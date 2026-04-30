@@ -5,6 +5,7 @@ import { extractParcelIdentifier } from "./parse/extractParcelIdentifier";
 import { extractPropertyAdress } from "./parse/extractPropertyAddress";
 import { extractPropertyArea } from "./parse/extractPropertyArea";
 import { extractPropertyIdentifier } from "./parse/extractPropertyIdentifier";
+import { extractPropertyPurpose } from "./parse/extractPropertyPurpose";
 import { extractSchemeNumber } from "./parse/extractSchemeNumber";
 
 async function main() {
@@ -17,6 +18,7 @@ async function main() {
     const propertyArea = extractPropertyArea(normalizedText);
     const buildingIdentifier = extractBuildingIdentifier(normalizedText);
     const parcelIdentifier = extractParcelIdentifier(normalizedText);
+    const propertyPurpose = extractPropertyPurpose(normalizedText);
 
     console.log("---- SCHEME NUMBER ----");
     console.log(schemeNumber);
@@ -35,6 +37,9 @@ async function main() {
 
     console.log("---- PARCEL IDENTIFIER ----");
     console.log(parcelIdentifier);
+
+    console.log("---- PROPERTY PURPOSE ----");
+    console.log(propertyPurpose);
 }
 
 main().catch(error => {
