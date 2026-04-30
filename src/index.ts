@@ -1,3 +1,4 @@
+import { buildCadastralDescriptionBlock } from "./build/buildCadastralDescriptionBlock";
 import { extractPdfText } from "./extract/extractPdfText";
 import { normalizePdfText } from "./normalize/normalizePdfText";
 import { extractBuildingIdentifier } from "./parse/extractBuildingIdentifier";
@@ -15,9 +16,13 @@ async function main() {
     const normalizedText = normalizePdfText(rawText)
 
     const pdfData = parseCadastreFields(normalizedText);
+    const cadastralDescriptionBlock = buildCadastralDescriptionBlock(pdfData);
 
     console.log("---- PDF DATA ----");
     console.log(pdfData);
+
+    console.log("---- CADASTRAL DESCRIPTION BLOCK ----");
+    console.log(cadastralDescriptionBlock);
 }
 
 main().catch(error => {
