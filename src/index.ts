@@ -1,6 +1,7 @@
 import { extractPdfText } from "./extract/extractPdfText";
 import { normalizePdfText } from "./normalize/normalizePdfText";
 import { extractBuildingIdentifier } from "./parse/extractBuildingIdentifier";
+import { extractNeighbors } from "./parse/extractNeighbors";
 import { extractParcelIdentifier } from "./parse/extractParcelIdentifier";
 import { extractPropertyAdress } from "./parse/extractPropertyAddress";
 import { extractPropertyArea } from "./parse/extractPropertyArea";
@@ -19,6 +20,7 @@ async function main() {
     const buildingIdentifier = extractBuildingIdentifier(normalizedText);
     const parcelIdentifier = extractParcelIdentifier(normalizedText);
     const propertyPurpose = extractPropertyPurpose(normalizedText);
+    const neighbors = extractNeighbors(normalizedText);
 
     console.log("---- SCHEME NUMBER ----");
     console.log(schemeNumber);
@@ -40,6 +42,9 @@ async function main() {
 
     console.log("---- PROPERTY PURPOSE ----");
     console.log(propertyPurpose);
+
+    console.log("---- NEIGHBORS ----");
+    console.log(neighbors);
 }
 
 main().catch(error => {
