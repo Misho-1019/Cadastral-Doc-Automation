@@ -8,43 +8,16 @@ import { extractPropertyArea } from "./parse/extractPropertyArea";
 import { extractPropertyIdentifier } from "./parse/extractPropertyIdentifier";
 import { extractPropertyPurpose } from "./parse/extractPropertyPurpose";
 import { extractSchemeNumber } from "./parse/extractSchemeNumber";
+import { parseCadastreFields } from "./parse/parseCadastreFields";
 
 async function main() {
     const rawText = await extractPdfText('./input/sample.pdf');
     const normalizedText = normalizePdfText(rawText)
 
-    const schemeNumber = extractSchemeNumber(normalizedText);
-    const propertyIdentifier = extractPropertyIdentifier(normalizedText)
-    const propertyAdress = extractPropertyAdress(normalizedText)
-    const propertyArea = extractPropertyArea(normalizedText);
-    const buildingIdentifier = extractBuildingIdentifier(normalizedText);
-    const parcelIdentifier = extractParcelIdentifier(normalizedText);
-    const propertyPurpose = extractPropertyPurpose(normalizedText);
-    const neighbors = extractNeighbors(normalizedText);
+    const pdfData = parseCadastreFields(normalizedText);
 
-    console.log("---- SCHEME NUMBER ----");
-    console.log(schemeNumber);
-
-    console.log("---- PROPERTY IDENTIFIER ----");
-    console.log(propertyIdentifier);
-
-    console.log("---- PROPERTY ADDRESS ----");
-    console.log(propertyAdress);
-
-    console.log("---- PROPERTY AREA ----");
-    console.log(propertyArea);
-
-    console.log("---- BUILDING IDENTIFIER ----");
-    console.log(buildingIdentifier);
-
-    console.log("---- PARCEL IDENTIFIER ----");
-    console.log(parcelIdentifier);
-
-    console.log("---- PROPERTY PURPOSE ----");
-    console.log(propertyPurpose);
-
-    console.log("---- NEIGHBORS ----");
-    console.log(neighbors);
+    console.log("---- PDF DATA ----");
+    console.log(pdfData);
 }
 
 main().catch(error => {
