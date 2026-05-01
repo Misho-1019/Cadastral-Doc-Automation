@@ -1,4 +1,5 @@
 import { buildCadastralDescriptionBlock } from "./build/buildCadastralDescriptionBlock";
+import { buildDerivedData } from "./build/buildDerivedData";
 import { calculateDealData } from "./build/calculateDealData";
 import { extractPdfText } from "./extract/extractPdfText";
 import { formatMoneyToWordsBg } from "./format/formatMoneyToWordsBg";
@@ -32,13 +33,7 @@ async function main() {
 
     const calculatedData = calculateDealData(manualData);
 
-    const salePriceWords = formatMoneyToWordsBg(manualData.sale_price_eur);
-    const depositWords = formatMoneyToWordsBg(manualData.deposit_eur);
-    const remainingPriceWords = formatMoneyToWordsBg(calculatedData.remaining_price_eur)
-
-    const taxExampleWords = formatMoneyToWordsBg(48492.9);
-
-    const cadastralDescriptionBlock = buildCadastralDescriptionBlock(pdfData);
+    const derivedData = buildDerivedData(pdfData, manualData, calculatedData);
 
     console.log("---- PDF DATA ----");
     console.log(pdfData);
@@ -49,16 +44,8 @@ async function main() {
     console.log("---- CALCULATED DATA ----");
     console.log(calculatedData);
 
-    console.log("---- MONEY WORDS ----");
-    console.log({
-        salePriceWords,
-        depositWords,
-        remainingPriceWords,
-        taxExampleWords
-    });
-
-    console.log("---- CADASTRAL DESCRIPTION BLOCK ----");
-    console.log(cadastralDescriptionBlock);
+    console.log("---- DERIVED DATA ----");
+    console.log(derivedData);
 }
 
 main().catch(error => {
