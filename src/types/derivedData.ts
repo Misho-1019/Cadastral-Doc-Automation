@@ -6,5 +6,7 @@ export type DerivedData = {
     remaining_price_eur_formatted: string;
     remaining_price_words: string;
     formatted_property_address: string;
+    formatted_deposit_percent: string;
+    formatted_attached_parts: string;
     cadastral_description_block: string;
 }
