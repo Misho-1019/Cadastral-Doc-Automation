@@ -1,5 +1,10 @@
 import { PdfData } from "../parse/parseCadastreFields";
 
-export function buildCadastralDescriptionBlock(pdfData: PdfData): string {
-    return `- ${pdfData.property_purpose}, който съгласно Схема на самостоятелен обект в сграда № ${pdfData.scheme_number} г., издадена от АГКК, представлява самостоятелен обект в сграда с идентификатор ${pdfData.property_identifier}, с адрес: ${pdfData.property_address}, находящ се в сграда с идентификатор ${pdfData.building_identifier}, с предназначение: ${pdfData.building_purpose}, брой етажи: ${pdfData.building_floors}, разположена в поземлен имот с идентификатор ${pdfData.parcel_identifier}, с предназначение на обекта: ${pdfData.property_purpose}, брой нива: ${pdfData.property_levels}, с площ от ${pdfData.property_area} кв. м., прилежащи части: ${pdfData.attached_parts}, при съседи: на същия етаж – ${pdfData.neighbors.same_floor}, под обекта – ${pdfData.neighbors.below}, над обекта – ${pdfData.neighbors.above}`;
+type BuildCadastralDescriptionInput = {
+    pdfData: PdfData,
+    formattedPropertyAddress: string;
+}
+
+export function buildCadastralDescriptionBlock({ pdfData, formattedPropertyAddress }: BuildCadastralDescriptionInput): string {
+    return `- ${pdfData.property_purpose}, който съгласно Схема на самостоятелен обект в сграда № ${pdfData.scheme_number} г., издадена от АГКК, представлява самостоятелен обект в сграда с идентификатор ${pdfData.property_identifier}, с адрес: ${formattedPropertyAddress}, находящ се в сграда с идентификатор ${pdfData.building_identifier}, с предназначение: ${pdfData.building_purpose}, брой етажи: ${pdfData.building_floors}, разположена в поземлен имот с идентификатор ${pdfData.parcel_identifier}, с предназначение на обекта: ${pdfData.property_purpose}, брой нива: ${pdfData.property_levels}, с площ от ${pdfData.property_area} кв. м., прилежащи части: ${pdfData.attached_parts}, при съседи: на същия етаж – ${pdfData.neighbors.same_floor}, под обекта – ${pdfData.neighbors.below}, над обекта – ${pdfData.neighbors.above}`;
 }
