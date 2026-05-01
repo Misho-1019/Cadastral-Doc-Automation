@@ -1,19 +1,10 @@
-import { buildCadastralDescriptionBlock } from "./build/buildCadastralDescriptionBlock";
 import { buildDerivedData } from "./build/buildDerivedData";
+import { buildDraftPayload } from "./build/buildDraftPayload";
 import { calculateDealData } from "./build/calculateDealData";
 import { extractPdfText } from "./extract/extractPdfText";
-import { formatMoneyToWordsBg } from "./format/formatMoneyToWordsBg";
-import { numberToWordsBg } from "./format/numberToWordsBg";
 import { normalizePdfText } from "./normalize/normalizePdfText";
-import { extractBuildingIdentifier } from "./parse/extractBuildingIdentifier";
-import { extractNeighbors } from "./parse/extractNeighbors";
-import { extractParcelIdentifier } from "./parse/extractParcelIdentifier";
-import { extractPropertyAdress } from "./parse/extractPropertyAddress";
-import { extractPropertyArea } from "./parse/extractPropertyArea";
-import { extractPropertyIdentifier } from "./parse/extractPropertyIdentifier";
-import { extractPropertyPurpose } from "./parse/extractPropertyPurpose";
-import { extractSchemeNumber } from "./parse/extractSchemeNumber";
 import { parseCadastreFields } from "./parse/parseCadastreFields";
+import { ManualData } from "./types/manualData";
 
 async function main() {
     const rawText = await extractPdfText('./input/sample.pdf');
@@ -21,7 +12,7 @@ async function main() {
 
     const pdfData = parseCadastreFields(normalizedText);
 
-    const manualData = {
+    const manualData: ManualData = {
         seller_full_name: "ЕМИЛИЯ ИВАНОВА ГОРАНОВА-ВЕСТНЕР",
         seller_egn: "7208223211",
         buyer_full_name: "КАМЕЛИЯ АНГЕЛОВА АНГЕЛОВА-ТОДОРОВА",
@@ -35,17 +26,10 @@ async function main() {
 
     const derivedData = buildDerivedData(pdfData, manualData, calculatedData);
 
-    console.log("---- PDF DATA ----");
-    console.log(pdfData);
+    const draftPayload = buildDraftPayload(pdfData, manualData, calculatedData, derivedData)
 
-    console.log("---- MANUAL DATA ----");
-    console.log(manualData);
-
-    console.log("---- CALCULATED DATA ----");
-    console.log(calculatedData);
-
-    console.log("---- DERIVED DATA ----");
-    console.log(derivedData);
+    console.log("---- DRAFT PAYLOAD ----");
+    console.dir(draftPayload, { depth: null })
 }
 
 main().catch(error => {
