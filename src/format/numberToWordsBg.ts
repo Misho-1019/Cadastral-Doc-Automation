@@ -81,6 +81,10 @@ function numberBelow1000ToWords(num: number): string {
         return hundreds[hundred];
     }
 
+    if (remainder < 10 || remainder % 10 === 0 || remainder < 20) {
+        return `${hundreds[hundred]} и ${numberBelow100ToWords(remainder)}`;
+    }
+
     return `${hundreds[hundred]} ${numberBelow100ToWords(remainder)}`;
 }
 

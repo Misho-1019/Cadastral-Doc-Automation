@@ -1,6 +1,7 @@
 import { buildCadastralDescriptionBlock } from "./build/buildCadastralDescriptionBlock";
 import { calculateDealData } from "./build/calculateDealData";
 import { extractPdfText } from "./extract/extractPdfText";
+import { formatMoneyToWordsBg } from "./format/formatMoneyToWordsBg";
 import { numberToWordsBg } from "./format/numberToWordsBg";
 import { normalizePdfText } from "./normalize/normalizePdfText";
 import { extractBuildingIdentifier } from "./parse/extractBuildingIdentifier";
@@ -31,9 +32,11 @@ async function main() {
 
     const calculatedData = calculateDealData(manualData);
 
-    const salePriceWords = numberToWordsBg(manualData.sale_price_eur);
-    const depositWords = numberToWordsBg(manualData.deposit_eur);
-    const remainingPriceWords = numberToWordsBg(calculatedData.remaining_price_eur)
+    const salePriceWords = formatMoneyToWordsBg(manualData.sale_price_eur);
+    const depositWords = formatMoneyToWordsBg(manualData.deposit_eur);
+    const remainingPriceWords = formatMoneyToWordsBg(calculatedData.remaining_price_eur)
+
+    const taxExampleWords = formatMoneyToWordsBg(48492.9);
 
     const cadastralDescriptionBlock = buildCadastralDescriptionBlock(pdfData);
 
@@ -50,7 +53,8 @@ async function main() {
     console.log({
         salePriceWords,
         depositWords,
-        remainingPriceWords
+        remainingPriceWords,
+        taxExampleWords
     });
 
     console.log("---- CADASTRAL DESCRIPTION BLOCK ----");
