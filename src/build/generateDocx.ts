@@ -9,14 +9,12 @@ export function generateDocx(payload: DraftPayload) {
     const zip = new PizZip(content);
     const doc = new Docxtemplater(zip, { paragraphLoop: true, linebreaks: true, delimiters: { start: "{{", end: "}}" } })
 
-    doc.setData({
-        ...payload.manual_data,
-        ...payload.calculated_data,
-        ...payload.derived_data,
-    })
-
     try {
-        doc.render();
+        doc.render({
+            ...payload.manual_data,
+            ...payload.calculated_data,
+            ...payload.derived_data,
+        });
     } catch (error) {
         console.error('Template rendering error:', error);
         throw error;

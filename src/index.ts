@@ -35,5 +35,5 @@ async function main() {
 }
 
 main().catch(error => {
-    console.error("Failed to extract PDF text:", error);
+    console.error("Failed to generate DOCX:", error);
 });
