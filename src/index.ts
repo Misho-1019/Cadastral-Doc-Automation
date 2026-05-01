@@ -16,6 +16,17 @@ async function main() {
     const normalizedText = normalizePdfText(rawText)
 
     const pdfData = parseCadastreFields(normalizedText);
+
+    const manualData = {
+        seller_full_name: "ЕМИЛИЯ ИВАНОВА ГОРАНОВА-ВЕСТНЕР",
+        seller_egn: "7208223211",
+        buyer_full_name: "КАМЕЛИЯ АНГЕЛОВА АНГЕЛОВА-ТОДОРОВА",
+        buyer_egn: "7507263057",
+        sale_price_eur: 360000,
+        deposit_eur: 36000,
+        signing_date: "02.04.2026"
+    };
+
     const cadastralDescriptionBlock = buildCadastralDescriptionBlock(pdfData);
 
     console.log("---- PDF DATA ----");
