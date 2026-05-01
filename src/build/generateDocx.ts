@@ -4,7 +4,7 @@ import Docxtemplater from "docxtemplater";
 import { DraftPayload } from "../types/draftPayload";
 
 export function generateDocx(payload: DraftPayload) {
-    const content = fs.readFileSync("./templates/test-template.docx", "binary")
+    const content = fs.readFileSync("./templates/notarial-act-template-v1.docx", "binary")
 
     const zip = new PizZip(content);
     const doc = new Docxtemplater(zip, { paragraphLoop: true, linebreaks: true, delimiters: { start: "{{", end: "}}" } })
