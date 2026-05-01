@@ -1,6 +1,7 @@
 import { buildDerivedData } from "./build/buildDerivedData";
 import { buildDraftPayload } from "./build/buildDraftPayload";
 import { calculateDealData } from "./build/calculateDealData";
+import { generateDocx } from "./build/generateDocx";
 import { extractPdfText } from "./extract/extractPdfText";
 import { normalizePdfText } from "./normalize/normalizePdfText";
 import { parseCadastreFields } from "./parse/parseCadastreFields";
@@ -28,8 +29,9 @@ async function main() {
 
     const draftPayload = buildDraftPayload(pdfData, manualData, calculatedData, derivedData)
 
-    console.log("---- DRAFT PAYLOAD ----");
-    console.dir(draftPayload, { depth: null })
+    generateDocx(draftPayload);
+
+    console.log("DOCX generated successfully ✅");
 }
 
 main().catch(error => {
