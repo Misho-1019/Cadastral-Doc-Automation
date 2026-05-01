@@ -1,4 +1,5 @@
 import { buildCadastralDescriptionBlock } from "./build/buildCadastralDescriptionBlock";
+import { calculateDealData } from "./build/calculateDealData";
 import { extractPdfText } from "./extract/extractPdfText";
 import { normalizePdfText } from "./normalize/normalizePdfText";
 import { extractBuildingIdentifier } from "./parse/extractBuildingIdentifier";
@@ -27,10 +28,18 @@ async function main() {
         signing_date: "02.04.2026"
     };
 
+    const calculatedData = calculateDealData(manualData);
+
     const cadastralDescriptionBlock = buildCadastralDescriptionBlock(pdfData);
 
     console.log("---- PDF DATA ----");
     console.log(pdfData);
+
+    console.log("---- MANUAL DATA ----");
+    console.log(manualData);
+
+    console.log("---- CALCULATED DATA ----");
+    console.log(calculatedData);
 
     console.log("---- CADASTRAL DESCRIPTION BLOCK ----");
     console.log(cadastralDescriptionBlock);
