@@ -3,6 +3,7 @@ import { buildDraftPayload } from "./build/buildDraftPayload";
 import { calculateDealData } from "./build/calculateDealData";
 import { generateDocx } from "./build/generateDocx";
 import { extractPdfText } from "./extract/extractPdfText";
+import { loadManualData } from "./loaders/loadManualData";
 import { normalizePdfText } from "./normalize/normalizePdfText";
 import { parseCadastreFields } from "./parse/parseCadastreFields";
 import { ManualData } from "./types/manualData";
@@ -14,15 +15,7 @@ async function main() {
 
     const pdfData = parseCadastreFields(normalizedText);
 
-    const manualData: ManualData = {
-        seller_full_name: "ЕМИЛИЯ ИВАНОВА ГОРАНОВА-ВЕСТНЕР",
-        seller_egn: "7208223211",
-        buyer_full_name: "КАМЕЛИЯ АНГЕЛОВА АНГЕЛОВА-ТОДОРОВА",
-        buyer_egn: "7507263057",
-        sale_price_eur: 360000,
-        deposit_eur: 36000,
-        signing_date: "02.04.2026"
-    };
+    const manualData = loadManualData("input/manualData.json");
 
     const calculatedData = calculateDealData(manualData);
 
