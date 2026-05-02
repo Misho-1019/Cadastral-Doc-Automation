@@ -6,6 +6,7 @@ import { extractPdfText } from "./extract/extractPdfText";
 import { normalizePdfText } from "./normalize/normalizePdfText";
 import { parseCadastreFields } from "./parse/parseCadastreFields";
 import { ManualData } from "./types/manualData";
+import { validateDraftPayload } from "./validate/validateDocumentInput";
 
 async function main() {
     const rawText = await extractPdfText('./input/sample.pdf');
@@ -28,6 +29,17 @@ async function main() {
     const derivedData = buildDerivedData(pdfData, manualData, calculatedData);
 
     const draftPayload = buildDraftPayload(pdfData, manualData, calculatedData, derivedData)
+
+    const validationResult = validateDraftPayload(draftPayload);
+
+    if (!validationResult.isValid) {
+        console.error("Validation failed:");
+        for (const error of validationResult.errors) {
+            console.error(`- ${error}`);
+        }
+
+        process.exit(1);
+    }
 
     generateDocx(draftPayload);
 
