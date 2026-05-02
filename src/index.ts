@@ -6,7 +6,6 @@ import { extractPdfText } from "./extract/extractPdfText";
 import { loadManualData } from "./loaders/loadManualData";
 import { normalizePdfText } from "./normalize/normalizePdfText";
 import { parseCadastreFields } from "./parse/parseCadastreFields";
-import { ManualData } from "./types/manualData";
 import { validateDraftPayload } from "./validate/validateDocumentInput";
 
 async function main() {
@@ -15,7 +14,7 @@ async function main() {
 
     const pdfData = parseCadastreFields(normalizedText);
 
-    const manualData = loadManualData("input/manualData.json");
+    const manualData = loadManualData("./input/manualData.json");
 
     const calculatedData = calculateDealData(manualData);
 
@@ -34,7 +33,11 @@ async function main() {
         process.exit(1);
     }
 
-    generateDocx(draftPayload);
+    generateDocx(
+        draftPayload,
+        "./templates/notarial-act-template-v1.docx",
+        "./output/result.docx"
+    );
 
     console.log("DOCX generated successfully ✅");
 }

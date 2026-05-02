@@ -2,9 +2,10 @@ import fs from "fs";
 import PizZip from "pizzip";
 import Docxtemplater from "docxtemplater";
 import { DraftPayload } from "../types/draftPayload";
+import path from "path";
 
-export function generateDocx(payload: DraftPayload) {
-    const content = fs.readFileSync("./templates/notarial-act-template-v1.docx", "binary")
+export function generateDocx(payload: DraftPayload, templatePath: string, outputPath: string) {
+    const content = fs.readFileSync(templatePath, "binary")
 
     const zip = new PizZip(content);
     const doc = new Docxtemplater(zip, { paragraphLoop: true, linebreaks: true, delimiters: { start: "{{", end: "}}" } })
@@ -20,7 +21,13 @@ export function generateDocx(payload: DraftPayload) {
         throw error;
     }
 
+    const outputDir = path.dirname(outputPath);
+
+    if (!fs.existsSync(outputDir)) {
+        fs.mkdirSync(outputDir, { recursive: true })
+    }
+
     const buffer = doc.getZip().generate({ type: 'nodebuffer' })
 
-    fs.writeFileSync("./output/result.docx", buffer)
+    fs.writeFileSync(outputPath, buffer)
 }
