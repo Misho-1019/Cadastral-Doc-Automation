@@ -1,17 +1,17 @@
 import { numberToWordsBg } from "./numberToWordsBg";
 
 export function formatIdentifierWithWords(identifier: string): string {
-    const parts = identifier.split('.');
+    const parts = identifier.split(".");
 
-    const formattedParts = parts.map(part => {
-        const numericValue = Number(part);
+    const words = parts.map((part) => {
+        const num = Number(part);
 
-        if (Number.isNaN(numericValue)) {
+        if (Number.isNaN(num)) {
             return part;
         }
 
-        return `${part} (${numberToWordsBg(numericValue)})`
-    })
+        return numberToWordsBg(num);
+    });
 
-    return formattedParts.join(", точка, ");
+    return `${identifier} (${words.join(", точка, ")})`;
 }
