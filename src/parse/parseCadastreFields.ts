@@ -4,7 +4,7 @@ import { extractBuildingIdentifier } from "./extractBuildingIdentifier";
 import { extractBuildingPurpose } from "./extractBuildingPurpose";
 import { extractNeighbors } from "./extractNeighbors";
 import { extractParcelIdentifier } from "./extractParcelIdentifier";
-import { extractPropertyAdress } from "./extractPropertyAddress";
+import { extractPropertyAddress } from "./extractPropertyAddress";
 import { extractPropertyArea } from "./extractPropertyArea";
 import { extractPropertyIdentifier } from "./extractPropertyIdentifier";
 import { extractPropertyLevels } from "./extractPropertyLevels";
@@ -36,7 +36,7 @@ export function parseCadastreFields(text: string): PdfData {
     return {
         scheme_number: extractSchemeNumber(text),
         property_identifier: extractPropertyIdentifier(text),
-        property_address: extractPropertyAdress(text),
+        property_address: extractPropertyAddress(text),
         property_area: extractPropertyArea(text),
         building_identifier: extractBuildingIdentifier(text),
         parcel_identifier: extractParcelIdentifier(text),

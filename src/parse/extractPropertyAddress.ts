@@ -1,4 +1,4 @@
-export function extractPropertyAdress(text: string): string {
+export function extractPropertyAddress(text: string): string {
     const startAnchor = "Адрес на самостоятелния обект:";
     const endAnchor = "Самостоятелният обект се намира на етаж";
 
