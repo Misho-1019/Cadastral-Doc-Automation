@@ -12,7 +12,15 @@ export function generateDocx(payload: DraftPayload, templatePath: string, output
     const doc = new Docxtemplater(zip, { paragraphLoop: true, linebreaks: true, delimiters: { start: "{{", end: "}}" } })
 
     try {
-        doc.render(buildTemplateData(payload));
+        const templateData = buildTemplateData(payload);
+
+        for (const [key, value] of Object.entries(templateData)) {
+            if (value === undefined || value === null) {
+                throw new Error(`Template data value is missing for key: ${key}`);
+            }
+        }
+
+        doc.render(templateData);
     } catch (error) {
         console.error('Template rendering error:', error);
         throw error;
