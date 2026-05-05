@@ -6,4 +6,5 @@ export type ManualData = {
     sale_price_eur: number;
     deposit_eur: number;
     signing_date: string;
+    ownership_proof_text: string;
 }

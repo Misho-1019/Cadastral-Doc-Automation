@@ -44,6 +44,10 @@ export function validateDraftPayload(payload: DraftPayload): ValidationResult {
         errors.push("manual_data.signing_date is missing or invalid.");
     }
 
+    if (!isNonEmptyString(payload.manual_data.ownership_proof_text)) {
+        errors.push("manual_data.ownership_proof_text is missing or invalid.");
+    }
+
     if (!isNonEmptyString(payload.pdf_data.scheme_number)) {
         errors.push("pdf_data.scheme_number is missing or invalid.");
     }
