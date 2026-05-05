@@ -76,6 +76,10 @@ export function validateDraftPayload(payload: DraftPayload): ValidationResult {
         errors.push("manual_data.seller_bank_iban is missing or invalid.");
     }
 
+    if (!isNonEmptyString(payload.manual_data.preliminary_contract_date)) {
+        errors.push("manual_data.preliminary_contract_date is missing or invalid.");
+    }
+
     if (!isNonEmptyString(payload.pdf_data.scheme_number)) {
         errors.push("pdf_data.scheme_number is missing or invalid.");
     }

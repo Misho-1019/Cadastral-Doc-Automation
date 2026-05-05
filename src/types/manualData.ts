@@ -14,4 +14,5 @@ export type ManualData = {
     seller_bank_name: string;
     seller_bank_bic: string;
     seller_bank_iban: string;
+    preliminary_contract_date: string;
 }
