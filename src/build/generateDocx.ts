@@ -3,6 +3,7 @@ import PizZip from "pizzip";
 import Docxtemplater from "docxtemplater";
 import { DraftPayload } from "../types/draftPayload";
 import path from "path";
+import { buildTemplateData } from "./buildTemplateData";
 
 export function generateDocx(payload: DraftPayload, templatePath: string, outputPath: string) {
     const content = fs.readFileSync(templatePath, "binary")
@@ -11,11 +12,7 @@ export function generateDocx(payload: DraftPayload, templatePath: string, output
     const doc = new Docxtemplater(zip, { paragraphLoop: true, linebreaks: true, delimiters: { start: "{{", end: "}}" } })
 
     try {
-        doc.render({
-            ...payload.manual_data,
-            ...payload.calculated_data,
-            ...payload.derived_data,
-        });
+        doc.render(buildTemplateData(payload));
     } catch (error) {
         console.error('Template rendering error:', error);
         throw error;

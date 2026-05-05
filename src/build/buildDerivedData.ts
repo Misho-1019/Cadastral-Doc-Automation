@@ -18,18 +18,23 @@ export function buildDerivedData(pdfData: PdfData, manualData: ManualData, calcu
     const formattedArea = formatArea(pdfData.property_area);
 
     return {
-        sale_price_eur_formatted: formatCurrencyNumberBg(manualData.sale_price_eur),
-        sale_price_words: formatMoneyToWordsBg(manualData.sale_price_eur),
-        deposit_eur_formatted: formatCurrencyNumberBg(manualData.deposit_eur),
-        deposit_words: formatMoneyToWordsBg(manualData.deposit_eur),
+        sale_price_eur_formatted: formatCurrencyNumberBg(manualData.deal.sale_price_eur),
+        sale_price_words: formatMoneyToWordsBg(manualData.deal.sale_price_eur),
+        deposit_eur_formatted: formatCurrencyNumberBg(manualData.deal.deposit_eur),
+        deposit_words: formatMoneyToWordsBg(manualData.deal.deposit_eur),
         remaining_price_eur_formatted: formatCurrencyNumberBg(calculatedData.remaining_price_eur),
         remaining_price_words: formatMoneyToWordsBg(calculatedData.remaining_price_eur),
         formatted_property_address: formattedPropertyAddress,
         formatted_deposit_percent: formattedDepositPercent,
         formatted_attached_parts: formattedAttachedParts,
-        cadastral_description_block: buildCadastralDescriptionBlock({ pdfData, formattedPropertyAddress, formattedAttachedParts, formattedArea }),
-        tax_evaluation_amount_formatted: formatCurrencyNumberBg(manualData.tax_evaluation_amount_eur),
-        tax_evaluation_words: formatMoneyToWordsBg(manualData.tax_evaluation_amount_eur),
-        signing_date_words: formatDateWordsBg(manualData.signing_date),
-    }
+        cadastral_description_block: buildCadastralDescriptionBlock({
+            pdfData,
+            formattedPropertyAddress,
+            formattedAttachedParts,
+            formattedArea
+        }),
+        tax_evaluation_amount_formatted: formatCurrencyNumberBg(manualData.tax_evaluation.amount_eur),
+        tax_evaluation_words: formatMoneyToWordsBg(manualData.tax_evaluation.amount_eur),
+        signing_date_words: formatDateWordsBg(manualData.deal.signing_date),
+    };
 }

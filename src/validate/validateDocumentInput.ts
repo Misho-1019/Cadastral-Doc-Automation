@@ -16,116 +16,116 @@ function isValidNumber(value: unknown): boolean {
 export function validateDraftPayload(payload: DraftPayload): ValidationResult {
     const errors: string[] = [];
 
-    if (!isNonEmptyString(payload.manual_data.seller_full_name)) {
-        errors.push("manual_data.seller_full_name is missing or invalid.");
+        if (!isNonEmptyString(payload.manual_data.seller.full_name)) {
+        errors.push("manual_data.seller.full_name is missing or invalid.");
     }
 
-    if (!isNonEmptyString(payload.manual_data.seller_egn)) {
-        errors.push("manual_data.seller_egn is missing or invalid.");
+    if (!isNonEmptyString(payload.manual_data.seller.egn)) {
+        errors.push("manual_data.seller.egn is missing or invalid.");
     }
 
-    if (!isNonEmptyString(payload.manual_data.buyer_full_name)) {
-        errors.push("manual_data.buyer_full_name is missing or invalid.");
+    if (!isNonEmptyString(payload.manual_data.seller.id_card.number)) {
+        errors.push("manual_data.seller.id_card.number is missing or invalid.");
     }
 
-    if (!isNonEmptyString(payload.manual_data.buyer_egn)) {
-        errors.push("manual_data.buyer_egn is missing or invalid.");
+    if (!isNonEmptyString(payload.manual_data.seller.id_card.issue_date)) {
+        errors.push("manual_data.seller.id_card.issue_date is missing or invalid.");
     }
 
-    if (!isValidNumber(payload.manual_data.sale_price_eur)) {
-        errors.push("manual_data.sale_price_eur is missing or invalid.");
+    if (!isNonEmptyString(payload.manual_data.seller.id_card.issuer)) {
+        errors.push("manual_data.seller.id_card.issuer is missing or invalid.");
     }
 
-    if (!isValidNumber(payload.manual_data.deposit_eur)) {
-        errors.push("manual_data.deposit_eur is missing or invalid.");
+    if (!isNonEmptyString(payload.manual_data.seller.permanent_address)) {
+        errors.push("manual_data.seller.permanent_address is missing or invalid.");
     }
 
-    if (!isNonEmptyString(payload.manual_data.signing_date)) {
-        errors.push("manual_data.signing_date is missing or invalid.");
+    if (!isNonEmptyString(payload.manual_data.buyer.full_name)) {
+        errors.push("manual_data.buyer.full_name is missing or invalid.");
+    }
+
+    if (!isNonEmptyString(payload.manual_data.buyer.egn)) {
+        errors.push("manual_data.buyer.egn is missing or invalid.");
+    }
+
+    if (!isNonEmptyString(payload.manual_data.buyer.id_card.number)) {
+        errors.push("manual_data.buyer.id_card.number is missing or invalid.");
+    }
+
+    if (!isNonEmptyString(payload.manual_data.buyer.id_card.issue_date)) {
+        errors.push("manual_data.buyer.id_card.issue_date is missing or invalid.");
+    }
+
+    if (!isNonEmptyString(payload.manual_data.buyer.id_card.issuer)) {
+        errors.push("manual_data.buyer.id_card.issuer is missing or invalid.");
+    }
+
+    if (!isNonEmptyString(payload.manual_data.buyer.permanent_address)) {
+        errors.push("manual_data.buyer.permanent_address is missing or invalid.");
+    }
+
+    if (!isValidNumber(payload.manual_data.deal.sale_price_eur)) {
+        errors.push("manual_data.deal.sale_price_eur is missing or invalid.");
+    }
+
+    if (!isValidNumber(payload.manual_data.deal.deposit_eur)) {
+        errors.push("manual_data.deal.deposit_eur is missing or invalid.");
+    }
+
+    if (!isNonEmptyString(payload.manual_data.deal.signing_date)) {
+        errors.push("manual_data.deal.signing_date is missing or invalid.");
+    }
+
+    if (!isNonEmptyString(payload.manual_data.deal.preliminary_contract_date)) {
+        errors.push("manual_data.deal.preliminary_contract_date is missing or invalid.");
+    }
+
+    if (!isNonEmptyString(payload.manual_data.notary.name)) {
+        errors.push("manual_data.notary.name is missing or invalid.");
+    }
+
+    if (!isNonEmptyString(payload.manual_data.notary.registry_number)) {
+        errors.push("manual_data.notary.registry_number is missing or invalid.");
+    }
+
+    if (!isNonEmptyString(payload.manual_data.notary.region)) {
+        errors.push("manual_data.notary.region is missing or invalid.");
+    }
+
+    if (!isNonEmptyString(payload.manual_data.notary.office_address)) {
+        errors.push("manual_data.notary.office_address is missing or invalid.");
+    }
+
+    if (!isValidNumber(payload.manual_data.tax_evaluation.amount_eur)) {
+        errors.push("manual_data.tax_evaluation.amount_eur is missing or invalid.");
+    }
+
+    if (!isNonEmptyString(payload.manual_data.tax_evaluation.certificate_number)) {
+        errors.push("manual_data.tax_evaluation.certificate_number is missing or invalid.");
+    }
+
+    if (!isNonEmptyString(payload.manual_data.tax_evaluation.certificate_date)) {
+        errors.push("manual_data.tax_evaluation.certificate_date is missing or invalid.");
+    }
+
+    if (!isNonEmptyString(payload.manual_data.tax_evaluation.issuer)) {
+        errors.push("manual_data.tax_evaluation.issuer is missing or invalid.");
+    }
+
+    if (!isNonEmptyString(payload.manual_data.seller_bank.name)) {
+        errors.push("manual_data.seller_bank.name is missing or invalid.");
+    }
+
+    if (!isNonEmptyString(payload.manual_data.seller_bank.bic)) {
+        errors.push("manual_data.seller_bank.bic is missing or invalid.");
+    }
+
+    if (!isNonEmptyString(payload.manual_data.seller_bank.iban)) {
+        errors.push("manual_data.seller_bank.iban is missing or invalid.");
     }
 
     if (!isNonEmptyString(payload.manual_data.ownership_proof_text)) {
         errors.push("manual_data.ownership_proof_text is missing or invalid.");
-    }
-
-    if (!isValidNumber(payload.manual_data.tax_evaluation_amount_eur)) {
-        errors.push("manual_data.tax_evaluation_amount_eur is missing or invalid.");
-    }
-
-    if (!isNonEmptyString(payload.manual_data.tax_evaluation_certificate_number)) {
-        errors.push("manual_data.tax_evaluation_certificate_number is missing or invalid.");
-    }
-
-    if (!isNonEmptyString(payload.manual_data.tax_evaluation_certificate_date)) {
-        errors.push("manual_data.tax_evaluation_certificate_date is missing or invalid.");
-    }
-
-    if (!isNonEmptyString(payload.manual_data.tax_evaluation_issuer)) {
-        errors.push("manual_data.tax_evaluation_issuer is missing or invalid.");
-    }
-
-    if (!isNonEmptyString(payload.manual_data.seller_bank_name)) {
-        errors.push("manual_data.seller_bank_name is missing or invalid.");
-    }
-
-    if (!isNonEmptyString(payload.manual_data.seller_bank_bic)) {
-        errors.push("manual_data.seller_bank_bic is missing or invalid.");
-    }
-
-    if (!isNonEmptyString(payload.manual_data.seller_bank_iban)) {
-        errors.push("manual_data.seller_bank_iban is missing or invalid.");
-    }
-
-    if (!isNonEmptyString(payload.manual_data.preliminary_contract_date)) {
-        errors.push("manual_data.preliminary_contract_date is missing or invalid.");
-    }
-
-    if (!isNonEmptyString(payload.manual_data.notary_name)) {
-        errors.push("manual_data.notary_name is missing or invalid.");
-    }
-
-    if (!isNonEmptyString(payload.manual_data.notary_registry_number)) {
-        errors.push("manual_data.notary_registry_number is missing or invalid.");
-    }
-
-    if (!isNonEmptyString(payload.manual_data.notary_region)) {
-        errors.push("manual_data.notary_region is missing or invalid.");
-    }
-
-    if (!isNonEmptyString(payload.manual_data.notary_office_address)) {
-        errors.push("manual_data.notary_office_address is missing or invalid.");
-    }
-
-    if (!isNonEmptyString(payload.manual_data.seller_id_card_number)) {
-        errors.push("manual_data.seller_id_card_number is missing or invalid.");
-    }
-
-    if (!isNonEmptyString(payload.manual_data.seller_id_card_issue_date)) {
-        errors.push("manual_data.seller_id_card_issue_date is missing or invalid.");
-    }
-
-    if (!isNonEmptyString(payload.manual_data.seller_id_card_issuer)) {
-        errors.push("manual_data.seller_id_card_issuer is missing or invalid.");
-    }
-
-    if (!isNonEmptyString(payload.manual_data.seller_permanent_address)) {
-        errors.push("manual_data.seller_permanent_address is missing or invalid.");
-    }
-
-    if (!isNonEmptyString(payload.manual_data.buyer_id_card_number)) {
-        errors.push("manual_data.buyer_id_card_number is missing or invalid.");
-    }
-
-    if (!isNonEmptyString(payload.manual_data.buyer_id_card_issue_date)) {
-        errors.push("manual_data.buyer_id_card_issue_date is missing or invalid.");
-    }
-
-    if (!isNonEmptyString(payload.manual_data.buyer_id_card_issuer)) {
-        errors.push("manual_data.buyer_id_card_issuer is missing or invalid.");
-    }
-
-    if (!isNonEmptyString(payload.manual_data.buyer_permanent_address)) {
-        errors.push("manual_data.buyer_permanent_address is missing or invalid.");
     }
 
     if (!isNonEmptyString(payload.manual_data.presented_documents_text)) {
