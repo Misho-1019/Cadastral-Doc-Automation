@@ -11,4 +11,5 @@ export type DerivedData = {
     cadastral_description_block: string;
     tax_evaluation_amount_formatted: string;
     tax_evaluation_words: string;
+    signing_date_words: string;
 }

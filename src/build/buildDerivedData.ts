@@ -1,6 +1,7 @@
 import { formatArea } from "../format/formatArea";
 import { formatAttachedParts } from "../format/formatAttachedParts";
 import { formatCurrencyNumberBg } from "../format/formatCurrencyNumberBg";
+import { formatDateWordsBg } from "../format/formatDateWordsBg";
 import { formatMoneyToWordsBg } from "../format/formatMoneyToWordsBg";
 import { formatPercentageBg } from "../format/formatPercentageBg";
 import { formatPropertyAddress } from "../format/formatPropertyAddress";
@@ -29,5 +30,6 @@ export function buildDerivedData(pdfData: PdfData, manualData: ManualData, calcu
         cadastral_description_block: buildCadastralDescriptionBlock({ pdfData, formattedPropertyAddress, formattedAttachedParts, formattedArea }),
         tax_evaluation_amount_formatted: formatCurrencyNumberBg(manualData.tax_evaluation_amount_eur),
         tax_evaluation_words: formatMoneyToWordsBg(manualData.tax_evaluation_amount_eur),
+        signing_date_words: formatDateWordsBg(manualData.signing_date),
     }
 }
