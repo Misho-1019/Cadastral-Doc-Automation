@@ -1,4 +1,5 @@
 import { formatIdentifierWithWords } from "../format/formatIdentifierWithWords";
+import { formatNeighborIdentifier } from "../format/formatNeighborIdentifier";
 import { numberToWordsBg } from "../format/numberToWordsBg";
 import { PdfData } from "../parse/parseCadastreFields";
 
@@ -20,5 +21,5 @@ export function buildCadastralDescriptionBlock({ pdfData, formattedPropertyAddre
 
     const formattedPropertyLevels = Number.isNaN(propertyLevelsNumber) ? pdfData.property_levels : `${pdfData.property_levels} (${numberToWordsBg(propertyLevelsNumber)})`;
 
-    return `- ${pdfData.property_purpose.toUpperCase()}, който съгласно Схема на самостоятелен обект в сграда № ${pdfData.scheme_number} г., издадена от АГКК, представлява самостоятелен обект в сграда с идентификатор ${propertyIdentifier}, с адрес на самостоятелния обект: ${formattedPropertyAddress}, находящ се в сграда с идентификатор ${buildingIdentifier}, с предназначение: ${pdfData.building_purpose}, брой етажи: ${formattedBuildingFloors}, разположена в поземлен имот с идентификатор ${parcelIdentifier}, с предназначение на обекта: ${pdfData.property_purpose}, брой нива на обекта: ${formattedPropertyLevels}, с площ от ${pdfData.property_area} кв. м., прилежащи части: ${formattedAttachedParts}, при съседи: на същия етаж – ${pdfData.neighbors.same_floor}, под обекта – ${pdfData.neighbors.below}, над обекта – ${pdfData.neighbors.above}`;
+    return `- ${pdfData.property_purpose.toUpperCase()}, който съгласно Схема на самостоятелен обект в сграда № ${pdfData.scheme_number} г., издадена от АГКК, представлява самостоятелен обект в сграда с идентификатор ${propertyIdentifier}, с адрес на самостоятелния обект: ${formattedPropertyAddress}, находящ се в сграда с идентификатор ${buildingIdentifier}, с предназначение: ${pdfData.building_purpose}, брой етажи: ${formattedBuildingFloors}, разположена в поземлен имот с идентификатор ${parcelIdentifier}, с предназначение на обекта: ${pdfData.property_purpose}, брой нива на обекта: ${formattedPropertyLevels}, с площ от ${pdfData.property_area} кв. м., прилежащи части: ${formattedAttachedParts}, при съседи на самостоятелния обект: на същия етаж – ${formatNeighborIdentifier(pdfData.neighbors.same_floor)}, под обекта – ${formatNeighborIdentifier(pdfData.neighbors.below)}, над обекта – ${formatNeighborIdentifier(pdfData.neighbors.above)}`;
 }
