@@ -1,4 +1,5 @@
 import { numberToWordsBg } from "./numberToWordsBg";
+import { numberToWordsBgFemale } from "./numberToWordsBgFemale";
 
 export function formatDecimalNumberBg(value: string): string {
     const normalizedValue = value.replace(',', '.');
@@ -23,5 +24,5 @@ export function formatDecimalNumberBg(value: string): string {
         decimalUnit = "хилядни";
     }
 
-    return `${numberToWordsBg(wholePart)} цяло и ${numberToWordsBg(decimalPart)} ${decimalUnit}`;
+    return `${numberToWordsBg(wholePart)} цяло и ${numberToWordsBgFemale(decimalPart)} ${decimalUnit}`;
 }
