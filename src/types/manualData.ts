@@ -28,4 +28,5 @@ export type ManualData = {
     buyer_id_card_issue_date: string;
     buyer_id_card_issuer: string;
     buyer_permanent_address: string;
+    presented_documents_text: string;
 }

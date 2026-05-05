@@ -128,6 +128,10 @@ export function validateDraftPayload(payload: DraftPayload): ValidationResult {
         errors.push("manual_data.buyer_permanent_address is missing or invalid.");
     }
 
+    if (!isNonEmptyString(payload.manual_data.presented_documents_text)) {
+        errors.push("manual_data.presented_documents_text is missing or invalid.");
+    }
+
     if (!isNonEmptyString(payload.pdf_data.scheme_number)) {
         errors.push("pdf_data.scheme_number is missing or invalid.");
     }
