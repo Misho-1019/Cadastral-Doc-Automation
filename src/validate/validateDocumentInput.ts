@@ -80,6 +80,22 @@ export function validateDraftPayload(payload: DraftPayload): ValidationResult {
         errors.push("manual_data.preliminary_contract_date is missing or invalid.");
     }
 
+    if (!isNonEmptyString(payload.manual_data.notary_name)) {
+        errors.push("manual_data.notary_name is missing or invalid.");
+    }
+
+    if (!isNonEmptyString(payload.manual_data.notary_registry_number)) {
+        errors.push("manual_data.notary_registry_number is missing or invalid.");
+    }
+
+    if (!isNonEmptyString(payload.manual_data.notary_region)) {
+        errors.push("manual_data.notary_region is missing or invalid.");
+    }
+
+    if (!isNonEmptyString(payload.manual_data.notary_office_address)) {
+        errors.push("manual_data.notary_office_address is missing or invalid.");
+    }
+
     if (!isNonEmptyString(payload.pdf_data.scheme_number)) {
         errors.push("pdf_data.scheme_number is missing or invalid.");
     }

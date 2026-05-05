@@ -15,4 +15,8 @@ export type ManualData = {
     seller_bank_bic: string;
     seller_bank_iban: string;
     preliminary_contract_date: string;
+    notary_name: string;
+    notary_registry_number: string;
+    notary_region: string;
+    notary_office_address: string;
 }
