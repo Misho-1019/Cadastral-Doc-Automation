@@ -1,3 +1,4 @@
+import { formatDecimalNumberBg } from "./formatDecimalNumberBg";
 import { formatPercentageBg } from "./formatPercentageBg"
 import { numberToWordsBg } from "./numberToWordsBg";
 
@@ -25,13 +26,7 @@ export function formatAttachedParts(text: string): string {
     });
 
     result = result.replace(/(\d+,\d+)\s*%/g, (_, n) => {
-        const num = Number(n.replace(",", "."));
-
-        if (Number.isNaN(num)) {
-            return `${n} %`;
-        }
-
-        return `${n} % (${numberToWordsBg(Math.floor(num))})`;
+        return `${n} % (${formatDecimalNumberBg(n)} върху сто)`;
     });
 
     result = result.replace(/ид\.ч\./g, "идеални части ");
