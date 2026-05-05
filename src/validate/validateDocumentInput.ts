@@ -64,6 +64,18 @@ export function validateDraftPayload(payload: DraftPayload): ValidationResult {
         errors.push("manual_data.tax_evaluation_issuer is missing or invalid.");
     }
 
+    if (!isNonEmptyString(payload.manual_data.seller_bank_name)) {
+        errors.push("manual_data.seller_bank_name is missing or invalid.");
+    }
+
+    if (!isNonEmptyString(payload.manual_data.seller_bank_bic)) {
+        errors.push("manual_data.seller_bank_bic is missing or invalid.");
+    }
+
+    if (!isNonEmptyString(payload.manual_data.seller_bank_iban)) {
+        errors.push("manual_data.seller_bank_iban is missing or invalid.");
+    }
+
     if (!isNonEmptyString(payload.pdf_data.scheme_number)) {
         errors.push("pdf_data.scheme_number is missing or invalid.");
     }

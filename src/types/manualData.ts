@@ -11,4 +11,7 @@ export type ManualData = {
     tax_evaluation_certificate_number: string;
     tax_evaluation_certificate_date: string;
     tax_evaluation_issuer: string;
+    seller_bank_name: string;
+    seller_bank_bic: string;
+    seller_bank_iban: string;
 }
