@@ -1,3 +1,4 @@
+import { formatArea } from "../format/formatArea";
 import { formatAttachedParts } from "../format/formatAttachedParts";
 import { formatCurrencyNumberBg } from "../format/formatCurrencyNumberBg";
 import { formatMoneyToWordsBg } from "../format/formatMoneyToWordsBg";
@@ -13,6 +14,7 @@ export function buildDerivedData(pdfData: PdfData, manualData: ManualData, calcu
     const formattedPropertyAddress = formatPropertyAddress(pdfData.property_address);
     const formattedDepositPercent = formatPercentageBg(calculatedData.deposit_percent);
     const formattedAttachedParts = formatAttachedParts(pdfData.attached_parts);
+    const formattedArea = formatArea(pdfData.property_area);
     
     return {
         sale_price_eur_formatted: formatCurrencyNumberBg(manualData.sale_price_eur),
@@ -24,6 +26,6 @@ export function buildDerivedData(pdfData: PdfData, manualData: ManualData, calcu
         formatted_property_address: formattedPropertyAddress,
         formatted_deposit_percent: formattedDepositPercent,
         formatted_attached_parts: formattedAttachedParts,
-        cadastral_description_block: buildCadastralDescriptionBlock({ pdfData, formattedPropertyAddress, formattedAttachedParts })
+        cadastral_description_block: buildCadastralDescriptionBlock({ pdfData, formattedPropertyAddress, formattedAttachedParts, formattedArea })
     }
 }
