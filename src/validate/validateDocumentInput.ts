@@ -96,6 +96,38 @@ export function validateDraftPayload(payload: DraftPayload): ValidationResult {
         errors.push("manual_data.notary_office_address is missing or invalid.");
     }
 
+    if (!isNonEmptyString(payload.manual_data.seller_id_card_number)) {
+        errors.push("manual_data.seller_id_card_number is missing or invalid.");
+    }
+
+    if (!isNonEmptyString(payload.manual_data.seller_id_card_issue_date)) {
+        errors.push("manual_data.seller_id_card_issue_date is missing or invalid.");
+    }
+
+    if (!isNonEmptyString(payload.manual_data.seller_id_card_issuer)) {
+        errors.push("manual_data.seller_id_card_issuer is missing or invalid.");
+    }
+
+    if (!isNonEmptyString(payload.manual_data.seller_permanent_address)) {
+        errors.push("manual_data.seller_permanent_address is missing or invalid.");
+    }
+
+    if (!isNonEmptyString(payload.manual_data.buyer_id_card_number)) {
+        errors.push("manual_data.buyer_id_card_number is missing or invalid.");
+    }
+
+    if (!isNonEmptyString(payload.manual_data.buyer_id_card_issue_date)) {
+        errors.push("manual_data.buyer_id_card_issue_date is missing or invalid.");
+    }
+
+    if (!isNonEmptyString(payload.manual_data.buyer_id_card_issuer)) {
+        errors.push("manual_data.buyer_id_card_issuer is missing or invalid.");
+    }
+
+    if (!isNonEmptyString(payload.manual_data.buyer_permanent_address)) {
+        errors.push("manual_data.buyer_permanent_address is missing or invalid.");
+    }
+
     if (!isNonEmptyString(payload.pdf_data.scheme_number)) {
         errors.push("pdf_data.scheme_number is missing or invalid.");
     }

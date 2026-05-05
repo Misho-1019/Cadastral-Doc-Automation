@@ -19,4 +19,13 @@ export type ManualData = {
     notary_registry_number: string;
     notary_region: string;
     notary_office_address: string;
+    seller_id_card_number: string;
+    seller_id_card_issue_date: string;
+    seller_id_card_issuer: string;
+    seller_permanent_address: string;
+
+    buyer_id_card_number: string;
+    buyer_id_card_issue_date: string;
+    buyer_id_card_issuer: string;
+    buyer_permanent_address: string;
 }

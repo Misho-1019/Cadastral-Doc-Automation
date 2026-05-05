@@ -18,5 +18,14 @@
     "notary_name": "ВАЛЕНТИНА ГЕОРГИЕВА",
     "notary_registry_number": "340",
     "notary_region": "Софийски районен съд",
-    "notary_office_address": "гр. София, улица „Княз Борис I“ № 49"
+    "notary_office_address": "гр. София, улица „Княз Борис I“ № 49",
+    "seller_id_card_number": "647544565",
+    "seller_id_card_issue_date": "28.03.2018",
+    "seller_id_card_issuer": "МВР - София",
+    "seller_permanent_address": "град София, ул. „Цар Иван Асен II“ № 43, ет. 3, ап. 6",
+    
+    "buyer_id_card_number": "651747724",
+    "buyer_id_card_issue_date": "17.02.2022",
+    "buyer_id_card_issuer": "МВР - София",
+    "buyer_permanent_address": "град София, Столична община, ул. „Добри Христов“ № 33, ет. 3, ап. 7"
 }
