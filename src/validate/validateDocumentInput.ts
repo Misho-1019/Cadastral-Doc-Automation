@@ -48,6 +48,22 @@ export function validateDraftPayload(payload: DraftPayload): ValidationResult {
         errors.push("manual_data.ownership_proof_text is missing or invalid.");
     }
 
+    if (!isValidNumber(payload.manual_data.tax_evaluation_amount_eur)) {
+        errors.push("manual_data.tax_evaluation_amount_eur is missing or invalid.");
+    }
+
+    if (!isNonEmptyString(payload.manual_data.tax_evaluation_certificate_number)) {
+        errors.push("manual_data.tax_evaluation_certificate_number is missing or invalid.");
+    }
+
+    if (!isNonEmptyString(payload.manual_data.tax_evaluation_certificate_date)) {
+        errors.push("manual_data.tax_evaluation_certificate_date is missing or invalid.");
+    }
+
+    if (!isNonEmptyString(payload.manual_data.tax_evaluation_issuer)) {
+        errors.push("manual_data.tax_evaluation_issuer is missing or invalid.");
+    }
+
     if (!isNonEmptyString(payload.pdf_data.scheme_number)) {
         errors.push("pdf_data.scheme_number is missing or invalid.");
     }

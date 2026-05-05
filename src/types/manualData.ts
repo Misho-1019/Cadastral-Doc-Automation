@@ -7,4 +7,8 @@ export type ManualData = {
     deposit_eur: number;
     signing_date: string;
     ownership_proof_text: string;
+    tax_evaluation_amount_eur: number;
+    tax_evaluation_certificate_number: string;
+    tax_evaluation_certificate_date: string;
+    tax_evaluation_issuer: string;
 }

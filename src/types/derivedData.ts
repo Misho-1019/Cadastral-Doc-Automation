@@ -9,4 +9,6 @@ export type DerivedData = {
     formatted_deposit_percent: string;
     formatted_attached_parts: string;
     cadastral_description_block: string;
+    tax_evaluation_amount_formatted: string;
+    tax_evaluation_words: string;
 }
