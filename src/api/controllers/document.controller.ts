@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { extractPdfText } from "../../extract/extractPdfText";
 import { normalizePdfText } from "../../normalize/normalizePdfText";
 import { parseCadastreFields } from "../../parse/parseCadastreFields";
+import { buildFormDraftData } from "../builders/buildFormDraftData";
 
 export const parsePdfController = async (req: Request, res: Response) => {
     try {
@@ -21,29 +22,7 @@ export const parsePdfController = async (req: Request, res: Response) => {
         return res.json({
             success: true,
             message: "PDF parsed successfully",
-            data: {
-                property: {
-                    scheme_number: parsedData.scheme_number,
-                    property_identifier: parsedData.property_identifier,
-                    property_address: parsedData.property_address,
-                    property_area: parsedData.property_area,
-                    building_identifier: parsedData.building_identifier,
-                    parcel_identifier: parsedData.parcel_identifier,
-                    property_purpose: parsedData.property_purpose,
-                    building_purpose: parsedData.building_purpose,
-                    building_floors: parsedData.building_floors,
-                    property_levels: parsedData.property_levels,
-                    attached_parts: parsedData.attached_parts,
-                    neighbors: parsedData.neighbors,
-                },
-                parties: {
-                    seller: {},
-                    buyer: {},
-                },
-                deal: {},
-                documents: {},
-                tax: {},
-            },
+            data: buildFormDraftData(parsedData),
         });
     } catch (error) {
         console.error(error);
