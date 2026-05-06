@@ -6,6 +6,7 @@ import { parseCadastreFields } from "../../parse/parseCadastreFields";
 import { buildFormDraftData } from "../builders/buildFormDraftData";
 import { generateDocx } from "../../build/generateDocx";
 import { validateDraftPayload } from "../../validate/validateDocumentInput";
+import { buildDraftPayloadFromForm } from "../builders/buildDraftPayloadFromForm";
 
 export const parsePdfController = async (req: Request, res: Response) => {
     try {
@@ -41,7 +42,9 @@ export const generateDocxController = async (req: Request, res: Response) => {
     try {
         const formData = req.body;
 
-        const validation = validateDraftPayload(formData);
+        const draftPayload = buildDraftPayloadFromForm(formData);
+
+        const validation = validateDraftPayload(draftPayload);
 
         if (!validation.isValid) {
             return res.status(400).json({
@@ -63,7 +66,7 @@ export const generateDocxController = async (req: Request, res: Response) => {
             `notarial-act-${Date.now()}.docx`
         )
 
-        generateDocx(formData, templatePath, outputPath);
+        generateDocx(draftPayload, templatePath, outputPath);
 
         return res.json({
             success: true,
