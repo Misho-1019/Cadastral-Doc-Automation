@@ -5,6 +5,7 @@ import { normalizePdfText } from "../../normalize/normalizePdfText";
 import { parseCadastreFields } from "../../parse/parseCadastreFields";
 import { buildFormDraftData } from "../builders/buildFormDraftData";
 import { generateDocx } from "../../build/generateDocx";
+import { validateDraftPayload } from "../../validate/validateDocumentInput";
 
 export const parsePdfController = async (req: Request, res: Response) => {
     try {
@@ -39,6 +40,16 @@ export const parsePdfController = async (req: Request, res: Response) => {
 export const generateDocxController = async (req: Request, res: Response) => {
     try {
         const formData = req.body;
+
+        const validation = validateDraftPayload(formData);
+
+        if (!validation.isValid) {
+            return res.status(400).json({
+                success: false,
+                message: "Invalid draft payload",
+                errors: validation.errors,
+            });
+        }
 
         const templatePath = path.join(
             process.cwd(),

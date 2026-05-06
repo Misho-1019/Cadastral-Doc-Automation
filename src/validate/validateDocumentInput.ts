@@ -16,7 +16,88 @@ function isValidNumber(value: unknown): boolean {
 export function validateDraftPayload(payload: DraftPayload): ValidationResult {
     const errors: string[] = [];
 
-        if (!isNonEmptyString(payload.manual_data.seller.full_name)) {
+    if (!payload || typeof payload !== "object") {
+        return {
+            isValid: false,
+            errors: ["Payload is missing or invalid."],
+        };
+    }
+
+    if (!payload.manual_data) {
+        return {
+            isValid: false,
+            errors: ["manual_data is missing."],
+        };
+    }
+
+    if (!payload.pdf_data) {
+        return {
+            isValid: false,
+            errors: ["pdf_data is missing."],
+        };
+    }
+
+    if (!payload.calculated_data) {
+        return {
+            isValid: false,
+            errors: ["calculated_data is missing."],
+        };
+    }
+
+    if (!payload.derived_data) {
+        return {
+            isValid: false,
+            errors: ["derived_data is missing."],
+        };
+    }
+
+    if (!payload.manual_data.seller) {
+        errors.push("manual_data.seller is missing.");
+    }
+
+    if (!payload.manual_data.buyer) {
+        errors.push("manual_data.buyer is missing.");
+    }
+
+    if (!payload.manual_data.deal) {
+        errors.push("manual_data.deal is missing.");
+    }
+
+    if (!payload.manual_data.notary) {
+        errors.push("manual_data.notary is missing.");
+    }
+
+    if (!payload.manual_data.tax_evaluation) {
+        errors.push("manual_data.tax_evaluation is missing.");
+    }
+
+    if (!payload.manual_data.seller_bank) {
+        errors.push("manual_data.seller_bank is missing.");
+    }
+
+    if (errors.length > 0) {
+        return {
+            isValid: false,
+            errors,
+        };
+    }
+
+    if (!payload.manual_data.seller.id_card) {
+        errors.push("manual_data.seller.id_card is missing.");
+    }
+
+    if (!payload.manual_data.buyer.id_card) {
+        errors.push("manual_data.buyer.id_card is missing.");
+    }
+
+    if (errors.length > 0) {
+        return {
+            isValid: false,
+            errors,
+        };
+    }
+
+    if (!isNonEmptyString(payload.manual_data.seller.full_name)) {
         errors.push("manual_data.seller.full_name is missing or invalid.");
     }
 
