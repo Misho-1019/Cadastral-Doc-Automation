@@ -34,9 +34,12 @@ export const parsePdfController = async (req: Request, res: Response) => {
     }
 }
 
-export const generateDocxController = async (_req: Request, res: Response) => {
+export const generateDocxController = async (req: Request, res: Response) => {
+    const formData = req.body;
+    
     return res.json({
         success: true,
-        message: "Generate DOCX endpoint is ready",
+        message: "Form data received",
+        data: formData,
     });
 }
