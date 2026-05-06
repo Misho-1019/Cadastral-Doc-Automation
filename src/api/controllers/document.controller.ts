@@ -1,8 +1,10 @@
 import { Request, Response } from "express";
+import path from "path";
 import { extractPdfText } from "../../extract/extractPdfText";
 import { normalizePdfText } from "../../normalize/normalizePdfText";
 import { parseCadastreFields } from "../../parse/parseCadastreFields";
 import { buildFormDraftData } from "../builders/buildFormDraftData";
+import { generateDocx } from "../../build/generateDocx";
 
 export const parsePdfController = async (req: Request, res: Response) => {
     try {
@@ -18,7 +20,7 @@ export const parsePdfController = async (req: Request, res: Response) => {
         const rawText = await extractPdfText(filePath);
         const normalizedText = normalizePdfText(rawText);
         const parsedData = parseCadastreFields(normalizedText);
-    
+
         return res.json({
             success: true,
             message: "PDF parsed successfully",
@@ -35,11 +37,36 @@ export const parsePdfController = async (req: Request, res: Response) => {
 }
 
 export const generateDocxController = async (req: Request, res: Response) => {
-    const formData = req.body;
-    
-    return res.json({
-        success: true,
-        message: "Form data received",
-        data: formData,
-    });
+    try {
+        const formData = req.body;
+
+        const templatePath = path.join(
+            process.cwd(),
+            "templates",
+            "notarial-act-template-v1.docx"
+        )
+
+        const outputPath = path.join(
+            process.cwd(),
+            "output",
+            `notarial-act-${Date.now()}.docx`
+        )
+
+        generateDocx(formData, templatePath, outputPath);
+
+        return res.json({
+            success: true,
+            message: "DOCX generated successfully",
+            file: {
+                path: outputPath,
+            },
+        });
+    } catch (error) {
+        console.error(error);
+
+        return res.status(500).json({
+            success: false,
+            message: "Failed to generate DOCX",
+        });
+    }
 }
