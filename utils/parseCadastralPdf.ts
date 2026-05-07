@@ -13,3 +13,9 @@ export function extractPropertyAddress(text: string): string | null {
 
     return match[1].replace(/\s+/g, ' ').trim();
 }
+
+export function extractPropertyArea(text: string): string | null {
+    const match = text.match(/Площ на самостоятелния обект:\s*([\d.,]+)\s*кв\.м/i)
+
+    return match ? match[1] : null;
+}
