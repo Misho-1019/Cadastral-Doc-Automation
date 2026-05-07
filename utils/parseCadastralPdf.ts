@@ -53,3 +53,15 @@ export function extractApartmentNumber(text: string): string | null {
 
     return match ? match[1] : null;
 }
+
+export function extractBuildingIdentifier(text: string): string | null {
+    const match = text.match(/сграда с идентификатор\s+([\d.]+)/i);
+
+    return match ? match[1] : null;
+}
+
+export function extractParcelIdentifier(text: string): string | null {
+    const match = text.match(/поземлен имот с идентификатор\s+([\d.]+)/i);
+
+    return match ? match[1] : null;
+}
