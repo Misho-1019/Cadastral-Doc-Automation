@@ -2,7 +2,12 @@ import express, { Request, Response } from "express";
 import fs from "fs";
 import PizZip from "pizzip";
 import Docxtemplater from "docxtemplater";
+import multer from "multer";
 import { validateTemplateData } from "./utils/validateTemplateData.js";
+
+const upload = multer({
+    dest: 'uploads/'
+})
 
 const app = express();
 const PORT = 3030;
@@ -45,6 +50,23 @@ app.post('/generate', (req: Request, res: Response) => {
     } catch (error) {
         console.error(error);
         res.status(500).send('Error generating document');
+    }
+})
+
+app.post('/upload-pdf', upload.single('file'), (req: Request, res: Response) => {
+    try {
+        if (!req.file) {
+            return res.status(400).json({ error: 'No file uploaded' });
+        }
+
+        res.json({
+            message: 'File uploaded successfully',
+            filename: req.file.filename,
+            originalName: req.file.originalname
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Upload failed' })
     }
 })
 
