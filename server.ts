@@ -2,6 +2,7 @@ import express, { Request, Response } from "express";
 import fs from "fs";
 import PizZip from "pizzip";
 import Docxtemplater from "docxtemplater";
+import { validateTemplateData } from "./utils/validateTemplateData.js";
 
 const app = express();
 const PORT = 3030;
@@ -14,6 +15,10 @@ app.get('/', (req: Request, res: Response) => {
 
 app.post('/generate', (req: Request, res: Response) => {
     try {
+        if (!validateTemplateData(req.body)) {
+            return res.status(400).json({ error: 'Invalid input data' });
+        }
+        
         const content = fs.readFileSync('./templates/template.docx', 'binary');
 
         const zip = new PizZip(content);
