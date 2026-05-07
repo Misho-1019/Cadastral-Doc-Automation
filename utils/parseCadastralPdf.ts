@@ -19,3 +19,13 @@ export function extractPropertyArea(text: string): string | null {
 
     return match ? match[1] : null;
 }
+
+export function extractOwnerName(text: string): string | null {
+    const match = text.match(/Собственици по данни от КРНИ:\s*([\s\S]*?)\n/)
+
+    if (!match) {
+        return null;
+    }
+
+    return match[1].replace(/\s+/g, ' ').trim();
+}

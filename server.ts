@@ -5,7 +5,7 @@ import Docxtemplater from "docxtemplater";
 import multer from "multer";
 import { validateTemplateData } from "./utils/validateTemplateData.js";
 import { extractPdfText } from "./utils/extractPdfText.js";
-import { extractPropertyAddress, extractPropertyArea, extractPropertyIdentifier } from "./utils/parseCadastralPdf.js";
+import { extractOwnerName, extractPropertyAddress, extractPropertyArea, extractPropertyIdentifier } from "./utils/parseCadastralPdf.js";
 
 const upload = multer({
     dest: 'uploads/'
@@ -66,12 +66,14 @@ app.post('/upload-pdf', upload.single('file'), async (req: Request, res: Respons
         const propertyIdentifier = extractPropertyIdentifier(text);
         const propertyAddress = extractPropertyAddress(text);
         const propertyArea = extractPropertyArea(text);
+        const ownerName = extractOwnerName(text);
 
         res.json({
             message: 'File uploaded and parsed',
             propertyIdentifier,
             propertyAddress,
-            propertyArea
+            propertyArea,
+            ownerName
         });
     } catch (error) {
         console.error(error);
