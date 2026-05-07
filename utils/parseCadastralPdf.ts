@@ -101,3 +101,22 @@ export function extractNeighborAbove(text: string): string | null {
 
     return match ? match[1] : null;
 }
+
+export function parseCadastralPdf(text: string) {
+    return {
+        propertyIdentifier: extractPropertyIdentifier(text),
+        propertyAddress: extractPropertyAddress(text),
+        propertyArea: extractPropertyArea(text),
+        ownerName: extractOwnerName(text),
+        propertyFloor: extractPropertyFloor(text),
+        apartmentNumber: extractApartmentNumber(text),
+        buildingIdentifier: extractBuildingIdentifier(text),
+        parcelIdentifier: extractParcelIdentifier(text),
+        atticNumber: extractAtticNumber(text),
+        basementNumber: extractBasementNumber(text),
+        commonPartsPercentage: extractCommonPartsPercentage(text),
+        neighborSameFloor: extractNeighborSameFloor(text),
+        neighborBelow: extractNeighborBelow(text),
+        neighborAbove: extractNeighborAbove(text)
+    };
+}

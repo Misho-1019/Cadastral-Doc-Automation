@@ -5,7 +5,7 @@ import Docxtemplater from "docxtemplater";
 import multer from "multer";
 import { validateTemplateData } from "./utils/validateTemplateData.js";
 import { extractPdfText } from "./utils/extractPdfText.js";
-import { extractApartmentNumber, extractAtticNumber, extractBasementNumber, extractBuildingIdentifier, extractCommonPartsPercentage, extractNeighborAbove, extractNeighborBelow, extractNeighborSameFloor, extractOwnerName, extractParcelIdentifier, extractPropertyAddress, extractPropertyArea, extractPropertyFloor, extractPropertyIdentifier } from "./utils/parseCadastralPdf.js";
+import { parseCadastralPdf } from "./utils/parseCadastralPdf.js";
 
 const upload = multer({
     dest: 'uploads/'
@@ -63,37 +63,11 @@ app.post('/upload-pdf', upload.single('file'), async (req: Request, res: Respons
 
         const text = await extractPdfText(req.file.path);
 
-        const propertyIdentifier = extractPropertyIdentifier(text);
-        const propertyAddress = extractPropertyAddress(text);
-        const propertyArea = extractPropertyArea(text);
-        const ownerName = extractOwnerName(text);
-        const propertyFloor = extractPropertyFloor(text);
-        const apartmentNumber = extractApartmentNumber(text);
-        const buildingIdentifier = extractBuildingIdentifier(text);
-        const parcelIdentifier = extractParcelIdentifier(text);
-        const atticNumber = extractAtticNumber(text);
-        const basementNumber = extractBasementNumber(text);
-        const commonPartsPercentage = extractCommonPartsPercentage(text);
-        const neighborSameFloor = extractNeighborSameFloor(text);
-        const neighborBelow = extractNeighborBelow(text);
-        const neighborAbove = extractNeighborAbove(text);
+        const parsedData = parseCadastralPdf(text)
 
         res.json({
             message: 'File uploaded and parsed',
-            propertyIdentifier,
-            propertyAddress,
-            propertyArea,
-            ownerName,
-            propertyFloor,
-            apartmentNumber,
-            buildingIdentifier,
-            parcelIdentifier,
-            atticNumber,
-            basementNumber,
-            commonPartsPercentage,
-            neighborSameFloor,
-            neighborBelow,
-            neighborAbove
+            data: parsedData
         });
     } catch (error) {
         console.error(error);
