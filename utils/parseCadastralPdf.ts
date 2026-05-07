@@ -29,3 +29,27 @@ export function extractOwnerName(text: string): string | null {
 
     return match[1].replace(/\s+/g, ' ').trim();
 }
+
+export function extractPropertyFloor(text: string): string | null {
+    const address = extractPropertyAddress(text);
+
+    if (!address) {
+        return null;
+    }
+
+    const match = address.match(/ет\.\s*(\d+)/i);
+
+    return match ? match[1] : null;
+}
+
+export function extractApartmentNumber(text: string): string | null {
+    const address = extractPropertyAddress(text);
+
+    if (!address) {
+        return null;
+    }
+
+    const match = address.match(/ап\.\s*(\d+)/i);
+
+    return match ? match[1] : null;
+}
