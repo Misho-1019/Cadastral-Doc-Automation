@@ -1,4 +1,6 @@
-export const sampleData = {
+import { TemplateData } from "../types/templateData.js";
+
+export const sampleData: TemplateData = {
     seller_name: "ИВАН ИВАНОВ",
     buyer_name: "ПЕТЪР ПЕТРОВ",
     contract_date: "01.01.2026",
