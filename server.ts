@@ -5,7 +5,7 @@ import Docxtemplater from "docxtemplater";
 import multer from "multer";
 import { validateTemplateData } from "./utils/validateTemplateData.js";
 import { extractPdfText } from "./utils/extractPdfText.js";
-import { extractApartmentNumber, extractBuildingIdentifier, extractOwnerName, extractParcelIdentifier, extractPropertyAddress, extractPropertyArea, extractPropertyFloor, extractPropertyIdentifier } from "./utils/parseCadastralPdf.js";
+import { extractApartmentNumber, extractAtticNumber, extractBasementNumber, extractBuildingIdentifier, extractCommonPartsPercentage, extractOwnerName, extractParcelIdentifier, extractPropertyAddress, extractPropertyArea, extractPropertyFloor, extractPropertyIdentifier } from "./utils/parseCadastralPdf.js";
 
 const upload = multer({
     dest: 'uploads/'
@@ -71,6 +71,9 @@ app.post('/upload-pdf', upload.single('file'), async (req: Request, res: Respons
         const apartmentNumber = extractApartmentNumber(text);
         const buildingIdentifier = extractBuildingIdentifier(text);
         const parcelIdentifier = extractParcelIdentifier(text);
+        const atticNumber = extractAtticNumber(text);
+        const basementNumber = extractBasementNumber(text);
+        const commonPartsPercentage = extractCommonPartsPercentage(text);
 
         res.json({
             message: 'File uploaded and parsed',
@@ -81,7 +84,10 @@ app.post('/upload-pdf', upload.single('file'), async (req: Request, res: Respons
             propertyFloor,
             apartmentNumber,
             buildingIdentifier,
-            parcelIdentifier
+            parcelIdentifier,
+            atticNumber,
+            basementNumber,
+            commonPartsPercentage
         });
     } catch (error) {
         console.error(error);

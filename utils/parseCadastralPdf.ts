@@ -65,3 +65,21 @@ export function extractParcelIdentifier(text: string): string | null {
 
     return match ? match[1] : null;
 }
+
+export function extractAtticNumber(text: string): string | null {
+    const match = text.match(/таван\s*(\d+)/i);
+
+    return match ? match[1] : null;
+}
+
+export function extractBasementNumber(text: string): string | null {
+    const match = text.match(/изба\s*(\d+)/i);
+
+    return match ? match[1] : null;
+}
+
+export function extractCommonPartsPercentage(text: string): string | null {
+    const match = text.match(/([\d.,]+)\s*%\s*ид\.ч/i);
+
+    return match ? match[1] : null;
+}
