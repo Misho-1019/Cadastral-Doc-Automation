@@ -5,6 +5,7 @@ import Docxtemplater from "docxtemplater";
 import multer from "multer";
 import { validateTemplateData } from "./utils/validateTemplateData.js";
 import { extractPdfText } from "./utils/extractPdfText.js";
+import { extractPropertyIdentifier } from "./utils/parseCadastralPdf.js";
 
 const upload = multer({
     dest: 'uploads/'
@@ -24,7 +25,7 @@ app.post('/generate', (req: Request, res: Response) => {
         if (!validateTemplateData(req.body)) {
             return res.status(400).json({ error: 'Invalid input data' });
         }
-        
+
         const content = fs.readFileSync('./templates/template.docx', 'binary');
 
         const zip = new PizZip(content);
@@ -62,11 +63,11 @@ app.post('/upload-pdf', upload.single('file'), async (req: Request, res: Respons
 
         const text = await extractPdfText(req.file.path);
 
+        const propertyIdentifier = extractPropertyIdentifier(text);
+
         res.json({
-            message: 'File uploaded successfully',
-            filename: req.file.filename,
-            originalName: req.file.originalname,
-            text
+            message: 'File uploaded and parsed',
+            propertyIdentifier
         });
     } catch (error) {
         console.error(error);
