@@ -1,19 +1,19 @@
-import express from "express";
+import express, { Request, Response } from "express";
 import fs from "fs";
 import PizZip from "pizzip";
 import Docxtemplater from "docxtemplater";
-import { sampleData } from "./data/sampleData";
+import { sampleData } from "./data/sampleData.js";
 
 const app = express();
 const PORT = 3030;
 
 app.use(express.json());
 
-app.get('/', (req, res) => {
+app.get('/', (req: Request, res: Response) => {
     res.send('Doc generator is running');
 });
 
-app.get('/generate', (req, res) => {
+app.get('/generate', (req: Request, res: Response) => {
     try {
         const content = fs.readFileSync('./templates/template.docx', 'binary');
 
