@@ -5,7 +5,7 @@ import Docxtemplater from "docxtemplater";
 import multer from "multer";
 import { validateTemplateData } from "./utils/validateTemplateData.js";
 import { extractPdfText } from "./utils/extractPdfText.js";
-import { extractApartmentNumber, extractAtticNumber, extractBasementNumber, extractBuildingIdentifier, extractCommonPartsPercentage, extractOwnerName, extractParcelIdentifier, extractPropertyAddress, extractPropertyArea, extractPropertyFloor, extractPropertyIdentifier } from "./utils/parseCadastralPdf.js";
+import { extractApartmentNumber, extractAtticNumber, extractBasementNumber, extractBuildingIdentifier, extractCommonPartsPercentage, extractNeighborAbove, extractNeighborBelow, extractNeighborSameFloor, extractOwnerName, extractParcelIdentifier, extractPropertyAddress, extractPropertyArea, extractPropertyFloor, extractPropertyIdentifier } from "./utils/parseCadastralPdf.js";
 
 const upload = multer({
     dest: 'uploads/'
@@ -74,6 +74,9 @@ app.post('/upload-pdf', upload.single('file'), async (req: Request, res: Respons
         const atticNumber = extractAtticNumber(text);
         const basementNumber = extractBasementNumber(text);
         const commonPartsPercentage = extractCommonPartsPercentage(text);
+        const neighborSameFloor = extractNeighborSameFloor(text);
+        const neighborBelow = extractNeighborBelow(text);
+        const neighborAbove = extractNeighborAbove(text);
 
         res.json({
             message: 'File uploaded and parsed',
@@ -87,7 +90,10 @@ app.post('/upload-pdf', upload.single('file'), async (req: Request, res: Respons
             parcelIdentifier,
             atticNumber,
             basementNumber,
-            commonPartsPercentage
+            commonPartsPercentage,
+            neighborSameFloor,
+            neighborBelow,
+            neighborAbove
         });
     } catch (error) {
         console.error(error);

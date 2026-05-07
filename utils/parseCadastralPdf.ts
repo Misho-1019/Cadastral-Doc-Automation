@@ -83,3 +83,21 @@ export function extractCommonPartsPercentage(text: string): string | null {
 
     return match ? match[1] : null;
 }
+
+export function extractNeighborSameFloor(text: string): string | null {
+    const match = text.match(/На същия етаж:\s*([\d.]+)/i);
+
+    return match ? match[1] : null;
+}
+
+export function extractNeighborBelow(text: string): string | null {
+    const match = text.match(/Под обекта:\s*([\d.]+)/i);
+
+    return match ? match[1] : null;
+}
+
+export function extractNeighborAbove(text: string): string | null {
+    const match = text.match(/Над обекта:\s*([\d.]+)/i);
+
+    return match ? match[1] : null;
+}
