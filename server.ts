@@ -2,7 +2,6 @@ import express, { Request, Response } from "express";
 import fs from "fs";
 import PizZip from "pizzip";
 import Docxtemplater from "docxtemplater";
-import { sampleData } from "./data/sampleData.js";
 
 const app = express();
 const PORT = 3030;
@@ -13,7 +12,7 @@ app.get('/', (req: Request, res: Response) => {
     res.send('Doc generator is running');
 });
 
-app.get('/generate', (req: Request, res: Response) => {
+app.post('/generate', (req: Request, res: Response) => {
     try {
         const content = fs.readFileSync('./templates/template.docx', 'binary');
 
@@ -28,7 +27,7 @@ app.get('/generate', (req: Request, res: Response) => {
             }
         })
 
-        doc.render(sampleData)
+        doc.render(req.body)
 
         const buf = doc.getZip().generate({
             type: 'nodebuffer',
