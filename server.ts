@@ -4,6 +4,7 @@ import PizZip from "pizzip";
 import Docxtemplater from "docxtemplater";
 import multer from "multer";
 import { validateTemplateData } from "./utils/validateTemplateData.js";
+import { extractPdfText } from "./utils/extractPdfText.js";
 
 const upload = multer({
     dest: 'uploads/'
@@ -53,16 +54,19 @@ app.post('/generate', (req: Request, res: Response) => {
     }
 })
 
-app.post('/upload-pdf', upload.single('file'), (req: Request, res: Response) => {
+app.post('/upload-pdf', upload.single('file'), async (req: Request, res: Response) => {
     try {
         if (!req.file) {
             return res.status(400).json({ error: 'No file uploaded' });
         }
 
+        const text = await extractPdfText(req.file.path);
+
         res.json({
             message: 'File uploaded successfully',
             filename: req.file.filename,
-            originalName: req.file.originalname
+            originalName: req.file.originalname,
+            text
         });
     } catch (error) {
         console.error(error);
