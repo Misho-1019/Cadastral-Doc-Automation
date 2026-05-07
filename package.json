@@ -1,0 +1,28 @@
+{
+  "name": "cadastral-doc-automation",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Misho-1019/Cadastral-Doc-Automation.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/Misho-1019/Cadastral-Doc-Automation/issues"
+  },
+  "homepage": "https://github.com/Misho-1019/Cadastral-Doc-Automation#readme",
+  "dependencies": {
+    "cors": "^2.8.6",
+    "docxtemplater": "^3.68.6",
+    "express": "^5.2.1",
+    "multer": "^2.1.1",
+    "pizzip": "^3.2.0"
+  }
+}
