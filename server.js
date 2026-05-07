@@ -2,6 +2,7 @@ import express from "express";
 import fs from "fs";
 import PizZip from "pizzip";
 import Docxtemplater from "docxtemplater";
+import { sampleData } from "./data/sampleData";
 
 const app = express();
 const PORT = 3030;
@@ -27,14 +28,7 @@ app.get('/generate', (req, res) => {
             }
         })
 
-        doc.render({
-            seller_name: "ИВАН ИВАНОВ",
-            buyer_name: "ПЕТЪР ПЕТРОВ",
-            contract_date: "01.01.2026",
-            contract_date_words: "първи януари две хиляди двадесет и шеста година",
-            sale_price: "100 000",
-            sale_price_words: "сто хиляди"
-        })
+        doc.render(sampleData)
 
         const buf = doc.getZip().generate({
             type: 'nodebuffer',
