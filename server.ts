@@ -8,6 +8,7 @@ import { extractPdfText } from "./utils/extractPdfText.js";
 import { parseCadastralPdf } from "./utils/parseCadastralPdf.js";
 import { GenerateRequestBody } from "./types/generateRequest.js";
 import { TemplateData } from "./types/templateData.js";
+import { mapPdfToTemplateData } from "./utils/mapPdfToTemplateData.js";
 
 const upload = multer({
     dest: 'uploads/'
@@ -30,6 +31,8 @@ app.post('/generate', upload.single('file'), async (req: Request<{}, {}, Generat
 
         const text = await extractPdfText(req.file.path);
         const parsedData = parseCadastralPdf(text);
+        
+        const pdfTemplateData = mapPdfToTemplateData(parsedData)
 
         const formData = JSON.parse(req.body.data) as TemplateData;
         
@@ -38,7 +41,7 @@ app.post('/generate', upload.single('file'), async (req: Request<{}, {}, Generat
         }
 
         const finalData = {
-            ...parsedData,
+            ...pdfTemplateData,
             ...formData,
         }
 
