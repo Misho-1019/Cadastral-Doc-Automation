@@ -56,24 +56,18 @@ app.post('/generate', upload.single('file'), async (req: Request<{}, {}, Generat
         }
 
         if (formData.sale_price) {
-            const priceNumber = Number(String(formData.sale_price).replace(/\s/g, '').replace(',', '.'));
-
             formData.sale_price = formatEuroAmount(formData.sale_price);
-            formData.sale_price_words = numberToWordsBG(priceNumber);
+            formData.sale_price_words = euroAmountToWordsBG(formData.sale_price);
         }
 
         if (formData.deposit_amount) {
-            const depositNumber = Number(String(formData.deposit_amount).replace(/\s/g, '').replace(',', '.'));
-
             formData.deposit_amount = formatEuroAmount(formData.deposit_amount);
-            formData.deposit_amount_words = numberToWordsBG(depositNumber);
+            formData.deposit_amount_words = euroAmountToWordsBG(formData.deposit_amount);
         }
 
         if (formData.remaining_amount) {
-            const remainingNumber = Number(String(formData.remaining_amount).replace(/\s/g, '').replace(',', '.'));
-
             formData.remaining_amount = formatEuroAmount(formData.remaining_amount);
-            formData.remaining_amount_words = numberToWordsBG(remainingNumber);
+            formData.remaining_amount_words = euroAmountToWordsBG(formData.remaining_amount);
         }
 
         if (formData.tax_evaluation) {
