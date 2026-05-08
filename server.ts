@@ -10,6 +10,7 @@ import { GenerateRequestBody } from "./types/generateRequest.js";
 import { TemplateData } from "./types/templateData.js";
 import { mapPdfToTemplateData } from "./utils/mapPdfToTemplateData.js";
 import { numberToWordsBG } from "./utils/numberToWords.js";
+import { formatEuroAmount } from "./utils/formatMoney.js";
 
 const upload = multer({
     dest: 'uploads/'
@@ -32,18 +33,25 @@ app.post('/generate', upload.single('file'), async (req: Request<{}, {}, Generat
 
         const text = await extractPdfText(req.file.path);
         const parsedData = parseCadastralPdf(text);
-        
+
         const pdfTemplateData = mapPdfToTemplateData(parsedData)
 
         const formData = JSON.parse(req.body.data) as TemplateData;
-        
+
         // if (!validateTemplateData(formData)) {
         //     return res.status(400).json({ error: 'Invalid input data' });
         // }
 
-        const priceNumber = parseInt(formData.sale_price.replace(/\s/g, ''))
+        if (formData.sale_price) {
+            const priceNumber = Number(String(formData.sale_price).replace(/\s/g, '').replace(',', '.'));
 
-        formData.sale_price_words = numberToWordsBG(priceNumber)
+            formData.sale_price = formatEuroAmount(formData.sale_price);
+            formData.sale_price_words = numberToWordsBG(priceNumber);
+        }
+
+        if (formData.tax_evaluation) {
+            formData.tax_evaluation = formatEuroAmount(formData.tax_evaluation);
+        }
 
         const finalData = {
             ...pdfTemplateData,

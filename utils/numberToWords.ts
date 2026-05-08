@@ -13,10 +13,10 @@ const hundreds = [
     'петстотин', 'шестстотин', 'седемстотин', 'осемстотин', 'деветстотин'
 ];
 
-function getOnes(gender: 'm' | 'f') {
+function getOnes(gender: 'm' | 'f' | 'n') {
     return [
         '',
-        gender === 'm' ? 'един' : 'едно',
+        gender === 'm' ? 'един' : gender === 'f' ? 'една' : 'едно',
         gender === 'm' ? 'два' : 'две',
         'три',
         'четири',
@@ -28,7 +28,7 @@ function getOnes(gender: 'm' | 'f') {
     ];
 }
 
-function underThousand(num: number, gender: 'm' | 'f' = 'f'): string {
+function underThousand(num: number, gender: 'm' | 'f' | 'n' = 'n'): string {
     const ones = getOnes(gender);
     const result: string[] = [];
 
@@ -63,6 +63,16 @@ function underThousand(num: number, gender: 'm' | 'f' = 'f'): string {
     return result.join(' ');
 }
 
+function addConjunctionForHundreds(text: string): string {
+    const parts = text.split(' ');
+
+    if (parts.length >= 2 && hundreds.includes(parts[0])) {
+        return `${parts[0]} и ${parts.slice(1).join(' ')}`;
+    }
+
+    return text;
+}
+
 export function numberToWordsBG(num: number): string {
     if (num === 0) return 'нула';
 
@@ -81,7 +91,11 @@ export function numberToWordsBG(num: number): string {
         if (thousands === 1) {
             result = 'хиляда';
         } else {
-            result = `${underThousand(thousands, 'f')} хиляди`;
+            const thousandsWords = addConjunctionForHundreds(
+                underThousand(thousands, 'f')
+            );
+
+            result = `${thousandsWords} хиляди`;
         }
 
         if (remainder > 0) {
@@ -124,4 +138,19 @@ export function numberToWordsBG(num: number): string {
     }
 
     return num.toString();
+}
+
+export function decimalPercentageToWordsBG(value: string | null): string | null {
+    if (!value) return null;
+
+    const [wholePart, decimalPart] = value.replace('.', ',').split(',');
+
+    const whole = Number(wholePart);
+    const decimal = Number(decimalPart);
+
+    if (Number.isNaN(whole) || Number.isNaN(decimal)) {
+        return null;
+    }
+
+    return `${numberToWordsBG(whole)} цяло и ${underThousand(decimal, 'f')} стотни върху сто`;
 }

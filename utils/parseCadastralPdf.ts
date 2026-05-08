@@ -102,6 +102,27 @@ export function extractNeighborAbove(text: string): string | null {
     return match ? match[1] : null;
 }
 
+export function extractPropertyLevels(text: string): string | null {
+    const match = text.match(/Брой нива на обекта:\s*(\d+)/i);
+
+    return match ? match[1] : null;
+}
+
+export function extractCadastralSchemeNumber(text: string): string | null {
+    const match = text.match(/Схема №\s*([\d-]+)-\d{2}\.\d{2}\.\d{4}/i);
+    return match ? match[1] : null;
+}
+
+export function extractCadastralSchemeDate(text: string): string | null {
+    const match = text.match(/Схема №\s*[\d-]+-(\d{2}\.\d{2}\.\d{4})/i);
+    return match ? match[1] : null;
+}
+
+export function extractBuildingFloors(text: string): string | null {
+    const match = text.match(/брой етажи:\s*(\d+)/i);
+    return match ? match[1] : null;
+}
+
 export function parseCadastralPdf(text: string) {
     return {
         propertyIdentifier: extractPropertyIdentifier(text),
@@ -117,6 +138,10 @@ export function parseCadastralPdf(text: string) {
         commonPartsPercentage: extractCommonPartsPercentage(text),
         neighborSameFloor: extractNeighborSameFloor(text),
         neighborBelow: extractNeighborBelow(text),
-        neighborAbove: extractNeighborAbove(text)
+        neighborAbove: extractNeighborAbove(text),
+        propertyLevels: extractPropertyLevels(text),
+        cadastralSchemeNumber: extractCadastralSchemeNumber(text),
+        cadastralSchemeDate: extractCadastralSchemeDate(text),
+        buildingFloors: extractBuildingFloors(text),
     };
 }
