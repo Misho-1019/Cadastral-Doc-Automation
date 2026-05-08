@@ -41,11 +41,19 @@ app.post('/generate', upload.single('file'), async (req: Request<{}, {}, Generat
 
         const pdfTemplateData = mapPdfToTemplateData(parsedData)
 
-        const formData = JSON.parse(req.body.data) as TemplateData;
+        let formData: TemplateData;
 
-        // if (!validateTemplateData(formData)) {
-        //     return res.status(400).json({ error: 'Invalid input data' });
-        // }
+        try {
+            formData = JSON.parse(req.body.data) as TemplateData;
+        } catch {
+            return res.status(400).json({
+                error: 'Invalid JSON data'
+            });
+        }
+
+        if (!validateTemplateData(formData)) {
+            return res.status(400).json({ error: 'Invalid input data' });
+        }
 
         if (formData.sale_price) {
             const priceNumber = Number(String(formData.sale_price).replace(/\s/g, '').replace(',', '.'));
@@ -96,7 +104,7 @@ app.post('/generate', upload.single('file'), async (req: Request<{}, {}, Generat
             if (err) {
                 console.error('Download error:', err);
             }
-        
+
             if (req.file) {
                 fs.unlink(req.file.path, (unlinkErr) => {
                     if (unlinkErr) {
@@ -107,7 +115,7 @@ app.post('/generate', upload.single('file'), async (req: Request<{}, {}, Generat
         });
     } catch (error) {
         console.error(error);
-        res.status(500).send('Error generating document');
+        res.status(500).json({ error: 'Error generating document' });
     }
 })
 

@@ -6,7 +6,6 @@ export function validateTemplateData(data: any): data is TemplateData {
         typeof data.buyer_name === 'string' &&
         typeof data.contract_date === 'string' &&
         typeof data.contract_date_words === 'string' &&
-        typeof data.sale_price === 'string' &&
-        typeof data.sale_price_words === 'string'
+        typeof data.sale_price === 'string'
     )
 }
