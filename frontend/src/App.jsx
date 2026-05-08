@@ -16,7 +16,6 @@ function App() {
         buyer_address: "",
     
         contract_date: "",
-        contract_date_words: "",
         notary_name: "",
         preliminary_contract_date: "",
     
@@ -129,7 +128,6 @@ function App() {
 
                     <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                         <input name="contract_date" value={formData.contract_date} onChange={handleChange} placeholder="Contract Date" className="rounded border p-2" />
-                        <input name="contract_date_words" value={formData.contract_date_words} onChange={handleChange} placeholder="Contract Date Words" className="rounded border p-2" />
                         <input name="notary_name" value={formData.notary_name} onChange={handleChange} placeholder="Notary Name" className="rounded border p-2" />
                         <input name="preliminary_contract_date" value={formData.preliminary_contract_date} onChange={handleChange} placeholder="Preliminary Contract Date" className="rounded border p-2" />
                     </div>

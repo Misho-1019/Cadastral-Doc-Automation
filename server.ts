@@ -12,6 +12,7 @@ import { TemplateData } from "./types/templateData.js";
 import { mapPdfToTemplateData } from "./utils/mapPdfToTemplateData.js";
 import { numberToWordsBG } from "./utils/numberToWords.js";
 import { euroAmountToWordsBG, formatEuroAmount } from "./utils/formatMoney.js";
+import { dateToWordsBG } from "./utils/dateToWordsBG.js";
 
 const upload = multer({
     dest: 'uploads/'
@@ -73,6 +74,10 @@ app.post('/generate', upload.single('file'), async (req: Request<{}, {}, Generat
         if (formData.tax_evaluation) {
             formData.tax_evaluation_words = euroAmountToWordsBG(formData.tax_evaluation);
             formData.tax_evaluation = formatEuroAmount(formData.tax_evaluation);
+        }
+
+        if (formData.contract_date) {
+            formData.contract_date_words = dateToWordsBG(formData.contract_date);
         }
 
         const finalData = {
