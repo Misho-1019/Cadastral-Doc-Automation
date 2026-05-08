@@ -9,6 +9,7 @@ import { parseCadastralPdf } from "./utils/parseCadastralPdf.js";
 import { GenerateRequestBody } from "./types/generateRequest.js";
 import { TemplateData } from "./types/templateData.js";
 import { mapPdfToTemplateData } from "./utils/mapPdfToTemplateData.js";
+import { numberToWordsBG } from "./utils/numberToWords.js";
 
 const upload = multer({
     dest: 'uploads/'
@@ -39,6 +40,10 @@ app.post('/generate', upload.single('file'), async (req: Request<{}, {}, Generat
         if (!validateTemplateData(formData)) {
             return res.status(400).json({ error: 'Invalid input data' });
         }
+
+        const priceNumber = parseInt(formData.sale_price.replace(/\s/g, ''))
+
+        formData.sale_price_words = numberToWordsBG(priceNumber)
 
         const finalData = {
             ...pdfTemplateData,
