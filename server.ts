@@ -6,6 +6,8 @@ import multer from "multer";
 import { validateTemplateData } from "./utils/validateTemplateData.js";
 import { extractPdfText } from "./utils/extractPdfText.js";
 import { parseCadastralPdf } from "./utils/parseCadastralPdf.js";
+import { GenerateRequestBody } from "./types/generateRequest.js";
+import { TemplateData } from "./types/templateData.js";
 
 const upload = multer({
     dest: 'uploads/'
@@ -20,10 +22,24 @@ app.get('/', (req: Request, res: Response) => {
     res.send('Doc generator is running');
 });
 
-app.post('/generate', (req: Request, res: Response) => {
+app.post('/generate', upload.single('file'), async (req: Request<{}, {}, GenerateRequestBody>, res: Response) => {
     try {
-        if (!validateTemplateData(req.body)) {
+        if (!req.file) {
+            return res.status(400).json({ error: 'No PDF uploaded' });
+        }
+
+        const text = await extractPdfText(req.file.path);
+        const parsedData = parseCadastralPdf(text);
+
+        const formData = JSON.parse(req.body.data) as TemplateData;
+        
+        if (!validateTemplateData(formData)) {
             return res.status(400).json({ error: 'Invalid input data' });
+        }
+
+        const finalData = {
+            ...parsedData,
+            ...formData,
         }
 
         const content = fs.readFileSync('./templates/template.docx', 'binary');
@@ -39,7 +55,7 @@ app.post('/generate', (req: Request, res: Response) => {
             }
         })
 
-        doc.render(req.body)
+        doc.render(finalData)
 
         const buf = doc.getZip().generate({
             type: 'nodebuffer',
