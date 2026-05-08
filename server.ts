@@ -3,6 +3,7 @@ import fs from "fs";
 import PizZip from "pizzip";
 import Docxtemplater from "docxtemplater";
 import multer from "multer";
+import cors from "cors";
 import { validateTemplateData } from "./utils/validateTemplateData.js";
 import { extractPdfText } from "./utils/extractPdfText.js";
 import { parseCadastralPdf } from "./utils/parseCadastralPdf.js";
@@ -18,6 +19,10 @@ const upload = multer({
 
 const app = express();
 const PORT = 3030;
+
+app.use(cors({
+    origin: "http://localhost:5173"
+}));
 
 app.use(express.json());
 
