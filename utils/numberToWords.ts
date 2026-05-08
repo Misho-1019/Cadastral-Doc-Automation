@@ -1,8 +1,3 @@
-const ones = [
-    '', 'едно', 'две', 'три', 'четири',
-    'пет', 'шест', 'седем', 'осем', 'девет'
-];
-
 const teens = [
     'десет', 'единадесет', 'дванадесет', 'тринадесет', 'четиринадесет',
     'петнадесет', 'шестнадесет', 'седемнадесет', 'осемнадесет', 'деветнадесет'
@@ -18,8 +13,24 @@ const hundreds = [
     'петстотин', 'шестстотин', 'седемстотин', 'осемстотин', 'деветстотин'
 ];
 
-function underThousand(num: number): string {
-    let result: string[] = [];
+function getOnes(gender: 'm' | 'f') {
+    return [
+        '',
+        gender === 'm' ? 'един' : 'едно',
+        gender === 'm' ? 'два' : 'две',
+        'три',
+        'четири',
+        'пет',
+        'шест',
+        'седем',
+        'осем',
+        'девет'
+    ];
+}
+
+function underThousand(num: number, gender: 'm' | 'f' = 'f'): string {
+    const ones = getOnes(gender);
+    const result: string[] = [];
 
     const h = Math.floor(num / 100);
     const remainder = num % 100;
@@ -29,21 +40,20 @@ function underThousand(num: number): string {
     }
 
     if (remainder >= 10 && remainder < 20) {
+        if (h > 0) result.push('и');
         result.push(teens[remainder - 10]);
     } else {
         const t = Math.floor(remainder / 10);
         const o = remainder % 10;
 
         if (t > 0) {
-            if (h > 0) {
-                result.push('и');
-            }
-
             result.push(tens[t]);
         }
 
         if (o > 0) {
             if (t > 0) {
+                result.push('и');
+            } else if (h > 0) {
                 result.push('и');
             }
             result.push(ones[o]);
@@ -56,10 +66,12 @@ function underThousand(num: number): string {
 export function numberToWordsBG(num: number): string {
     if (num === 0) return 'нула';
 
+    // under 1000
     if (num < 1000) {
         return underThousand(num);
     }
 
+    // thousands
     if (num < 1000000) {
         const thousands = Math.floor(num / 1000);
         const remainder = num % 1000;
@@ -69,7 +81,7 @@ export function numberToWordsBG(num: number): string {
         if (thousands === 1) {
             result = 'хиляда';
         } else {
-            result = `${underThousand(thousands)} хиляди`;
+            result = `${underThousand(thousands, 'f')} хиляди`;
         }
 
         if (remainder > 0) {
@@ -78,11 +90,38 @@ export function numberToWordsBG(num: number): string {
             } else {
                 result += ' ';
             }
+
             result += underThousand(remainder);
         }
 
         return result;
     }
 
-    return num.toString(); // fallback for now
+    // millions
+    if (num < 1000000000) {
+        const millions = Math.floor(num / 1000000);
+        const remainder = num % 1000000;
+
+        let result = '';
+
+        if (millions === 1) {
+            result = 'един милион';
+        } else {
+            result = `${underThousand(millions, 'm')} милиона`;
+        }
+
+        if (remainder > 0) {
+            if (remainder < 100) {
+                result += ' и ';
+            } else {
+                result += ' ';
+            }
+
+            result += numberToWordsBG(remainder);
+        }
+
+        return result;
+    }
+
+    return num.toString();
 }
