@@ -37,9 +37,9 @@ app.post('/generate', upload.single('file'), async (req: Request<{}, {}, Generat
 
         const formData = JSON.parse(req.body.data) as TemplateData;
         
-        if (!validateTemplateData(formData)) {
-            return res.status(400).json({ error: 'Invalid input data' });
-        }
+        // if (!validateTemplateData(formData)) {
+        //     return res.status(400).json({ error: 'Invalid input data' });
+        // }
 
         const priceNumber = parseInt(formData.sale_price.replace(/\s/g, ''))
 
