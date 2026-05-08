@@ -29,7 +29,6 @@ function App() {
         seller_bank_iban: "",
     
         tax_evaluation: "",
-        tax_evaluation_words: "",
     });
     const [loading, setLoading] = useState(false);
 
@@ -155,7 +154,6 @@ function App() {
                     
                     <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                         <input name="tax_evaluation" value={formData.tax_evaluation} onChange={handleChange} placeholder="Tax Evaluation" className="rounded border p-2" />
-                        <input name="tax_evaluation_words" value={formData.tax_evaluation_words} onChange={handleChange} placeholder="Tax Evaluation Words" className="rounded border p-2" />
                     </div>
 
                     <button
