@@ -92,7 +92,19 @@ app.post('/generate', upload.single('file'), async (req: Request<{}, {}, Generat
 
         fs.writeFileSync(outputPath, buf);
 
-        res.download(outputPath, 'generated-contract.docx')
+        res.download(outputPath, 'generated-contract.docx', (err) => {
+            if (err) {
+                console.error('Download error:', err);
+            }
+        
+            if (req.file) {
+                fs.unlink(req.file.path, (unlinkErr) => {
+                    if (unlinkErr) {
+                        console.error('Error deleting uploaded file:', unlinkErr);
+                    }
+                });
+            }
+        });
     } catch (error) {
         console.error(error);
         res.status(500).send('Error generating document');
