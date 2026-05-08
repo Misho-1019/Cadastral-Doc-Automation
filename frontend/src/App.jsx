@@ -2,8 +2,47 @@ import { useState } from "react";
 
 function App() {
     const [file, setFile] = useState(null);
-    const [jsonData, setJsonData] = useState('');
+    const [formData, setFormData] = useState({
+        seller_name: "",
+        seller_egn: "",
+        seller_id_card: "",
+        seller_id_issue_date: "",
+        seller_address: "",
+    
+        buyer_name: "",
+        buyer_egn: "",
+        buyer_id_card: "",
+        buyer_id_issue_date: "",
+        buyer_address: "",
+    
+        contract_date: "",
+        contract_date_words: "",
+        notary_name: "",
+        preliminary_contract_date: "",
+    
+        sale_price: "",
+        deposit_amount: "",
+        deposit_amount_words: "",
+        remaining_amount: "",
+        remaining_amount_words: "",
+    
+        seller_bank_name: "",
+        seller_bank_bic: "",
+        seller_bank_iban: "",
+    
+        tax_evaluation: "",
+        tax_evaluation_words: "",
+    });
     const [loading, setLoading] = useState(false);
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+
+        setFormData(prev => ({
+            ...prev,
+            [name]: value
+        }))
+    }
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -17,14 +56,14 @@ function App() {
         setLoading(true);
 
         try {
-            const formData = new FormData();
+            const requestData = new FormData();
 
-            formData.append('file', file);
-            formData.append('data', jsonData);
+            requestData.append('file', file);
+            requestData.append('data', JSON.stringify(formData));  
 
             const response = await fetch('http://localhost:3030/generate', {
                 method: 'POST',
-                body: formData,
+                body: requestData,
             });
 
             if (!response.ok) {
@@ -69,17 +108,58 @@ function App() {
                         />
                     </div>
 
-                    <div>
-                        <label className="block text-sm font-medium text-slate-700">
-                            JSON Data
-                        </label>
-                        <textarea
-                            value={jsonData}
-                            onChange={(e) => setJsonData(e.target.value)}
-                            rows={10}
-                            className="mt-1 w-full rounded-lg border p-2 font-mono text-sm"
-                            placeholder='{"seller_name": "..."}'
-                        />
+                    <h2 className="text-lg font-semibold mt-6">Seller</h2>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <input name="seller_name" placeholder="Seller Name" onChange={handleChange} className="border p-2 rounded" />
+                        <input name="seller_egn" placeholder="EGN" onChange={handleChange} className="border p-2 rounded" />
+                        <input name="seller_id_card" placeholder="ID Card" onChange={handleChange} className="border p-2 rounded" />
+                        <input name="seller_id_issue_date" placeholder="ID Issue Date" onChange={handleChange} className="border p-2 rounded" />
+                        <input name="seller_address" placeholder="Address" onChange={handleChange} className="border p-2 rounded md:col-span-2" />
+                    </div>
+                    
+                    <h2 className="text-lg font-semibold mt-6">Buyer</h2>
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <input name="buyer_name" placeholder="Buyer Name" onChange={handleChange} className="border p-2 rounded" />
+                        <input name="buyer_egn" placeholder="EGN" onChange={handleChange} className="border p-2 rounded" />
+                        <input name="buyer_id_card" placeholder="ID Card" onChange={handleChange} className="border p-2 rounded" />
+                        <input name="buyer_id_issue_date" placeholder="ID Issue Date" onChange={handleChange} className="border p-2 rounded" />
+                        <input name="buyer_address" placeholder="Address" onChange={handleChange} className="border p-2 rounded md:col-span-2" />
+                    </div>
+
+                    <h2 className="mt-6 text-lg font-semibold">Contract</h2>
+
+                    <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                        <input name="contract_date" value={formData.contract_date} onChange={handleChange} placeholder="Contract Date" className="rounded border p-2" />
+                        <input name="contract_date_words" value={formData.contract_date_words} onChange={handleChange} placeholder="Contract Date Words" className="rounded border p-2" />
+                        <input name="notary_name" value={formData.notary_name} onChange={handleChange} placeholder="Notary Name" className="rounded border p-2" />
+                        <input name="preliminary_contract_date" value={formData.preliminary_contract_date} onChange={handleChange} placeholder="Preliminary Contract Date" className="rounded border p-2" />
+                    </div>
+                    
+                    <h2 className="mt-6 text-lg font-semibold">Payment</h2>
+                    
+                    <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                        <input name="sale_price" value={formData.sale_price} onChange={handleChange} placeholder="Sale Price" className="rounded border p-2" />
+                        <input name="deposit_amount" value={formData.deposit_amount} onChange={handleChange} placeholder="Deposit Amount" className="rounded border p-2" />
+                        <input name="deposit_amount_words" value={formData.deposit_amount_words} onChange={handleChange} placeholder="Deposit Amount Words" className="rounded border p-2" />
+                        <input name="remaining_amount" value={formData.remaining_amount} onChange={handleChange} placeholder="Remaining Amount" className="rounded border p-2" />
+                        <input name="remaining_amount_words" value={formData.remaining_amount_words} onChange={handleChange} placeholder="Remaining Amount Words" className="rounded border p-2" />
+                    </div>
+                    
+                    <h2 className="mt-6 text-lg font-semibold">Seller Bank</h2>
+                    
+                    <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                        <input name="seller_bank_name" value={formData.seller_bank_name} onChange={handleChange} placeholder="Bank Name" className="rounded border p-2" />
+                        <input name="seller_bank_bic" value={formData.seller_bank_bic} onChange={handleChange} placeholder="BIC" className="rounded border p-2" />
+                        <input name="seller_bank_iban" value={formData.seller_bank_iban} onChange={handleChange} placeholder="IBAN" className="rounded border p-2 md:col-span-2" />
+                    </div>
+                    
+                    <h2 className="mt-6 text-lg font-semibold">Tax</h2>
+                    
+                    <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                        <input name="tax_evaluation" value={formData.tax_evaluation} onChange={handleChange} placeholder="Tax Evaluation" className="rounded border p-2" />
+                        <input name="tax_evaluation_words" value={formData.tax_evaluation_words} onChange={handleChange} placeholder="Tax Evaluation Words" className="rounded border p-2" />
                     </div>
 
                     <button
