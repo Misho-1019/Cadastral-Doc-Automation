@@ -1,3 +1,5 @@
+import { numberToWordsBG } from "./numberToWords.js";
+
 const months = [
     "януари",
     "февруари",
@@ -47,15 +49,48 @@ const dayOrdinals: Record<number, string> = {
     31: "тридесет и първи",
 };
 
-const yearOrdinals: Record<number, string> = {
-    2024: "две хиляди двадесет и четвърта",
-    2025: "две хиляди двадесет и пета",
-    2026: "две хиляди двадесет и шеста",
-    2027: "две хиляди двадесет и седма",
-    2028: "две хиляди двадесет и осма",
-    2029: "две хиляди двадесет и девета",
-    2030: "две хиляди и тридесета",
-};
+function yearToOrdinalBG(year: number): string {
+    const words = numberToWordsBG(year)
+
+    const replacements: Record<string, string> = {
+        "едно": "първа",
+        "две": "втора",
+        "три": "трета",
+        "четири": "четвърта",
+        "пет": "пета",
+        "шест": "шеста",
+        "седем": "седма",
+        "осем": "осма",
+        "девет": "девета",
+        "десет": "десета",
+        "единадесет": "единадесета",
+        "дванадесет": "дванадесета",
+        "тринадесет": "тринадесета",
+        "четиринадесет": "четиринадесета",
+        "петнадесет": "петнадесета",
+        "шестнадесет": "шестнадесета",
+        "седемнадесет": "седемнадесета",
+        "осемнадесет": "осемнадесета",
+        "деветнадесет": "деветнадесета",
+        "двадесет": "двадесета",
+        "тридесет": "тридесета",
+        "четиридесет": "четиридесета",
+        "петдесет": "петдесета",
+        "шестдесет": "шестдесета",
+        "седемдесет": "седемдесета",
+        "осемдесет": "осемдесета",
+        "деветдесет": "деветдесета",
+    };
+
+    const parts = words.split(' ');
+    const last = parts[parts.length - 1];
+
+    const ordinalLast = replacements[last] || last;
+
+    parts[parts.length - 1] = ordinalLast;
+
+    return parts.join(' ');
+}
 
 export function dateToWordsBG(value: string): string {
     const [dayRaw, monthRaw, yearRaw] = value.split('.');
@@ -66,7 +101,7 @@ export function dateToWordsBG(value: string): string {
 
     const dayWords = dayOrdinals[day];
     const monthWords = months[month - 1];
-    const yearWords = yearOrdinals[year];
+    const yearWords = yearToOrdinalBG(year);
 
     if (!dayWords || !monthWords || !yearWords) {
         throw new Error("Invalid date for Bulgarian wording");

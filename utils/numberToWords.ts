@@ -99,7 +99,7 @@ export function numberToWordsBG(num: number): string {
         }
 
         if (remainder > 0) {
-            if (remainder < 100) {
+            if (remainder < 10) {
                 result += ' и ';
             } else {
                 result += ' ';
