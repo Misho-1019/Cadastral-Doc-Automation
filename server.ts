@@ -83,9 +83,11 @@ app.post('/generate', upload.single('file'), async (req: Request<{}, {}, Generat
             compression: 'DEFLATE',
         })
 
-        fs.writeFileSync('./output/result.docx', buf);
+        const outputPath = './output/result.docx';
 
-        res.send('Document generated!')
+        fs.writeFileSync(outputPath, buf);
+
+        res.download(outputPath, 'generated-contract.docx')
     } catch (error) {
         console.error(error);
         res.status(500).send('Error generating document');
