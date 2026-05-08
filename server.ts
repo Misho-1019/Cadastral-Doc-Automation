@@ -83,7 +83,12 @@ app.post('/generate', upload.single('file'), async (req: Request<{}, {}, Generat
             compression: 'DEFLATE',
         })
 
-        const outputPath = './output/result.docx';
+        const outputDir = './output';
+        const outputPath = `${outputDir}/result.docx`;
+
+        if (!fs.existsSync(outputDir)) {
+            fs.mkdirSync(outputDir, { recursive: true })
+        }
 
         fs.writeFileSync(outputPath, buf);
 
