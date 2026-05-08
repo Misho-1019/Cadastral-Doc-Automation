@@ -22,9 +22,7 @@ function App() {
     
         sale_price: "",
         deposit_amount: "",
-        deposit_amount_words: "",
         remaining_amount: "",
-        remaining_amount_words: "",
     
         seller_bank_name: "",
         seller_bank_bic: "",
@@ -142,9 +140,7 @@ function App() {
                     <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                         <input name="sale_price" value={formData.sale_price} onChange={handleChange} placeholder="Sale Price" className="rounded border p-2" />
                         <input name="deposit_amount" value={formData.deposit_amount} onChange={handleChange} placeholder="Deposit Amount" className="rounded border p-2" />
-                        <input name="deposit_amount_words" value={formData.deposit_amount_words} onChange={handleChange} placeholder="Deposit Amount Words" className="rounded border p-2" />
                         <input name="remaining_amount" value={formData.remaining_amount} onChange={handleChange} placeholder="Remaining Amount" className="rounded border p-2" />
-                        <input name="remaining_amount_words" value={formData.remaining_amount_words} onChange={handleChange} placeholder="Remaining Amount Words" className="rounded border p-2" />
                     </div>
                     
                     <h2 className="mt-6 text-lg font-semibold">Seller Bank</h2>
