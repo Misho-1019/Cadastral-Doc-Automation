@@ -77,4 +77,7 @@ export type TemplateData = {
     buyer_id_card?: string;
     buyer_id_issue_date?: string;
     buyer_address?: string;
+
+    buyer_name_signature?: string | null;
+    seller_name_signature?: string | null;
 };

@@ -14,6 +14,7 @@ import { numberToWordsBG } from "./utils/numberToWords.js";
 import { euroAmountToWordsBG, formatEuroAmount } from "./utils/formatMoney.js";
 import { dateToWordsBG } from "./utils/dateToWordsBG.js";
 import { formatAddressBG } from "./utils/formatAddressBG.js";
+import { toTitleCaseBG } from "./utils/toTitleCaseBG.js";
 
 const upload = multer({
     dest: 'uploads/'
@@ -89,6 +90,9 @@ app.post('/generate', upload.single('file'), async (req: Request<{}, {}, Generat
         if (finalData.property_address_full) {
             finalData.property_address_full = formatAddressBG(finalData.property_address_full)
         }
+
+        finalData.seller_name_signature = toTitleCaseBG(finalData.seller_name);
+        finalData.buyer_name_signature = toTitleCaseBG(finalData.buyer_name);
 
         const content = fs.readFileSync('./templates/template.docx', 'binary');
 

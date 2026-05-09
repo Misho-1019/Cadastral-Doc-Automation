@@ -1,9 +1,13 @@
 import { decimalPercentageToWordsBG, numberToWordsBG } from './numberToWords.js';
 import { ordinalToWordsBG } from './ordinalWords.js';
+import { toTitleCaseBG } from './toTitleCaseBG.js';
 
 export function mapPdfToTemplateData(parsedData: any) {
     return {
         seller_name: parsedData.ownerName,
+        seller_name_signature: parsedData.ownerName
+            ? toTitleCaseBG(parsedData.ownerName)
+            : null,
 
         property_identifier: parsedData.propertyIdentifier,
         property_identifier_words: parsedData.propertyIdentifier
