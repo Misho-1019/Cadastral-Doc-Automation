@@ -1,6 +1,6 @@
 export function toTitleCaseBG(value: string): string {
-    return value.toLowerCase().split(' ').map(word => {
-        if (word === '-' || word === '–') {
+    return value.replace(/-/g, "–").toLowerCase().split(' ').map(word => {
+        if (word === "–") {
             return word;
         }
 

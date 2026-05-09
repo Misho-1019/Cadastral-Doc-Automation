@@ -91,8 +91,8 @@ app.post('/generate', upload.single('file'), async (req: Request<{}, {}, Generat
             finalData.property_address_full = formatAddressBG(finalData.property_address_full)
         }
 
-        finalData.seller_name_signature = toTitleCaseBG(finalData.seller_name);
-        finalData.buyer_name_signature = toTitleCaseBG(finalData.buyer_name);
+        finalData.seller_name_signature = toTitleCaseBG(finalData.seller_name).replace(/-/g, "–");
+        finalData.buyer_name_signature = toTitleCaseBG(finalData.buyer_name).replace(/-/g, "–");
 
         const content = fs.readFileSync('./templates/template.docx', 'binary');
 
