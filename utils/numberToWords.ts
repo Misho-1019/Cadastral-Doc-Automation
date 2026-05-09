@@ -66,7 +66,17 @@ function underThousand(num: number, gender: 'm' | 'f' | 'n' = 'n'): string {
 function addConjunctionForHundreds(text: string): string {
     const parts = text.split(' ');
 
-    if (parts.length >= 2 && hundreds.includes(parts[0])) {
+    if (!hundreds.includes(parts[0])) {
+        return text;
+    }
+
+    const hasExistingConjunction = parts.includes('и');
+
+    if (hasExistingConjunction) {
+        return text;
+    }
+
+    if (parts.length >= 2) {
         return `${parts[0]} и ${parts.slice(1).join(' ')}`;
     }
 
