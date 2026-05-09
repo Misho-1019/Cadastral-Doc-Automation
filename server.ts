@@ -75,7 +75,7 @@ app.post('/generate', upload.single('file'), async (req: Request<{}, {}, Generat
 
         if (formData.tax_evaluation) {
             formData.tax_evaluation_words = euroAmountToWordsBG(formData.tax_evaluation);
-            formData.tax_evaluation = formatEuroAmount(formData.tax_evaluation);
+            formData.tax_evaluation = formatEuroAmount(formData.tax_evaluation).replace(/,\s*/, ", ");
         }
 
         if (formData.contract_date) {
