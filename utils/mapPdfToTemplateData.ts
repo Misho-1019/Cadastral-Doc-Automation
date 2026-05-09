@@ -48,10 +48,10 @@ export function mapPdfToTemplateData(parsedData: any) {
             : null,
 
         attic_number: parsedData.atticNumber,
-        attic_number_words: ordinalToWordsBG(parsedData.atticNumber),
+        attic_number_words: numberToWordsBG(Number(parsedData.atticNumber)),
 
         basement_number: parsedData.basementNumber,
-        basement_number_words: ordinalToWordsBG(parsedData.basementNumber),
+        basement_number_words: numberToWordsBG(Number(parsedData.basementNumber)),
 
         common_parts_percentage: parsedData.commonPartsPercentage,
         common_parts_percentage_words: decimalPercentageToWordsBG(parsedData.commonPartsPercentage),
