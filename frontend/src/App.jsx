@@ -34,6 +34,8 @@ function App() {
     const [loading, setLoading] = useState(false);
     const isSubmittingRef = useRef(false);
 
+    const [fileInputKey, setFileInputKey] = useState(0);
+
     const steps = [
         "PDF Upload",
         "Seller",
@@ -111,16 +113,60 @@ function App() {
         switch (step) {
             case 0:
                 return (
-                    <div>
-                        <label className="block text-sm font-medium text-slate-700">
-                            Upload PDF
+                    <div className="space-y-4">
+                        <label
+                            htmlFor="pdf-upload"
+                            className="flex cursor-pointer flex-col items-center justify-center rounded-2xl border-2 border-dashed border-slate-300 bg-slate-50 px-6 py-10 text-center transition hover:border-blue-400 hover:bg-blue-50"
+                        >
+                            <div className="rounded-full bg-white px-4 py-3 text-3xl shadow-sm">
+                                📄
+                            </div>
+            
+                            <p className="mt-4 text-base font-semibold text-slate-800">
+                                Upload cadastral PDF
+                            </p>
+            
+                            <p className="mt-1 text-sm text-slate-500">
+                                Click here to choose a PDF file
+                            </p>
+            
+                            <p className="mt-2 text-xs text-slate-400">
+                                Accepted format: .pdf
+                            </p>
+            
+                            <input
+                                key={fileInputKey}
+                                id="pdf-upload"
+                                type="file"
+                                accept="application/pdf"
+                                onChange={(e) => setFile(e.target.files[0])}
+                                className="hidden"
+                            />
                         </label>
-                        <input
-                            type="file"
-                            accept="application/pdf"
-                            onChange={(e) => setFile(e.target.files[0])}
-                            className="mt-1 block w-full"
-                        />
+            
+                        {file && (
+                            <div className="flex items-center justify-between rounded-xl border border-green-200 bg-green-50 px-4 py-3">
+                                <div>
+                                    <p className="text-sm font-medium text-green-800">
+                                        File selected
+                                    </p>
+                                    <p className="text-sm text-green-700">
+                                        {file.name}
+                                    </p>
+                                </div>
+            
+                                <button
+                                    type="button"
+                                    onClick={() => {
+                                        setFile(null);
+                                        setFileInputKey(prev => prev + 1)
+                                    }}
+                                    className="rounded-lg border border-green-300 px-3 py-1 text-sm text-green-700 hover:bg-green-100"
+                                >
+                                    Remove
+                                </button>
+                            </div>
+                        )}
                     </div>
                 );
     
