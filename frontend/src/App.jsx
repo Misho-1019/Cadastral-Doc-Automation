@@ -1,35 +1,35 @@
 import { useRef, useState } from "react";
 import { translations } from "./i18n";
 
-function App() {
-    const initialFormData = {
-        seller_name: "",
-        seller_egn: "",
-        seller_id_card: "",
-        seller_id_issue_date: "",
-        seller_address: "",
-    
-        buyer_name: "",
-        buyer_egn: "",
-        buyer_id_card: "",
-        buyer_id_issue_date: "",
-        buyer_address: "",
-    
-        contract_date: "",
-        notary_name: "",
-        preliminary_contract_date: "",
-    
-        sale_price: "",
-        deposit_amount: "",
-        remaining_amount: "",
-    
-        seller_bank_name: "",
-        seller_bank_bic: "",
-        seller_bank_iban: "",
-    
-        tax_evaluation: "",
-    };
+const initialFormData = {
+    seller_name: "",
+    seller_egn: "",
+    seller_id_card: "",
+    seller_id_issue_date: "",
+    seller_address: "",
 
+    buyer_name: "",
+    buyer_egn: "",
+    buyer_id_card: "",
+    buyer_id_issue_date: "",
+    buyer_address: "",
+
+    contract_date: "",
+    notary_name: "",
+    preliminary_contract_date: "",
+
+    sale_price: "",
+    deposit_amount: "",
+    remaining_amount: "",
+
+    seller_bank_name: "",
+    seller_bank_bic: "",
+    seller_bank_iban: "",
+
+    tax_evaluation: "",
+};
+
+function App() {
     const [file, setFile] = useState(null);
     const [formData, setFormData] = useState(initialFormData);
     const [step, setStep] = useState(0);

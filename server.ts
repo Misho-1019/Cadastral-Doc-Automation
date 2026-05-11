@@ -10,7 +10,6 @@ import { parseCadastralPdf } from "./utils/parseCadastralPdf.js";
 import { GenerateRequestBody } from "./types/generateRequest.js";
 import { TemplateData } from "./types/templateData.js";
 import { mapPdfToTemplateData } from "./utils/mapPdfToTemplateData.js";
-import { numberToWordsBG } from "./utils/numberToWords.js";
 import { euroAmountToWordsBG, formatEuroAmount } from "./utils/formatMoney.js";
 import { dateToWordsBG } from "./utils/dateToWordsBG.js";
 import { formatAddressBG } from "./utils/formatAddressBG.js";
