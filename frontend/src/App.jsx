@@ -86,7 +86,7 @@ function App() {
             requestData.append('file', file);
             requestData.append('data', JSON.stringify(formData));  
 
-            const response = await fetch('http://localhost:3030/generate', {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/generate`, {
                 method: 'POST',
                 body: requestData,
             });
