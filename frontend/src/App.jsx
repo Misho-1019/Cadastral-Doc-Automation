@@ -30,6 +30,7 @@ function App() {
         tax_evaluation: "",
     });
     const [step, setStep] = useState(0);
+    const [screen, setScreen] = useState("home");
     const [loading, setLoading] = useState(false);
 
     const steps = [
@@ -40,7 +41,6 @@ function App() {
         "Payment",
         "Seller Bank",
         "Tax",
-        "Review"
     ];
 
     const handleChange = (e) => {
@@ -88,6 +88,7 @@ function App() {
             a.click();
 
             window.URL.revokeObjectURL(url);
+            setScreen('success');
         } catch (err) {
             console.error(err);
             alert(err.message)
@@ -183,6 +184,57 @@ function App() {
                 return null;
         }
     };
+
+    if (screen === "home") {
+        return (
+            <main className="flex min-h-screen items-center justify-center bg-slate-50 px-6">
+                <section className="max-w-2xl rounded-2xl bg-white p-8 text-center shadow-sm">
+                    <h1 className="text-3xl font-bold text-slate-900">
+                        Cadastral Document Generator
+                    </h1>
+    
+                    <p className="mt-3 text-slate-600">
+                        Generate a notarial contract from cadastral PDF data and structured form input.
+                    </p>
+    
+                    <button
+                        type="button"
+                        onClick={() => setScreen("form")}
+                        className="mt-6 rounded-lg bg-blue-600 px-5 py-2 text-white"
+                    >
+                        Start New Document
+                    </button>
+                </section>
+            </main>
+        );
+    }
+    
+    if (screen === "success") {
+        return (
+            <main className="flex min-h-screen items-center justify-center bg-slate-50 px-6">
+                <section className="max-w-2xl rounded-2xl bg-white p-8 text-center shadow-sm">
+                    <h1 className="text-3xl font-bold text-slate-900">
+                        Document Generated
+                    </h1>
+    
+                    <p className="mt-3 text-slate-600">
+                        Your DOCX file has been downloaded successfully.
+                    </p>
+    
+                    <button
+                        type="button"
+                        onClick={() => {
+                            setStep(0);
+                            setScreen("form");
+                        }}
+                        className="mt-6 rounded-lg bg-blue-600 px-5 py-2 text-white"
+                    >
+                        Generate Another Document
+                    </button>
+                </section>
+            </main>
+        );
+    }
 
     return (
         <main className="min-h-screen bg-slate-50 px-6 py-10">
