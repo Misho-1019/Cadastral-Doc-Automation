@@ -23,6 +23,16 @@ const upload = multer({
 const app = express();
 const PORT = 3030;
 
+function deleteUploadedFile(filePath?: string) {
+    if (!filePath) return;
+
+    fs.unlink(filePath, (err) => {
+        if (err) {
+            console.error("Error deleting uploaded file:", err);
+        }
+    })
+}
+
 app.use(cors({
     origin: "http://localhost:5173"
 }));
@@ -49,13 +59,19 @@ app.post('/generate', upload.single('file'), async (req: Request<{}, {}, Generat
         try {
             formData = JSON.parse(req.body.data) as TemplateData;
         } catch {
+            deleteUploadedFile(req.file.path)
+
             return res.status(400).json({
                 error: 'Invalid JSON data'
             });
         }
 
-        if (!validateTemplateData(formData)) {
-            return res.status(400).json({ error: 'Invalid input data' });
+        const validation = validateTemplateData(formData);
+
+        if (!validation.isValid) {
+            deleteUploadedFile(req.file.path)
+
+            return res.status(400).json({ error: 'Validation failed', fields: validation.errors });
         }
 
         if (formData.sale_price) {
@@ -128,13 +144,7 @@ app.post('/generate', upload.single('file'), async (req: Request<{}, {}, Generat
                 console.error('Download error:', err);
             }
 
-            if (req.file) {
-                fs.unlink(req.file.path, (unlinkErr) => {
-                    if (unlinkErr) {
-                        console.error('Error deleting uploaded file:', unlinkErr);
-                    }
-                });
-            }
+            deleteUploadedFile(req.file?.path)
         });
     } catch (error) {
         console.error(error);
