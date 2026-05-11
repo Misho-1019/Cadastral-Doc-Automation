@@ -202,6 +202,34 @@ function App() {
         }
     };
 
+    const isStepValid = () => {
+        switch (step) {
+            case 0:
+                return !!file;
+    
+            case 1:
+                return formData.seller_name && formData.seller_egn;
+    
+            case 2:
+                return formData.buyer_name && formData.buyer_egn;
+    
+            case 3:
+                return formData.contract_date && formData.notary_name;
+    
+            case 4:
+                return formData.sale_price;
+    
+            case 5:
+                return formData.seller_bank_name && formData.seller_bank_iban;
+    
+            case 6:
+                return formData.tax_evaluation;
+    
+            default:
+                return true;
+        }
+    };
+
     if (screen === "home") {
         return (
             <main className="flex min-h-screen items-center justify-center bg-slate-50 px-6">
@@ -271,6 +299,12 @@ function App() {
                     </div>
                     
                     {renderStep()}
+
+                    {!isStepValid() && (
+                        <p className="text-sm text-red-500">
+                            Please fill required fields before continuing.
+                        </p>
+                    )}
                     
                     <div className="mt-8 flex justify-between">
                         <button
@@ -286,7 +320,8 @@ function App() {
                             <button
                                 type="button"
                                 onClick={() => setStep((prev) => prev + 1)}
-                                className="rounded-lg bg-blue-600 px-4 py-2 text-white"
+                                disabled={!isStepValid()}
+                                className="rounded-lg bg-blue-600 px-4 py-2 text-white disabled:opacity-50"
                             >
                                 Next
                             </button>
