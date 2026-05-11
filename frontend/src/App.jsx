@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 function App() {
     const [file, setFile] = useState(null);
@@ -32,6 +32,7 @@ function App() {
     const [step, setStep] = useState(0);
     const [screen, setScreen] = useState("home");
     const [loading, setLoading] = useState(false);
+    const isSubmittingRef = useRef(false);
 
     const steps = [
         "PDF Upload",
@@ -41,6 +42,7 @@ function App() {
         "Payment",
         "Seller Bank",
         "Tax",
+        "Generate",
     ];
 
     const handleChange = (e) => {
@@ -55,8 +57,15 @@ function App() {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
+        if (isSubmittingRef.current) return;
+
+        isSubmittingRef.current = true;
+        setLoading(true);
+
         if (!file) {
             alert('Please upload a PDF file');
+            isSubmittingRef.current = false;
+            setLoading(false);
 
             return;
         }
@@ -93,6 +102,7 @@ function App() {
             console.error(err);
             alert(err.message)
         } finally {
+            isSubmittingRef.current = false;
             setLoading(false)
         }
     }
@@ -172,11 +182,18 @@ function App() {
     
             case 7:
                 return (
-                    <div className="rounded-lg bg-slate-50 p-4 text-sm text-slate-700">
-                        <p><strong>PDF:</strong> {file ? file.name : "No file selected"}</p>
-                        <pre className="mt-4 overflow-auto rounded bg-white p-4">
-                            {JSON.stringify(formData, null, 2)}
-                        </pre>
+                    <div className="rounded-lg bg-slate-50 p-6 text-slate-700">
+                        <h3 className="text-lg font-semibold text-slate-900">
+                            Ready to generate document
+                        </h3>
+            
+                        <p className="mt-2">
+                            Review that all fields are filled correctly, then click Generate Document.
+                        </p>
+            
+                        <p className="mt-4 text-sm">
+                            <strong>PDF:</strong> {file ? file.name : "No file selected"}
+                        </p>
                     </div>
                 );
     
