@@ -2,8 +2,7 @@ import { useRef, useState } from "react";
 import { translations } from "./i18n";
 
 function App() {
-    const [file, setFile] = useState(null);
-    const [formData, setFormData] = useState({
+    const initialFormData = {
         seller_name: "",
         seller_egn: "",
         seller_id_card: "",
@@ -29,7 +28,10 @@ function App() {
         seller_bank_iban: "",
     
         tax_evaluation: "",
-    });
+    };
+
+    const [file, setFile] = useState(null);
+    const [formData, setFormData] = useState(initialFormData);
     const [step, setStep] = useState(0);
     const [screen, setScreen] = useState("home");
     const [loading, setLoading] = useState(false);
@@ -113,6 +115,16 @@ function App() {
         }
     }
 
+    const handleResetFlow = () => {
+        setFile(null);
+        setFormData(initialFormData);
+        setStep(0);
+        setScreen("form");
+        setLoading(false);
+        setFileInputKey(prev => prev + 1);
+        isSubmittingRef.current = false;
+    };
+
     const renderStep = () => {
         switch (step) {
             case 0:
@@ -143,7 +155,7 @@ function App() {
                                 id="pdf-upload"
                                 type="file"
                                 accept="application/pdf"
-                                onChange={(e) => setFile(e.target.files[0])}
+                                onChange={(e) => setFile(e.target.files?.[0] || null)}
                                 className="hidden"
                             />
                         </label>
@@ -340,10 +352,7 @@ function App() {
     
                     <button
                         type="button"
-                        onClick={() => {
-                            setStep(0);
-                            setScreen("form");
-                        }}
+                        onClick={handleResetFlow}
                         className="mt-6 rounded-lg bg-blue-600 px-5 py-2 text-white"
                     >
                         {t.generateAnother}
