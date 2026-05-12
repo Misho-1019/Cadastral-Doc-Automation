@@ -5,6 +5,8 @@ import PizZip from "pizzip";
 import Docxtemplater from "docxtemplater";
 import multer from "multer";
 import cors from "cors";
+import { randomUUID } from "crypto";
+import rateLimit from "express-rate-limit";
 import { validateTemplateData } from "./utils/validateTemplateData.js";
 import { extractPdfText } from "./utils/extractPdfText.js";
 import { parseCadastralPdf } from "./utils/parseCadastralPdf.js";
@@ -15,14 +17,29 @@ import { euroAmountToWordsBG, formatEuroAmount } from "./utils/formatMoney.js";
 import { dateToWordsBG } from "./utils/dateToWordsBG.js";
 import { formatAddressBG } from "./utils/formatAddressBG.js";
 import { toTitleCaseBG } from "./utils/toTitleCaseBG.js";
+import { error } from "console";
+import { multerErrorHandler } from "./utils/multerErrorHandler.js";
 
 const upload = multer({
-    dest: 'uploads/'
+    dest: 'uploads/',
+    limits: {
+        fileSize: 10 * 1024 * 1024,
+    }
 })
 
 const app = express();
 const PORT = process.env.PORT || 3030;
 const FRONTEND_URL = process.env.FRONTEND_URL || "http://localhost:5173";
+
+const generateLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000,
+    limit: 20,
+    standardHeaders: true,
+    legacyHeaders: false,
+    message: {
+        error: 'Too many requests, please try again later.'
+    }
+})
 
 function deleteUploadedFile(filePath?: string) {
     if (!filePath) return;
@@ -35,7 +52,7 @@ function deleteUploadedFile(filePath?: string) {
 }
 
 app.use(cors({
-    origin: FRONTEND_URL
+    origin: [FRONTEND_URL],
 }));
 
 app.use(express.json());
@@ -44,7 +61,7 @@ app.get('/', (req: Request, res: Response) => {
     res.send('Doc generator is running');
 });
 
-app.post('/generate', upload.single('file'), async (req: Request<{}, {}, GenerateRequestBody>, res: Response) => {
+app.post('/generate', generateLimiter, upload.single('file'), async (req: Request<{}, {}, GenerateRequestBody>, res: Response) => {
     try {
         if (!req.file) {
             return res.status(400).json({ error: 'No PDF uploaded' });
@@ -132,7 +149,8 @@ app.post('/generate', upload.single('file'), async (req: Request<{}, {}, Generat
         })
 
         const outputDir = './output';
-        const outputPath = `${outputDir}/result.docx`;
+        const fileName = `contract-${randomUUID()}.docx`;
+        const outputPath = `${outputDir}/${fileName}`;
 
         if (!fs.existsSync(outputDir)) {
             fs.mkdirSync(outputDir, { recursive: true })
@@ -140,20 +158,27 @@ app.post('/generate', upload.single('file'), async (req: Request<{}, {}, Generat
 
         fs.writeFileSync(outputPath, buf);
 
-        res.download(outputPath, 'generated-contract.docx', (err) => {
+        res.download(outputPath, fileName, (err) => {
             if (err) {
                 console.error('Download error:', err);
             }
 
             deleteUploadedFile(req.file?.path)
+
+            fs.unlink(outputPath, (unlinkErr) => {
+                if (unlinkErr) {
+                    console.error("Error deleting output file:", unlinkErr);
+                }
+            });
         });
     } catch (error) {
         console.error(error);
+        deleteUploadedFile(req.file?.path)
         res.status(500).json({ error: 'Error generating document' });
     }
 })
 
-app.post('/upload-pdf', upload.single('file'), async (req: Request, res: Response) => {
+app.post('/upload-pdf', generateLimiter, upload.single('file'), async (req: Request, res: Response) => {
     try {
         if (!req.file) {
             return res.status(400).json({ error: 'No file uploaded' });
@@ -163,14 +188,19 @@ app.post('/upload-pdf', upload.single('file'), async (req: Request, res: Respons
 
         const parsedData = parseCadastralPdf(text)
 
+        deleteUploadedFile(req.file.path)
+
         res.json({
             message: 'File uploaded and parsed',
             data: parsedData
         });
     } catch (error) {
         console.error(error);
+        deleteUploadedFile(req.file?.path)
         res.status(500).json({ error: 'Upload failed' })
     }
 })
+
+app.use(multerErrorHandler)
 
 app.listen(PORT, () => { console.log(`Server running on http://localhost:${PORT}`) })
