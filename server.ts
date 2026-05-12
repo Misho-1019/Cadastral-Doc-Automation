@@ -166,11 +166,11 @@ app.post('/generate', generateLimiter, upload.single('file'), async (req: Reques
 
             deleteUploadedFile(req.file?.path)
 
-            fs.unlink(outputPath, (unlinkErr) => {
-                if (unlinkErr) {
-                    console.error("Error deleting output file:", unlinkErr);
-                }
-            });
+            // fs.unlink(outputPath, (unlinkErr) => {
+            //     if (unlinkErr) {
+            //         console.error("Error deleting output file:", unlinkErr);
+            //     }
+            // });
         });
     } catch (error) {
         deleteUploadedFile(req.file?.path)
