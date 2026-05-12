@@ -1,5 +1,5 @@
 import "dotenv/config";
-import express, { Request, Response } from "express";
+import express, { NextFunction, Request, Response } from "express";
 import fs from "fs";
 import PizZip from "pizzip";
 import Docxtemplater from "docxtemplater";
@@ -19,6 +19,7 @@ import { formatAddressBG } from "./utils/formatAddressBG.js";
 import { toTitleCaseBG } from "./utils/toTitleCaseBG.js";
 import { error } from "console";
 import { multerErrorHandler } from "./utils/multerErrorHandler.js";
+import { errorHandler } from "./utils/errorHandler.js";
 
 const upload = multer({
     dest: 'uploads/',
@@ -61,7 +62,7 @@ app.get('/', (req: Request, res: Response) => {
     res.send('Doc generator is running');
 });
 
-app.post('/generate', generateLimiter, upload.single('file'), async (req: Request<{}, {}, GenerateRequestBody>, res: Response) => {
+app.post('/generate', generateLimiter, upload.single('file'), async (req: Request<{}, {}, GenerateRequestBody>, res: Response, next: NextFunction) => {
     try {
         if (!req.file) {
             return res.status(400).json({ error: 'No PDF uploaded' });
@@ -172,13 +173,12 @@ app.post('/generate', generateLimiter, upload.single('file'), async (req: Reques
             });
         });
     } catch (error) {
-        console.error(error);
         deleteUploadedFile(req.file?.path)
-        res.status(500).json({ error: 'Error generating document' });
+        next(error)
     }
 })
 
-app.post('/upload-pdf', generateLimiter, upload.single('file'), async (req: Request, res: Response) => {
+app.post('/upload-pdf', generateLimiter, upload.single('file'), async (req: Request, res: Response, next: NextFunction) => {
     try {
         if (!req.file) {
             return res.status(400).json({ error: 'No file uploaded' });
@@ -195,12 +195,12 @@ app.post('/upload-pdf', generateLimiter, upload.single('file'), async (req: Requ
             data: parsedData
         });
     } catch (error) {
-        console.error(error);
         deleteUploadedFile(req.file?.path)
-        res.status(500).json({ error: 'Upload failed' })
+        next(error)
     }
 })
 
 app.use(multerErrorHandler)
+app.use(errorHandler)
 
 app.listen(PORT, () => { console.log(`Server running on http://localhost:${PORT}`) })
