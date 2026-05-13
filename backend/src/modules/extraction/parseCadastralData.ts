@@ -2,6 +2,7 @@ import { DocumentType } from "./detectDocumentType";
 import { extractAdjoiningParts } from "./extractAdjoiningParts";
 import { extractArea } from "./extractArea";
 import { extractIdentifier } from "./extractIdentifier";
+import { extractIndependentObjectDetails } from "./extractIndependentObjectDetails";
 
 export type BasicCadastralData = {
     documentType: DocumentType;
@@ -9,6 +10,10 @@ export type BasicCadastralData = {
     address: string | null;
     area: string | null;
     adjoiningParts: string | null;
+    objectFloor: string | null;
+    buildingFloors: string | null;
+    levelsCount: string | null;
+    purpose: string | null;
 }
 
 function matchFirst(text: string, patterns: RegExp[]): string | null {
@@ -71,13 +76,19 @@ export function parseBasicCadastralData(text: string, documentType: DocumentType
 
     const area = extractArea(text);
 
-    const adjoiningParts = extractAdjoiningParts(text);
+    const adjoiningParts = documentType === 'independentObjectScheme' ? extractAdjoiningParts(text) : null;
+
+    const independentObjectDetails = documentType === 'independentObjectScheme' ? extractIndependentObjectDetails(text) : { objectFloor: null, buildingFloors: null, levelsCount: null, purpose: null };
 
     return {
         documentType,
         identifier,
         address,
         area,
-        adjoiningParts
+        adjoiningParts,
+        objectFloor: independentObjectDetails.objectFloor,
+        buildingFloors: independentObjectDetails.buildingFloors,
+        levelsCount: independentObjectDetails.levelsCount,
+        purpose: independentObjectDetails.purpose
     }
 }
