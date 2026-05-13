@@ -1,4 +1,5 @@
 import { DocumentType } from "./detectDocumentType";
+import { extractIdentifier } from "./extractIdentifier";
 
 export type BasicCadastralData = {
     documentType: DocumentType;
@@ -51,13 +52,7 @@ function extractBlockBetween(
 }
 
 export function parseBasicCadastralData(text: string, documentType: DocumentType): BasicCadastralData {
-    const identifier = matchFirst(text, [
-        /с\s+идентификатор\s*([0-9]+(?:\.[0-9]+)+)/i,
-        /Идентификатор\s*[:\-]?\s*([0-9]+(?:\.[0-9]+)+)/i,
-        /самостоятел[еe]н обект.*?([0-9]+(?:\.[0-9]+)+)/i,
-        /поземлен имот.*?([0-9]+(?:\.[0-9]+)+)/i,
-        /сграда.*?([0-9]+(?:\.[0-9]+)+)/i
-    ]);
+    const identifier = extractIdentifier(text);
 
     const address = extractBlockBetween(
         text,
