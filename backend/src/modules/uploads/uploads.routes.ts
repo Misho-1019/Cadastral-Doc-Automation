@@ -1,7 +1,8 @@
 import { Router } from "express";
 import multer from "multer";
-import { extractTextFromPdf } from "../extraction/extractText";
-import { detectDocumentType } from "../extraction/detectDocumentType";
+import { extractTextFromPdf } from "../extraction/extractText.js";
+import { detectDocumentType, type DocumentType } from "../extraction/detectDocumentType.js";
+import { parseBasicCadastralData } from "../extraction/parseCadastralData.js";
 
 const router = Router();
 
@@ -19,10 +20,13 @@ router.post('/upload', upload.single('file'), async (req, res) => {
 
         const documentType = detectDocumentType(text);
 
+        const extractedData = parseBasicCadastralData(text, documentType)
+
         res.json({
             message: "File processed successfully",
             fileName: req.file.originalname,
-            documentType: documentType,
+            documentType,
+            extractedData,
             preview: text.substring(0, 1000) // first 1000 chars only
         });
     } catch (error) {
