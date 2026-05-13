@@ -5,6 +5,7 @@ import { detectDocumentType, type DocumentType } from "../extraction/detectDocum
 import { parseBasicCadastralData } from "../extraction/parseCadastralData.js";
 import { normalizePdfText } from "../extraction/normalizeText.js";
 import { validateCadastralData } from "../extraction/validateCadastralData.js";
+import { formatCardinal } from "../formatting/numberWords.js";
 
 const router = Router();
 
@@ -34,6 +35,10 @@ router.post('/upload', upload.single('file'), async (req, res) => {
             documentType,
             extractedData,
             validation,
+            testFormatting: {
+                areaInteger: formatCardinal(81),
+                identifierPart: formatCardinal(68134)
+            },
             preview: text.substring(0, 3000) // first 1000 chars only
         });
     } catch (error) {
