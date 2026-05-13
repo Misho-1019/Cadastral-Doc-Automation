@@ -4,7 +4,7 @@ import { extractArea } from "./extractArea";
 import { extractIdentifier } from "./extractIdentifier";
 import { extractIndependentObjectDetails } from "./extractIndependentObjectDetails";
 import { extractNeighbouringObjects } from "./extractNeighbouringObjects";
-import { extractOwners } from "./extractOwners";
+import { extractOwners, Owner } from "./extractOwners";
 import { extractRelatedIdentifiers } from "./extractRelatedIdentifiers";
 
 export type BasicCadastralData = {
@@ -24,7 +24,7 @@ export type BasicCadastralData = {
         below: string | null;
         above: string | null;
     };
-    owners: string[];
+    owners: Owner[];
 }
 
 function matchFirst(text: string, patterns: RegExp[]): string | null {
