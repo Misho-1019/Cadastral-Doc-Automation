@@ -3,6 +3,7 @@ import { extractAdjoiningParts } from "./extractAdjoiningParts";
 import { extractArea } from "./extractArea";
 import { extractIdentifier } from "./extractIdentifier";
 import { extractIndependentObjectDetails } from "./extractIndependentObjectDetails";
+import { extractNeighbouringObjects } from "./extractNeighbouringObjects";
 import { extractRelatedIdentifiers } from "./extractRelatedIdentifiers";
 
 export type BasicCadastralData = {
@@ -17,6 +18,11 @@ export type BasicCadastralData = {
     purpose: string | null;
     buildingIdentifier: string | null;
     landPropertyIdentifier: string | null;
+    neighbouringObjects: {
+        sameFloor: string | null;
+        below: string | null;
+        above: string | null;
+    };
 }
 
 function matchFirst(text: string, patterns: RegExp[]): string | null {
@@ -85,6 +91,8 @@ export function parseBasicCadastralData(text: string, documentType: DocumentType
 
     const relatedIdentifiers = documentType === 'independentObjectScheme' ? extractRelatedIdentifiers(text) : { buildingIdentifier: null, landPropertyIdentifier: null };
 
+    const neighbouringObjects = documentType === 'independentObjectScheme' ? extractNeighbouringObjects(text) : { sameFloor: null, below: null, above: null };
+
     return {
         documentType,
         identifier,
@@ -97,5 +105,6 @@ export function parseBasicCadastralData(text: string, documentType: DocumentType
         purpose: independentObjectDetails.purpose,
         buildingIdentifier: relatedIdentifiers.buildingIdentifier,
         landPropertyIdentifier: relatedIdentifiers.landPropertyIdentifier,
+        neighbouringObjects
     }
 }

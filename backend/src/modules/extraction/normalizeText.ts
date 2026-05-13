@@ -1,21 +1,19 @@
 export function normalizePdfText(text: string): string {
     return text
-        // join broken lines
         .replace(/\n+/g, " ")
-
-        // remove multiple spaces
         .replace(/\s+/g, " ")
 
-        // restore cadastral identifiers broken by spacing
-        .replace(/(\d+)\.\s+(?=\d)/g, "$1.")
+        // fix decimals (safe)
+        .replace(/(\d+)\.\s+(\d{1,2})(?!\.)/g, "$1.$2")
 
-        // restore decimal numbers broken by spacing
-        .replace(/(\d+)[,.]\s+(?=\d)/g, "$1.")
+        // fix identifiers (controlled)
+        .replace(/(\d+)\.\s+(?=\d+\.)/g, "$1.")
+        .replace(/(\d+)\.\s+(?=\d+$)/g, "$1.")
 
-        // restore common Bulgarian area unit spacing
+        // normalize area unit
         .replace(/кв\.\s*м\.?/gi, "кв.м")
 
-        // clean some common punctuation spacing, but do NOT touch dots between numbers
+        // punctuation (safe only)
         .replace(/\s+([,:;%])/g, "$1")
         .replace(/([,:;%])(?=\S)/g, "$1 ")
 
