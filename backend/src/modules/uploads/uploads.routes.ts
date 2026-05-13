@@ -4,6 +4,7 @@ import { extractTextFromPdf } from "../extraction/extractText.js";
 import { detectDocumentType, type DocumentType } from "../extraction/detectDocumentType.js";
 import { parseBasicCadastralData } from "../extraction/parseCadastralData.js";
 import { normalizePdfText } from "../extraction/normalizeText.js";
+import { validateCadastralData } from "../extraction/validateCadastralData.js";
 
 const router = Router();
 
@@ -25,11 +26,14 @@ router.post('/upload', upload.single('file'), async (req, res) => {
 
         const extractedData = parseBasicCadastralData(text, documentType)
 
+        const validation = validateCadastralData(extractedData);
+
         res.json({
             message: "File processed successfully",
             fileName: req.file.originalname,
             documentType,
             extractedData,
+            validation,
             preview: text.substring(0, 3000) // first 1000 chars only
         });
     } catch (error) {
