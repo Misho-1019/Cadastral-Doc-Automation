@@ -1,4 +1,5 @@
 import { DocumentType } from "./detectDocumentType";
+import { extractArea } from "./extractArea";
 import { extractIdentifier } from "./extractIdentifier";
 
 export type BasicCadastralData = {
@@ -66,10 +67,7 @@ export function parseBasicCadastralData(text: string, documentType: DocumentType
         ]
     );
 
-    const area = matchFirst(text, [
-        /Площ\s*(?:на самостоятелния обект|на имота|на сградата)?\s*[:\-]?\s*([0-9]+(?:[.,][0-9]+)?\s*кв\.?\s*м\.?)/i,
-        /Застроена площ\s*[:\-]?\s*([0-9]+(?:[.,][0-9]+)?\s*кв\.?\s*м\.?)/i
-    ]);
+    const area = extractArea(text);
 
     return {
         documentType,
