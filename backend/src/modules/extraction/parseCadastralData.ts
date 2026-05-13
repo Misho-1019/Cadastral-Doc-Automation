@@ -1,4 +1,5 @@
 import { DocumentType } from "./detectDocumentType";
+import { extractAdjoiningParts } from "./extractAdjoiningParts";
 import { extractArea } from "./extractArea";
 import { extractIdentifier } from "./extractIdentifier";
 
@@ -7,6 +8,7 @@ export type BasicCadastralData = {
     identifier: string | null;
     address: string | null;
     area: string | null;
+    adjoiningParts: string | null;
 }
 
 function matchFirst(text: string, patterns: RegExp[]): string | null {
@@ -69,10 +71,13 @@ export function parseBasicCadastralData(text: string, documentType: DocumentType
 
     const area = extractArea(text);
 
+    const adjoiningParts = extractAdjoiningParts(text);
+
     return {
         documentType,
         identifier,
         address,
         area,
+        adjoiningParts
     }
 }
