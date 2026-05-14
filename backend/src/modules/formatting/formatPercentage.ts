@@ -1,14 +1,17 @@
 import { formatCardinal } from "./numberWords.js";
 
 export function formatPercentage(value: string): string {
-    const match = value.match(/([0-9]+(?:[.,][0-9]+)?)\s*%/);
+    const match = value.match(/([0-9]+(?:\s*[.,]\s*[0-9]+)?)\s*%/);
 
     if (!match) {
         return value;
     }
 
     const rawNumber = match[1];
-    const normalizedNumber = rawNumber.replace(",", ".");
+    const normalizedNumber = rawNumber
+        .replace(/\s+/g, "")
+        .replace(",", ".");
+
     const [integerPartStr, decimalPartStr] = normalizedNumber.split(".");
 
     const integerPart = Number(integerPartStr);
@@ -23,5 +26,9 @@ export function formatPercentage(value: string): string {
         words = `${integerWords} процента`;
     }
 
-    return `${rawNumber} % (${words})`;
+    const displayNumber = normalizedNumber.includes(".")
+        ? normalizedNumber
+        : integerPartStr;
+
+    return `${displayNumber} % (${words})`;
 }

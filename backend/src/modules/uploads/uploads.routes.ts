@@ -9,6 +9,7 @@ import { formatCardinal } from "../formatting/numberWords.js";
 import { formatIdentifier } from "../formatting/formatIdentifier.js";
 import { formatArea } from "../formatting/formatArea.js";
 import { formatPercentage } from "../formatting/formatPercentage.js";
+import { formatFreeTextNumbers } from "../formatting/formatFreeTextNumbers.js";
 
 const router = Router();
 
@@ -38,7 +39,9 @@ router.post('/upload', upload.single('file'), async (req, res) => {
             documentType,
             extractedData,
             validation,
-            testPercentageWhole: formatPercentage("10%"),
+            testAdjoiningPartsFormatted: extractedData.adjoiningParts
+                ? formatFreeTextNumbers(extractedData.adjoiningParts)
+                : null,
             preview: text.substring(0, 3000) // first 1000 chars only
         });
     } catch (error) {
