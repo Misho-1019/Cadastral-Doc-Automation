@@ -7,6 +7,7 @@ import { normalizePdfText } from "../extraction/normalizeText.js";
 import { validateCadastralData } from "../extraction/validateCadastralData.js";
 import { formatCardinal } from "../formatting/numberWords.js";
 import { formatIdentifier } from "../formatting/formatIdentifier.js";
+import { formatArea } from "../formatting/formatArea.js";
 
 const router = Router();
 
@@ -36,11 +37,9 @@ router.post('/upload', upload.single('file'), async (req, res) => {
             documentType,
             extractedData,
             validation,
-            testFormatting: {
-                areaInteger: formatCardinal(81),
-                identifierPart: formatCardinal(68134)
-            },
-            testIdentifier: extractedData.identifier ? formatIdentifier(extractedData.identifier) : null,
+            testArea: extractedData.area
+                ? formatArea(extractedData.area)
+                : null,
             preview: text.substring(0, 3000) // first 1000 chars only
         });
     } catch (error) {
