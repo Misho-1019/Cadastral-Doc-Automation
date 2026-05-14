@@ -1,4 +1,5 @@
 import { formatArea } from "./formatArea.js";
+import { formatOrdinal } from "./formatOrdinal.js";
 import { formatPercentage } from "./formatPercentage.js";
 import { formatCardinal } from "./numberWords.js";
 
@@ -17,7 +18,7 @@ export function formatFreeTextNumbers(text: string): string {
 
     // integers (like "таван 6", "изба 5", "мазе №5")
     formatted = formatted.replace(
-        /(таван|изба|мазе|апартамент|етаж)\s*(№)?\s*([0-9]+)/giu,
+        /(таван|изба|мазе)\s*(№)?\s*([0-9]+)/giu,
         (_, label, symbol, numStr) => {
             const num = Number(numStr);
             const words = formatCardinal(num);
@@ -25,6 +26,18 @@ export function formatFreeTextNumbers(text: string): string {
             const prefix = symbol ? "№" : "";
 
             return `${label} ${prefix}${num} (${words})`;
+        }
+    );
+
+    formatted = formatted.replace(
+        /(етаж|апартамент)\s*(№)?\s*([0-9]+)/giu,
+        (_, label, symbol, numStr) => {
+            const num = Number(numStr);
+            const ordinal = formatOrdinal(num);
+
+            const prefix = symbol ? "№" : "";
+
+            return `${label} ${prefix}${num} (${ordinal})`;
         }
     );
 
