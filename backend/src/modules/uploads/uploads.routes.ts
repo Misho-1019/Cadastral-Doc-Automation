@@ -33,7 +33,7 @@ router.post("/upload", upload.single("file"), async (req, res) => {
         const manualData = req.body.manualData
             ? JSON.parse(req.body.manualData)
             : null;
-            
+
         const caseRecord = createCase({
             fileName: req.file.originalname,
             documentType,
@@ -96,6 +96,9 @@ router.post('/:id/generate-docx', (req, res) => {
         outputPath,
         data: {
             propertyDescription: caseRecord.propertyDescription,
+            sellerName: caseRecord.manualData?.seller?.fullName || "",
+            buyerName: caseRecord.manualData?.buyer?.fullName || "",
+            salePrice: caseRecord.manualData?.transaction?.salePrice || ""
         }
     })
 
