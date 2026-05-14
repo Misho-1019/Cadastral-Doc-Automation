@@ -12,6 +12,8 @@ import { formatPercentage } from "../formatting/formatPercentage.js";
 import { formatFreeTextNumbers } from "../formatting/formatFreeTextNumbers.js";
 import { formatMoney } from "../formatting/formatMoney.js";
 import { buildPropertyDescription } from "../documents/buildPropertyDescription.js";
+import path from "path";
+import { generateDocx } from "../documents/generateDocx.js";
 
 const router = Router();
 
@@ -37,6 +39,16 @@ router.post('/upload', upload.single('file'), async (req, res) => {
 
         const propertyDescription = buildPropertyDescription(extractedData);
 
+        const generatedDocxPath = path.resolve("generated", `notarial-act-${Date.now()}.docx`);
+
+        generateDocx({
+            templatePath: path.resolve("templates", "notarial-act-template.docx"),
+            outputPath: generatedDocxPath,
+            data: {
+                propertyDescription,
+            }
+        })
+
         res.json({
             message: "File processed successfully",
             fileName: req.file.originalname,
@@ -44,6 +56,7 @@ router.post('/upload', upload.single('file'), async (req, res) => {
             extractedData,
             validation,
             propertyDescription,
+            generatedDocxPath,
             preview: text.substring(0, 3000) // first 1000 chars only
         });
     } catch (error) {
