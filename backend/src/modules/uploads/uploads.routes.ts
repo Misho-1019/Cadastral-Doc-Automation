@@ -6,7 +6,7 @@ import { parseBasicCadastralData } from "../extraction/parseCadastralData.js";
 import { normalizePdfText } from "../extraction/normalizeText.js";
 import { validateCadastralData } from "../extraction/validateCadastralData.js";
 import { buildPropertyDescription } from "../documents/buildPropertyDescription.js";
-import { createCase, getCaseById } from "../cases/cases.store.js";
+import { createCase, getCaseById, updateCaseManualData } from "../cases/cases.store.js";
 import path from "path";
 import { generateDocx } from "../documents/generateDocx.js";
 
@@ -30,12 +30,17 @@ router.post("/upload", upload.single("file"), async (req, res) => {
         const validation = validateCadastralData(extractedData);
         const propertyDescription = buildPropertyDescription(extractedData);
 
+        const manualData = req.body.manualData
+            ? JSON.parse(req.body.manualData)
+            : null;
+            
         const caseRecord = createCase({
             fileName: req.file.originalname,
             documentType,
             extractedData,
             validation,
-            propertyDescription
+            propertyDescription,
+            manualData
         });
 
         return res.json({
@@ -95,6 +100,23 @@ router.post('/:id/generate-docx', (req, res) => {
     })
 
     return res.download(outputPath);
+});
+
+router.patch('/:id/manual-data', (req, res) => {
+    const { id } = req.params;
+
+    const updatedCase = updateCaseManualData(id, req.body);
+
+    if (!updatedCase) {
+        return res.status(404).json({
+            error: "Case not found"
+        });
+    }
+
+    return res.json({
+        message: "Manual data updated successfully",
+        case: updatedCase
+    });
 });
 
 export default router;
