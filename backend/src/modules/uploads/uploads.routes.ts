@@ -6,7 +6,7 @@ import { parseBasicCadastralData } from "../extraction/parseCadastralData.js";
 import { normalizePdfText } from "../extraction/normalizeText.js";
 import { validateCadastralData } from "../extraction/validateCadastralData.js";
 import { buildPropertyDescription } from "../documents/buildPropertyDescription.js";
-import { createCase } from "../cases/cases.store.js";
+import { createCase, getCaseById } from "../cases/cases.store.js";
 
 const router = Router();
 
@@ -53,5 +53,19 @@ router.post("/upload", upload.single("file"), async (req, res) => {
         });
     }
 });
+
+router.get('/:id', (req, res) => {
+    const { id } = req.params;
+
+    const caseRecord = getCaseById(id);
+
+    if (!caseRecord) {
+        return res.status(404).json({
+            error: "Case not found"
+        });
+    }
+
+    return res.json(caseRecord);
+})
 
 export default router;
