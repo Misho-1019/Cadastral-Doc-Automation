@@ -7,6 +7,8 @@ import { normalizePdfText } from "../extraction/normalizeText.js";
 import { validateCadastralData } from "../extraction/validateCadastralData.js";
 import { buildPropertyDescription } from "../documents/buildPropertyDescription.js";
 import { createCase, getCaseById } from "../cases/cases.store.js";
+import path from "path";
+import { generateDocx } from "../documents/generateDocx.js";
 
 const router = Router();
 
@@ -67,5 +69,32 @@ router.get('/:id', (req, res) => {
 
     return res.json(caseRecord);
 })
+
+router.post('/:id/generate-docx', (req, res) => {
+    const { id } = req.params;
+
+    const caseRecord = getCaseById(id);
+
+    if (!caseRecord) {
+        return res.status(404).json({
+            error: "Case not found"
+        });
+    }
+
+    const outputPath = path.resolve(
+        "generated",
+        `notarial-act-${id}.docx`
+    );
+
+    generateDocx({
+        templatePath: path.resolve('templates', 'notarial-act-template.docx'),
+        outputPath,
+        data: {
+            propertyDescription: caseRecord.propertyDescription,
+        }
+    })
+
+    return res.download(outputPath);
+});
 
 export default router;
