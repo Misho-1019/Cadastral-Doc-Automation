@@ -8,6 +8,7 @@ import { validateCadastralData } from "../extraction/validateCadastralData.js";
 import { formatCardinal } from "../formatting/numberWords.js";
 import { formatIdentifier } from "../formatting/formatIdentifier.js";
 import { formatArea } from "../formatting/formatArea.js";
+import { formatPercentage } from "../formatting/formatPercentage.js";
 
 const router = Router();
 
@@ -37,9 +38,7 @@ router.post('/upload', upload.single('file'), async (req, res) => {
             documentType,
             extractedData,
             validation,
-            testArea: extractedData.area
-                ? formatArea(extractedData.area)
-                : null,
+            testPercentageWhole: formatPercentage("10%"),
             preview: text.substring(0, 3000) // first 1000 chars only
         });
     } catch (error) {
