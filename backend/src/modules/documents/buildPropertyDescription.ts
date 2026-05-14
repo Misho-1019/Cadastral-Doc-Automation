@@ -4,6 +4,7 @@ import { formatArea } from "../formatting/formatArea.js";
 import { formatOrdinal } from "../formatting/formatOrdinal.js";
 import { formatCardinal } from "../formatting/numberWords.js";
 import { formatFreeTextNumbers } from "../formatting/formatFreeTextNumbers.js";
+import { formatAddress } from "../formatting/formatAddress.js";
 
 export function buildPropertyDescription(data: BasicCadastralData): string {
     if (data.documentType !== "independentObjectScheme") {
@@ -17,7 +18,7 @@ export function buildPropertyDescription(data: BasicCadastralData): string {
     }
 
     if (data.address) {
-        parts.push(`с адрес: ${data.address}`);
+        parts.push(`с адрес: ${formatAddress(data.address)}`);
     }
 
     if (data.objectFloor) {
