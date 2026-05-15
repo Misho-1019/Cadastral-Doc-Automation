@@ -35,7 +35,7 @@ router.post("/upload", upload.single("file"), async (req, res) => {
             ? JSON.parse(req.body.manualData)
             : null;
 
-        const caseRecord = createCase({
+        const caseRecord = await createCase({
             fileName: req.file.originalname,
             documentType,
             extractedData,
@@ -49,8 +49,8 @@ router.post("/upload", upload.single("file"), async (req, res) => {
             caseId: caseRecord.id,
             fileName: caseRecord.fileName,
             documentType: caseRecord.documentType,
-            extractedData: caseRecord.extractedData,
-            validation: caseRecord.validation,
+            extractedData: caseRecord.extractionResult?.extractedJson,
+            validation: caseRecord.extractionResult?.validationJson,
             propertyDescription: caseRecord.propertyDescription
         });
     } catch (error) {
@@ -62,10 +62,10 @@ router.post("/upload", upload.single("file"), async (req, res) => {
     }
 });
 
-router.get('/:id', (req, res) => {
+router.get('/:id', async (req, res) => {
     const { id } = req.params;
 
-    const caseRecord = getCaseById(id);
+    const caseRecord = await getCaseById(id);
 
     if (!caseRecord) {
         return res.status(404).json({
@@ -76,10 +76,10 @@ router.get('/:id', (req, res) => {
     return res.json(caseRecord);
 })
 
-router.post('/:id/generate-docx', (req, res) => {
+router.post('/:id/generate-docx', async (req, res) => {
     const { id } = req.params;
 
-    const caseRecord = getCaseById(id);
+    const caseRecord = await getCaseById(id);
 
     if (!caseRecord) {
         return res.status(404).json({
@@ -87,7 +87,7 @@ router.post('/:id/generate-docx', (req, res) => {
         });
     }
 
-    const manualData = caseRecord.manualData;
+    const manualData = caseRecord.manualCaseData?.dataJson as any;
 
     const salePriceFormatted = manualData?.transaction?.salePrice
         ? formatMoney(String(manualData.transaction.salePrice))
@@ -111,26 +111,39 @@ router.post('/:id/generate-docx', (req, res) => {
     );
 
     generateDocx({
-        templatePath: path.resolve('templates', 'notarial-act-template.docx'),
+        templatePath: path.resolve("templates", "notarial-act-template.docx"),
         outputPath,
         data: {
             propertyDescription: caseRecord.propertyDescription,
-            sellerName: caseRecord.manualData?.seller?.fullName || "",
-            buyerName: caseRecord.manualData?.buyer?.fullName || "",
+
+            sellerName: manualData?.seller?.fullName || "",
+            buyerName: manualData?.buyer?.fullName || "",
+
             salePriceFormatted,
             depositAmountFormatted,
             remainingAmountFormatted,
             taxEvaluationFormatted,
+
+            contractDate: manualData?.transaction?.contractDate || "",
+            preliminaryContractDate: manualData?.transaction?.preliminaryContractDate || "",
+
+            taxEvaluationNumber: manualData?.taxEvaluation?.number || "",
+            taxEvaluationDate: manualData?.taxEvaluation?.date || "",
+
+            notaryName: manualData?.notary?.name || "",
+
+            bankBic: manualData?.bankDetails?.bic || "",
+            bankIban: manualData?.bankDetails?.iban || ""
         }
-    })
+    });
 
     return res.download(outputPath);
 });
 
-router.patch('/:id/manual-data', (req, res) => {
+router.patch('/:id/manual-data', async (req, res) => {
     const { id } = req.params;
 
-    const updatedCase = updateCaseManualData(id, req.body);
+    const updatedCase = await updateCaseManualData(id, req.body);
 
     if (!updatedCase) {
         return res.status(404).json({

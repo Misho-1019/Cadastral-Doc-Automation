@@ -1,3 +1,5 @@
+import { prisma } from "../../config/prisma.js";
+import { Prisma } from "../../generated/prisma/client.js";
 import { BasicCadastralData } from "../extraction/parseCadastralData.js";
 import { ValidationResult } from "../extraction/validateCadastralData.js";
 
@@ -11,53 +13,78 @@ export type ManualCaseData = {
     bankDetails: Record<string, unknown>;
 };
 
-export type CaseRecord = {
-    id: string;
+export async function createCase(input: {
     fileName: string;
     documentType: string;
     extractedData: BasicCadastralData;
     validation: ValidationResult;
     propertyDescription: string;
-    createdAt: string;
     manualData: ManualCaseData | null;
-};
-
-const cases = new Map<string, CaseRecord>();
-
-export function createCase(input: Omit<CaseRecord, "id" | "createdAt">): CaseRecord {
-    const id = crypto.randomUUID();
-
-    const caseRecord: CaseRecord = {
-        id,
-        ...input,
-        createdAt: new Date().toISOString(),
-    };
-
-    cases.set(id, caseRecord);
-
-    return caseRecord;
+}) {
+    return prisma.case.create({
+        data: {
+            fileName: input.fileName,
+            documentType: input.documentType,
+            propertyDescription: input.propertyDescription,
+            extractionResult: {
+                create: {
+                    extractedJson: input.extractedData as unknown as Prisma.InputJsonValue,
+                    validationJson: input.validation as unknown as Prisma.InputJsonValue
+                }
+            },
+            manualCaseData: input.manualData
+                ? {
+                    create: {
+                        dataJson: input.manualData as unknown as Prisma.InputJsonValue
+                    }
+                }
+                : undefined
+        },
+        include: {
+            extractionResult: true,
+            manualCaseData: true,
+            generatedDocuments: true
+        }
+    });
 }
 
-export function getCaseById(id: string): CaseRecord | null {
-    return cases.get(id) ?? null;
+export async function getCaseById(id: string) {
+    return prisma.case.findUnique({
+        where: { id },
+        include: {
+            extractionResult: true,
+            manualCaseData: true,
+            generatedDocuments: true
+        }
+    });
 }
 
-export function updateCaseManualData(
+export async function updateCaseManualData(
     id: string,
     manualData: ManualCaseData
-): CaseRecord | null {
-    const caseRecord = cases.get(id);
+) {
+    const existingCase = await prisma.case.findUnique({
+        where: { id },
+        include: { manualCaseData: true }
+    });
 
-    if (!caseRecord) {
+    if (!existingCase) {
         return null;
     }
 
-    const updatedCase: CaseRecord = {
-        ...caseRecord,
-        manualData
-    };
+    if (existingCase.manualCaseData) {
+        await prisma.manualCaseData.update({
+            where: { caseId: id },
+            data: { dataJson: manualData as unknown as Prisma.InputJsonValue }
+        });
+    } else {
+        await prisma.manualCaseData.create({
+            data: {
+                caseId: id,
+                dataJson: manualData as unknown as Prisma.InputJsonValue
+            }
+        });
+    }
 
-    cases.set(id, updatedCase);
-
-    return updatedCase;
+    return getCaseById(id);
 }
