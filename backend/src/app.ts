@@ -2,6 +2,8 @@ import express from "express";
 import cors from "cors";
 
 import uploadRoutes from "./modules/uploads/uploads.routes";
+import caseRoutes from "./modules/cases/cases.routes.js";
+import documentRoutes from "./modules/documents/documents.routes.js";
 
 export const app = express();
 
@@ -16,3 +18,5 @@ app.get("/api/health", (req, res) => {
 });
 
 app.use('/api/cases', uploadRoutes)
+app.use('/api/cases', caseRoutes)
+app.use('/api/cases', documentRoutes)
