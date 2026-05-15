@@ -8,6 +8,7 @@ import { validateCadastralData } from "../extraction/validateCadastralData.js";
 import { buildPropertyDescription } from "../documents/buildPropertyDescription.js";
 import { createCase } from "../cases/cases.store.js";
 import { validateManualCaseData } from "../cases/validateManualCaseData.js";
+import { normalizeManualCaseData } from "../cases/normalizeManualCaseData.js";
 
 const router = Router();
 
@@ -29,8 +30,12 @@ router.post("/upload", upload.single("file"), async (req, res) => {
         const validation = validateCadastralData(extractedData);
         const propertyDescription = buildPropertyDescription(extractedData);
 
-        const manualData = req.body.manualData
+        const rawManualData = req.body.manualData
             ? JSON.parse(req.body.manualData)
+            : null;
+        
+        const manualData = rawManualData
+            ? normalizeManualCaseData(rawManualData)
             : null;
 
         const validationResult = manualData

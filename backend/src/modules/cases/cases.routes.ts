@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { getCaseById, updateCaseManualData } from "./cases.store.js";
 import { validateManualCaseData } from "./validateManualCaseData.js";
+import { normalizeManualCaseData } from "./normalizeManualCaseData.js";
 
 const router = Router();
 
@@ -17,7 +18,9 @@ router.get("/:id", async (req, res) => {
 });
 
 router.patch("/:id/manual-data", async (req, res) => {
-    const validationResult = validateManualCaseData(req.body);
+    const normalizedManualData = normalizeManualCaseData(req.body);
+
+    const validationResult = validateManualCaseData(normalizedManualData);
 
     if (!validationResult.isValid) {
         return res.status(400).json({
@@ -26,7 +29,7 @@ router.patch("/:id/manual-data", async (req, res) => {
         });
     }
     
-    const updatedCase = await updateCaseManualData(req.params.id, req.body);
+    const updatedCase = await updateCaseManualData(req.params.id, normalizedManualData);
 
     if (!updatedCase) {
         return res.status(404).json({
