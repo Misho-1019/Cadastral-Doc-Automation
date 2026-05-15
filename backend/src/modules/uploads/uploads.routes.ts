@@ -7,6 +7,7 @@ import { normalizePdfText } from "../extraction/normalizeText.js";
 import { validateCadastralData } from "../extraction/validateCadastralData.js";
 import { buildPropertyDescription } from "../documents/buildPropertyDescription.js";
 import { createCase } from "../cases/cases.store.js";
+import { validateManualCaseData } from "../cases/validateManualCaseData.js";
 
 const router = Router();
 
@@ -31,6 +32,17 @@ router.post("/upload", upload.single("file"), async (req, res) => {
         const manualData = req.body.manualData
             ? JSON.parse(req.body.manualData)
             : null;
+
+        const validationResult = manualData
+            ? validateManualCaseData(manualData)
+            : null;
+
+        if (validationResult && !validationResult.isValid) {
+            return res.status(400).json({
+                error: "Invalid manual data",
+                validationErrors: validationResult.errors
+            });
+        }
 
         const caseRecord = await createCase({
             fileName: req.file.originalname,
