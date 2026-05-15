@@ -80,3 +80,22 @@ export async function updateCaseManualData(
 
     return getCaseById(id);
 }
+
+export async function createGeneratedDocument(
+    caseId: string,
+    filePath: string
+) {
+    const existingCount = await prisma.generatedDocument.count({
+        where: {
+            caseId
+        }
+    });
+
+    return prisma.generatedDocument.create({
+        data: {
+            caseId,
+            filePath,
+            version: existingCount + 1
+        }
+    });
+}

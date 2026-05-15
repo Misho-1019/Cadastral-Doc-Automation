@@ -6,7 +6,7 @@ import { parseBasicCadastralData } from "../extraction/parseCadastralData.js";
 import { normalizePdfText } from "../extraction/normalizeText.js";
 import { validateCadastralData } from "../extraction/validateCadastralData.js";
 import { buildPropertyDescription } from "../documents/buildPropertyDescription.js";
-import { createCase, getCaseById, updateCaseManualData } from "../cases/cases.store.js";
+import { createCase, createGeneratedDocument, getCaseById, updateCaseManualData } from "../cases/cases.store.js";
 import path from "path";
 import { generateDocx } from "../documents/generateDocx.js";
 import { buildDocxTemplateData } from "../documents/buildDocxTemplateData.js";
@@ -99,6 +99,8 @@ router.post('/:id/generate-docx', async (req, res) => {
         outputPath,
         data: templateData,
     });
+
+    await createGeneratedDocument(id, outputPath);
 
     return res.download(outputPath);
 });
