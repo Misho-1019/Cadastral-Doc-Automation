@@ -2,16 +2,8 @@ import { prisma } from "../../config/prisma.js";
 import { Prisma } from "../../generated/prisma/client.js";
 import { BasicCadastralData } from "../extraction/parseCadastralData.js";
 import { ValidationResult } from "../extraction/validateCadastralData.js";
+import { ManualCaseData } from "./manualCaseData.types.js";
 
-export type ManualCaseData = {
-    seller: Record<string, unknown>;
-    buyer: Record<string, unknown>;
-    transaction: Record<string, unknown>;
-    notary: Record<string, unknown>;
-    ownershipDocument: Record<string, unknown>;
-    taxEvaluation: Record<string, unknown>;
-    bankDetails: Record<string, unknown>;
-};
 
 export async function createCase(input: {
     fileName: string;
