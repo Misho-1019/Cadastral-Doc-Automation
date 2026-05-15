@@ -9,6 +9,7 @@ import { buildPropertyDescription } from "../documents/buildPropertyDescription.
 import { createCase, getCaseById, updateCaseManualData } from "../cases/cases.store.js";
 import path from "path";
 import { generateDocx } from "../documents/generateDocx.js";
+import { formatMoney } from "../formatting/formatMoney.js";
 
 const router = Router();
 
@@ -86,6 +87,24 @@ router.post('/:id/generate-docx', (req, res) => {
         });
     }
 
+    const manualData = caseRecord.manualData;
+
+    const salePriceFormatted = manualData?.transaction?.salePrice
+        ? formatMoney(String(manualData.transaction.salePrice))
+        : "";
+
+    const depositAmountFormatted = manualData?.transaction?.depositAmount
+        ? formatMoney(String(manualData.transaction.depositAmount))
+        : "";
+
+    const remainingAmountFormatted = manualData?.transaction?.remainingAmount
+        ? formatMoney(String(manualData.transaction.remainingAmount))
+        : "";
+
+    const taxEvaluationFormatted = manualData?.taxEvaluation?.amount
+        ? formatMoney(String(manualData.taxEvaluation.amount))
+        : "";
+
     const outputPath = path.resolve(
         "generated",
         `notarial-act-${id}.docx`
@@ -98,7 +117,10 @@ router.post('/:id/generate-docx', (req, res) => {
             propertyDescription: caseRecord.propertyDescription,
             sellerName: caseRecord.manualData?.seller?.fullName || "",
             buyerName: caseRecord.manualData?.buyer?.fullName || "",
-            salePrice: caseRecord.manualData?.transaction?.salePrice || ""
+            salePriceFormatted,
+            depositAmountFormatted,
+            remainingAmountFormatted,
+            taxEvaluationFormatted,
         }
     })
 
