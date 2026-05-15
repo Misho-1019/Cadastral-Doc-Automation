@@ -9,7 +9,7 @@ import { buildPropertyDescription } from "../documents/buildPropertyDescription.
 import { createCase, getCaseById, updateCaseManualData } from "../cases/cases.store.js";
 import path from "path";
 import { generateDocx } from "../documents/generateDocx.js";
-import { formatMoney } from "../formatting/formatMoney.js";
+import { buildDocxTemplateData } from "../documents/buildDocxTemplateData.js";
 
 const router = Router();
 
@@ -87,23 +87,7 @@ router.post('/:id/generate-docx', async (req, res) => {
         });
     }
 
-    const manualData = caseRecord.manualCaseData?.dataJson as any;
-
-    const salePriceFormatted = manualData?.transaction?.salePrice
-        ? formatMoney(String(manualData.transaction.salePrice))
-        : "";
-
-    const depositAmountFormatted = manualData?.transaction?.depositAmount
-        ? formatMoney(String(manualData.transaction.depositAmount))
-        : "";
-
-    const remainingAmountFormatted = manualData?.transaction?.remainingAmount
-        ? formatMoney(String(manualData.transaction.remainingAmount))
-        : "";
-
-    const taxEvaluationFormatted = manualData?.taxEvaluation?.amount
-        ? formatMoney(String(manualData.taxEvaluation.amount))
-        : "";
+    const templateData = buildDocxTemplateData(caseRecord);
 
     const outputPath = path.resolve(
         "generated",
@@ -113,28 +97,7 @@ router.post('/:id/generate-docx', async (req, res) => {
     generateDocx({
         templatePath: path.resolve("templates", "notarial-act-template.docx"),
         outputPath,
-        data: {
-            propertyDescription: caseRecord.propertyDescription,
-
-            sellerName: manualData?.seller?.fullName || "",
-            buyerName: manualData?.buyer?.fullName || "",
-
-            salePriceFormatted,
-            depositAmountFormatted,
-            remainingAmountFormatted,
-            taxEvaluationFormatted,
-
-            contractDate: manualData?.transaction?.contractDate || "",
-            preliminaryContractDate: manualData?.transaction?.preliminaryContractDate || "",
-
-            taxEvaluationNumber: manualData?.taxEvaluation?.number || "",
-            taxEvaluationDate: manualData?.taxEvaluation?.date || "",
-
-            notaryName: manualData?.notary?.name || "",
-
-            bankBic: manualData?.bankDetails?.bic || "",
-            bankIban: manualData?.bankDetails?.iban || ""
-        }
+        data: templateData,
     });
 
     return res.download(outputPath);
