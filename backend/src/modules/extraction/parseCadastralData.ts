@@ -25,6 +25,10 @@ export type BasicCadastralData = {
         above: string | null;
     };
     owners: Owner[];
+    schemeNumber: string | null;
+    approvalOrder: string | null;
+    lastChangeDescription: string | null;
+    cadastralLocation: string | null;
 }
 
 function matchFirst(text: string, patterns: RegExp[]): string | null {
@@ -97,6 +101,36 @@ export function parseBasicCadastralData(text: string, documentType: DocumentType
 
     const owners = extractOwners(text);
 
+    const schemeNumber = matchFirst(text, [
+        /Схема\s*№\s*([^\s,]+)/i
+    ]);
+
+    const approvalOrder = matchFirst(text, [
+        /одобрени\s+със\s+Заповед\s*№\s*(.*?)(?=\s+Последно\s+изменение)/i
+    ]);
+
+    const lastChangeDescription = matchFirst(text, [
+        /Последно\s+изменение.*?:\s*(.*?)(?=\s+Адрес\s+на\s+самостоятелния\s+обект)/i
+    ]);
+
+    const cadastralLocation = matchFirst(text, [
+        /по\s+кадастралната\s+карта\s+и\s+кадастралните\s+регистри\s+на\s+(.*?),\s+одобрени/i
+    ]);
+
+    const cleanedApprovalOrder = approvalOrder
+        ?.replace(/\s+/g, " ")
+        .replace("/", " от ")
+        .replace("ИЗПЪЛНИТЕЛЕН ДИРЕКТОР", "Изпълнителния директор")
+        .replace("АГКК", "АГКК")
+        .replace("НА АГКК", "на АГКК")
+        .trim() ?? null;
+
+    const cleanedSchemeNumber = schemeNumber
+        ? schemeNumber.endsWith("г.")
+            ? schemeNumber
+            : `${schemeNumber} г.`
+        : null;
+
     return {
         documentType,
         identifier,
@@ -111,5 +145,9 @@ export function parseBasicCadastralData(text: string, documentType: DocumentType
         landPropertyIdentifier: relatedIdentifiers.landPropertyIdentifier,
         neighbouringObjects,
         owners,
+        schemeNumber: cleanedSchemeNumber,
+        approvalOrder: cleanedApprovalOrder,
+        lastChangeDescription,
+        cadastralLocation
     }
 }

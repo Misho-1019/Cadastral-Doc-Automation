@@ -42,8 +42,9 @@ export function formatFreeTextNumbers(text: string): string {
     );
 
     formatted = formatted
-        .replace(/ид\.ч\./g, "идеални части")
-        .replace(/общ\.ч\./g, "общите части")
+        .replace(/ид\.\s*ч\./g, "идеални части ")
+        .replace(/общ\.\s*ч\./g, "общите части ")
+        .replace(/частиот/g, "части от")
         .replace(/\s+%/g, " %")
         .replace(/\s*,\s*/g, ", ")
         .replace(/\s+/g, " ")

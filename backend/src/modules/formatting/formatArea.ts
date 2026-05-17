@@ -27,5 +27,7 @@ export function formatArea(area: string): string {
 
     resultWords += " квадратни метра";
 
-    return `${area} (${resultWords})`;
+    const displayArea = area.replace(/кв\.м$/i, "кв.м.");
+
+    return `${displayArea} (${resultWords})`;
 }
