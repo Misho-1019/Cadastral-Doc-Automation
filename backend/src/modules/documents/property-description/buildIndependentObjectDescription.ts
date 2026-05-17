@@ -48,7 +48,7 @@ export function buildIndependentObjectDescription(
     }
 
     if (data.adjoiningParts) {
-        parts.push(`заедно с прилежащи части: ${formatFreeTextNumbers(data.adjoiningParts)}`);
+        parts.push(`и прилежащи части: ${formatFreeTextNumbers(data.adjoiningParts)}`);
     }
 
     return parts.join(", ");

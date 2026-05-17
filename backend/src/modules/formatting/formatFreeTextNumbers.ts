@@ -41,5 +41,13 @@ export function formatFreeTextNumbers(text: string): string {
         }
     );
 
+    formatted = formatted
+        .replace(/ид\.ч\./g, "идеални части")
+        .replace(/общ\.ч\./g, "общите части")
+        .replace(/\s+%/g, " %")
+        .replace(/\s*,\s*/g, ", ")
+        .replace(/\s+/g, " ")
+        .trim();
+
     return formatted;
 }
