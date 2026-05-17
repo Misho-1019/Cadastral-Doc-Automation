@@ -50,13 +50,14 @@ export function buildIndependentObjectDescription(
     if (data.objectFloor) {
         parts.push(
             `самостоятелният обект се намира на етаж ${data.objectFloor} (${formatOrdinal(Number(data.objectFloor))})`
-        );
-    }
+        let floorText =
+            `самостоятелният обект се намира на етаж ${data.objectFloor} (${formatOrdinal(Number(data.objectFloor))})`;
 
-    if (data.buildingIdentifier) {
-        parts.push(
-            `в сграда с идентификатор ${formatIdentifier(data.buildingIdentifier)}`
-        );
+        if (data.buildingIdentifier) {
+            floorText += ` в сграда с идентификатор ${formatIdentifier(data.buildingIdentifier)}`;
+        }
+
+        parts.push(floorText);
     }
 
     if (data.buildingFloors) {
@@ -130,4 +131,15 @@ export function buildIndependentObjectDescription(
     }
 
     return parts.join(", ");
+}
+
+function buildNeighbourIdentifiers(text: string): string {
+    return text
+        .split(",")
+        .map(identifier => identifier.trim())
+        .filter(Boolean)
+        .map(identifier => {
+            return `самостоятелен обект с идентификатор ${formatIdentifier(identifier)}`;
+        })
+        .join(", ");
 }
