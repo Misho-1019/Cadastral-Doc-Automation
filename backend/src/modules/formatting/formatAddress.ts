@@ -2,7 +2,7 @@ import { formatOrdinal } from "./formatOrdinal.js";
 import { formatCardinal } from "./numberWords.js";
 
 export function formatAddress(address: string): string {
-    let formatted = address;
+    let formatted = normalizeStreetNameCasing(address);
 
     // --- Roman numerals (e.g. "II")
     formatted = formatted.replace(
@@ -63,4 +63,33 @@ function romanToNumber(roman: string): number {
     };
 
     return map[roman] || 0;
+}
+
+function normalizeStreetNameCasing(address: string): string {
+    return address.replace(
+        /ул\.\s+([^,№]+)(?=\s+№|\s*,)/giu,
+        (match, streetName) => {
+            const trimmed = streetName.trim();
+
+            const hasLowercase = /[а-я]/u.test(trimmed);
+
+            if (hasLowercase) {
+                return match;
+            }
+
+            const formatted = trimmed
+                .toLowerCase()
+                .split(/\s+/)
+                .map((word: string) => {
+                    if (/^(i|ii|iii|iv|v|vi|vii|viii|ix|x)$/i.test(word)) {
+                        return word.toUpperCase();
+                    }
+
+                    return word.charAt(0).toUpperCase() + word.slice(1);
+                })
+                .join(" ");
+
+            return `ул. ${formatted}`;
+        }
+    );
 }
