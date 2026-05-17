@@ -27,7 +27,7 @@ export function formatPercentage(value: string): string {
     }
 
     const displayNumber = normalizedNumber.includes(".")
-        ? normalizedNumber
+        ? normalizedNumber.replace(".", ",")
         : integerPartStr;
 
     return `${displayNumber} % (${words})`;

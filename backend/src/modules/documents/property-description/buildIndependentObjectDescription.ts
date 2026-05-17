@@ -48,8 +48,6 @@ export function buildIndependentObjectDescription(
     }
 
     if (data.objectFloor) {
-        parts.push(
-            `самостоятелният обект се намира на етаж ${data.objectFloor} (${formatOrdinal(Number(data.objectFloor))})`
         let floorText =
             `самостоятелният обект се намира на етаж ${data.objectFloor} (${formatOrdinal(Number(data.objectFloor))})`;
 
@@ -109,7 +107,7 @@ export function buildIndependentObjectDescription(
 
         if (data.neighbouringObjects.sameFloor) {
             neighbourParts.push(
-                `на същия етаж – самостоятелен обект с идентификатор ${formatIdentifier(data.neighbouringObjects.sameFloor)}`
+                `на същия етаж – ${buildNeighbourIdentifiers(data.neighbouringObjects.sameFloor)}`
             );
         }
 
