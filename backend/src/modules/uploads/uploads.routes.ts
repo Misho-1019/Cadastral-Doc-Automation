@@ -5,7 +5,7 @@ import { detectDocumentType } from "../extraction/detectDocumentType.js";
 import { parseBasicCadastralData } from "../extraction/parseCadastralData.js";
 import { normalizePdfText } from "../extraction/normalizeText.js";
 import { validateCadastralData } from "../extraction/validateCadastralData.js";
-import { buildPropertyDescription } from "../documents/buildPropertyDescription.js";
+import { buildPropertyDescription } from "../documents/property-description/buildPropertyDescription.js";
 import { createCase } from "../cases/cases.store.js";
 import { validateManualCaseData } from "../cases/validateManualCaseData.js";
 import { normalizeManualCaseData } from "../cases/normalizeManualCaseData.js";

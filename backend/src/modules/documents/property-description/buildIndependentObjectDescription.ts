@@ -1,16 +1,14 @@
-import { BasicCadastralData } from "../extraction/parseCadastralData.js";
-import { formatIdentifier } from "../formatting/formatIdentifier.js";
-import { formatArea } from "../formatting/formatArea.js";
-import { formatOrdinal } from "../formatting/formatOrdinal.js";
-import { formatCardinal } from "../formatting/numberWords.js";
-import { formatFreeTextNumbers } from "../formatting/formatFreeTextNumbers.js";
-import { formatAddress } from "../formatting/formatAddress.js";
+import { BasicCadastralData } from "../../extraction/parseCadastralData.js";
+import { formatIdentifier } from "../../formatting/formatIdentifier.js";
+import { formatArea } from "../../formatting/formatArea.js";
+import { formatOrdinal } from "../../formatting/formatOrdinal.js";
+import { formatCardinal } from "../../formatting/numberWords.js";
+import { formatFreeTextNumbers } from "../../formatting/formatFreeTextNumbers.js";
+import { formatAddress } from "../../formatting/formatAddress.js";
 
-export function buildPropertyDescription(data: BasicCadastralData): string {
-    if (data.documentType !== "independentObjectScheme") {
-        return "Property description generation for this document type is not implemented yet.";
-    }
-
+export function buildIndependentObjectDescription(
+    data: BasicCadastralData
+): string {
     const parts: string[] = [];
 
     if (data.identifier) {
@@ -53,5 +51,5 @@ export function buildPropertyDescription(data: BasicCadastralData): string {
         parts.push(`заедно с прилежащи части: ${formatFreeTextNumbers(data.adjoiningParts)}`);
     }
 
-    return parts.join(", ") + ".";
+    return parts.join(", ");
 }
