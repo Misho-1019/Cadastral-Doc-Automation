@@ -38,7 +38,7 @@ export function buildLandPropertyDescription(
     const buildingsText = buildBuildingsText(data);
 
     return [
-        "- ПОЗЕМЛЕН ИМОТ,",
+        "ПОЗЕМЛЕН ИМОТ,",
         `който съгласно Скица на поземлен имот № ${data.sketchNumber}, издадена от АГКК,`,
         `представлява поземлен имот с идентификатор ${formatIdentifier(data.identifier ?? '')},`,
         `по кадастралната карта и кадастралните регистри на ${data.cadastralLocation ?? data.address},`,

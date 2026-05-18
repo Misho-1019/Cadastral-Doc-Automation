@@ -1,6 +1,7 @@
 import { DocumentType } from "./detectDocumentType";
 import { extractAdjoiningParts } from "./extractAdjoiningParts";
 import { extractArea } from "./extractArea";
+import { BuildingSketchDetails, extractBuildingSketchDetails } from "./extractBuildingSketchDetails";
 import { extractIdentifier } from "./extractIdentifier";
 import { extractIndependentObjectDetails } from "./extractIndependentObjectDetails";
 import { extractLandPropertyDetails, LandPropertyDetails } from "./extractLandPropertyDetails";
@@ -32,7 +33,7 @@ export type BasicCadastralData = {
     cadastralLocation: string | null;
 }
 
-export type ParsedCadastralData = BasicCadastralData & Partial<LandPropertyDetails>;
+export type ParsedCadastralData = BasicCadastralData & Partial<LandPropertyDetails> & Partial<BuildingSketchDetails>;
 
 function matchFirst(text: string, patterns: RegExp[]): string | null {
     for (const pattern of patterns) {
@@ -141,6 +142,11 @@ export function parseBasicCadastralData(text: string, documentType: DocumentType
         ? extractLandPropertyDetails(text)
         : {};
 
+    const buildingSketchDetails =
+    documentType === "buildingSketch"
+        ? extractBuildingSketchDetails(text)
+        : {};
+
     return {
         documentType,
         identifier,
@@ -159,6 +165,7 @@ export function parseBasicCadastralData(text: string, documentType: DocumentType
         approvalOrder: cleanedApprovalOrder,
         lastChangeDescription,
         cadastralLocation,
-        ...landPropertyDetails
+        ...landPropertyDetails,
+        ...buildingSketchDetails,
     }
 }
