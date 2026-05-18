@@ -47,13 +47,18 @@ const hundreds: Record<number, string> = {
     900: "деветстотин"
 };
 
-export function formatCardinal(value: number): string {
+export type BulgarianNumberGender = "neutral" | "masculine" | "feminine";
+
+export function formatCardinal(
+    value: number,
+    gender: BulgarianNumberGender = "neutral"
+): string {
     if (!Number.isInteger(value) || value < 0) {
         throw new Error("formatCardinal supports only non-negative integers");
     }
 
     if (value < 10) {
-        return units[value];
+        return formatUnit(value, gender);
     }
 
     if (value < 20) {
@@ -61,21 +66,45 @@ export function formatCardinal(value: number): string {
     }
 
     if (value < 100) {
-        return formatTwoDigits(value);
+        return formatTwoDigits(value, gender);
     }
 
     if (value < 1000) {
-        return formatThreeDigits(value);
+        return formatThreeDigits(value, gender);
     }
 
     if (value < 1000000) {
-        return formatThousands(value);
+        return formatThousands(value, gender);
     }
 
     throw new Error("formatCardinal currently supports numbers below 1,000,000");
 }
 
-function formatTwoDigits(value: number): string {
+function formatUnit(value: number, gender: BulgarianNumberGender): string {
+    if (value === 1) {
+        if (gender === "masculine") {
+            return "един";
+        }
+
+        if (gender === "feminine") {
+            return "една";
+        }
+
+        return "едно";
+    }
+
+    if (value === 2) {
+        if (gender === "masculine") {
+            return "два";
+        }
+
+        return "две";
+    }
+
+    return units[value];
+}
+
+function formatTwoDigits(value: number, gender: BulgarianNumberGender): string {
     const ten = Math.floor(value / 10) * 10;
     const unit = value % 10;
 
@@ -83,10 +112,10 @@ function formatTwoDigits(value: number): string {
         return tens[ten];
     }
 
-    return `${tens[ten]} и ${units[unit]}`;
+    return `${tens[ten]} и ${formatUnit(unit, gender)}`;
 }
 
-function formatThreeDigits(value: number): string {
+function formatThreeDigits(value: number, gender: BulgarianNumberGender): string {
     const hundred = Math.floor(value / 100) * 100;
     const remainder = value % 100;
 
@@ -95,13 +124,13 @@ function formatThreeDigits(value: number): string {
     }
 
     if (remainder < 20 || remainder % 10 === 0) {
-        return `${hundreds[hundred]} и ${formatCardinal(remainder)}`;
+        return `${hundreds[hundred]} и ${formatCardinal(remainder, gender)}`;
     }
 
-    return `${hundreds[hundred]} ${formatCardinal(remainder)}`;
+    return `${hundreds[hundred]} ${formatCardinal(remainder, gender)}`;
 }
 
-function formatThousands(value: number): string {
+function formatThousands(value: number, gender: BulgarianNumberGender): string {
     const thousandPart = Math.floor(value / 1000);
     const remainder = value % 1000;
 
@@ -120,8 +149,8 @@ function formatThousands(value: number): string {
     }
 
     if (remainder < 100 || remainder % 100 === 0) {
-        return `${thousandText} и ${formatCardinal(remainder)}`;
+        return `${thousandText} и ${formatCardinal(remainder, gender)}`;
     }
 
-    return `${thousandText} ${formatCardinal(remainder)}`;
+    return `${thousandText} ${formatCardinal(remainder, gender)}`;
 }

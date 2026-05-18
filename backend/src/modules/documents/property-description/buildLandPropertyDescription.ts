@@ -1,4 +1,21 @@
 import { ParsedCadastralData } from "../../extraction/parseCadastralData";
+import { formatArea } from "../../formatting/formatArea";
+import { formatIdentifier } from "../../formatting/formatIdentifier";
+import { formatCardinal } from "../../formatting/numberWords";
+
+function formatCount(value: string | null): string {
+    if (!value) {
+        return "";
+    }
+
+    const numberValue = Number(value);
+
+    if (!Number.isInteger(numberValue)) {
+        return value;
+    }
+
+    return `${value} (${formatCardinal(numberValue, 'masculine')})`;
+}
 
 export function buildLandPropertyDescription(
     data: ParsedCadastralData
@@ -8,17 +25,17 @@ export function buildLandPropertyDescription(
     return [
         "- ПОЗЕМЛЕН ИМОТ,",
         `който съгласно Скица на поземлен имот № ${data.sketchNumber}, издадена от АГКК,`,
-        `представлява поземлен имот с идентификатор ${data.identifier},`,
+        `представлява поземлен имот с идентификатор ${formatIdentifier(data.identifier ?? '')},`,
         `по кадастралната карта и кадастралните регистри на ${data.cadastralLocation ?? data.address},`,
         `одобрени със Заповед № ${data.approvalOrder},`,
         `последно изменение на кадастралната карта и кадастралните регистри, засягащо поземления имот: ${data.lastChangeDescription},`,
         `с адрес на поземления имот: ${data.address},`,
-        `с площ ${data.area},`,
+        `с площ ${formatArea(data.area ?? "")},`,
         `трайно предназначение на територията: ${data.territoryPurpose},`,
         `начин на трайно ползване: ${data.permanentUse},`,
         `предишен идентификатор: ${data.previousIdentifier},`,
         `номер по предходен план: ${data.previousPlanNumber}, квартал: ${data.quarter}, парцел: ${data.plot},`,
-        `при съседи: ${data.neighbours}${buildingsText}.`
+        `при съседи: ${data.neighbours ? formatIdentifier(data.neighbours) : ""}${buildingsText}.`
     ]
         .filter(Boolean)
         .join(" ");
@@ -32,9 +49,9 @@ function buildBuildingsText(data: ParsedCadastralData): string {
     const buildings = data.buildings
         .map((building, index) => {
             return [
-                `${index + 1}. Сграда с идентификатор ${building.identifier}`,
-                `със застроена площ ${building.builtArea}`,
-                `брой етажи ${building.floors}`,
+                `${index + 1}. Сграда с идентификатор ${formatIdentifier(building.identifier)}`,
+                `със застроена площ ${formatArea(building.builtArea ?? "")}`,
+                `брой етажи ${formatCount(building.floors)}`,
                 `с предназначение: ${building.purpose}`
             ].join(", ");
         })
