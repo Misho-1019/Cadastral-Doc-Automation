@@ -61,6 +61,7 @@ function cleanText(value: string | null): string | null {
 
     return value
         .replace(/--\s*\d+\s+of\s+\d+\s*--/gi, "")
+        .replace(/^С\.\s/gi, "с. ")
         .replace(/\s+/g, " ")
         .replace(/кв\.?\s*м\.?/gi, "кв.м")
         .trim();
