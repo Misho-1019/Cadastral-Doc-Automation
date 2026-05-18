@@ -27,13 +27,17 @@ router.post("/upload", upload.single("file"), async (req, res) => {
 
         const documentType = detectDocumentType(text);
         const extractedData = parseBasicCadastralData(text, documentType);
+
+        console.log("EXTRACTED CADASTRAL DATA:");
+        console.log(JSON.stringify(extractedData, null, 2));
+
         const validation = validateCadastralData(extractedData);
         const propertyDescription = buildPropertyDescription(extractedData);
 
         const rawManualData = req.body.manualData
             ? JSON.parse(req.body.manualData)
             : null;
-        
+
         const manualData = rawManualData
             ? normalizeManualCaseData(rawManualData)
             : null;

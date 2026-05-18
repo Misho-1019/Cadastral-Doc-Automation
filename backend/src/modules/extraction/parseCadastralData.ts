@@ -3,6 +3,7 @@ import { extractAdjoiningParts } from "./extractAdjoiningParts";
 import { extractArea } from "./extractArea";
 import { extractIdentifier } from "./extractIdentifier";
 import { extractIndependentObjectDetails } from "./extractIndependentObjectDetails";
+import { extractLandPropertyDetails, LandPropertyDetails } from "./extractLandPropertyDetails";
 import { extractNeighbouringObjects } from "./extractNeighbouringObjects";
 import { extractOwners, Owner } from "./extractOwners";
 import { extractRelatedIdentifiers } from "./extractRelatedIdentifiers";
@@ -30,6 +31,8 @@ export type BasicCadastralData = {
     lastChangeDescription: string | null;
     cadastralLocation: string | null;
 }
+
+export type ParsedCadastralData = BasicCadastralData & Partial<LandPropertyDetails>;
 
 function matchFirst(text: string, patterns: RegExp[]): string | null {
     for (const pattern of patterns) {
@@ -74,12 +77,12 @@ function extractBlockBetween(
         .trim();
 }
 
-export function parseBasicCadastralData(text: string, documentType: DocumentType): BasicCadastralData {
+export function parseBasicCadastralData(text: string, documentType: DocumentType): ParsedCadastralData {
     const identifier = extractIdentifier(text);
 
     const address = extractBlockBetween(
         text,
-        /Адрес\s*(?:на имота|на сградата|на самостоятелния обект)?\s*[:\-]?\s*/i,
+        /Адрес\s*(?:на имота|на сградата|на самостоятелния обект|на поземления имот)?\s*[:\-]?\s*/i,
         [
             /Самостоятелният обект се намира/i,
             /Сградата е разположена/i,
@@ -106,11 +109,13 @@ export function parseBasicCadastralData(text: string, documentType: DocumentType
     ]);
 
     const approvalOrder = matchFirst(text, [
-        /одобрени\s+със\s+Заповед\s*№\s*(.*?)(?=\s+Последно\s+изменение)/i
+        /одобрени\s+със\s+Заповед\s*№\s*(.*?)(?=\s+Последно\s+изменение)/i,
+        /одобрени\s+със\s+Заповед\s*(.*?)(?=\s+Последно\s+изменение)/i
     ]);
 
     const lastChangeDescription = matchFirst(text, [
-        /Последно\s+изменение.*?:\s*(.*?)(?=\s+Адрес\s+на\s+самостоятелния\s+обект)/i
+        /Последно\s+изменение.*?:\s*(.*?)(?=\s+Адрес\s+на\s+самостоятелния\s+обект)/i,
+        /Последно\s+изменение.*?е\s+от\s*(.*?)(?=\s+Адрес\s+на\s+поземления\s+имот)/i
     ]);
 
     const cadastralLocation = matchFirst(text, [
@@ -130,6 +135,11 @@ export function parseBasicCadastralData(text: string, documentType: DocumentType
             ? schemeNumber
             : `${schemeNumber} г.`
         : null;
+    
+    const landPropertyDetails =
+    documentType === "landPropertySketch"
+        ? extractLandPropertyDetails(text)
+        : {};
 
     return {
         documentType,
@@ -148,6 +158,7 @@ export function parseBasicCadastralData(text: string, documentType: DocumentType
         schemeNumber: cleanedSchemeNumber,
         approvalOrder: cleanedApprovalOrder,
         lastChangeDescription,
-        cadastralLocation
+        cadastralLocation,
+        ...landPropertyDetails
     }
 }
