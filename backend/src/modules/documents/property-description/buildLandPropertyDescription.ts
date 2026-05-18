@@ -1,6 +1,7 @@
 import { ParsedCadastralData } from "../../extraction/parseCadastralData";
 import { formatArea } from "../../formatting/formatArea";
 import { formatIdentifier } from "../../formatting/formatIdentifier";
+import { formatRomanNumeral } from "../../formatting/formatRomanNumeral";
 import { formatCardinal } from "../../formatting/numberWords";
 
 function formatCount(value: string | null): string {
@@ -15,6 +16,20 @@ function formatCount(value: string | null): string {
     }
 
     return `${value} (${formatCardinal(numberValue, 'masculine')})`;
+}
+
+function formatNumberWithWords(value: string | null | undefined): string {
+    if (!value) {
+        return "";
+    }
+
+    const numberValue = Number(value);
+
+    if (!Number.isInteger(numberValue)) {
+        return value;
+    }
+
+    return `${value} (${formatCardinal(numberValue)})`;
 }
 
 export function buildLandPropertyDescription(
@@ -34,7 +49,7 @@ export function buildLandPropertyDescription(
         `трайно предназначение на територията: ${data.territoryPurpose},`,
         `начин на трайно ползване: ${data.permanentUse},`,
         `предишен идентификатор: ${data.previousIdentifier},`,
-        `номер по предходен план: ${data.previousPlanNumber}, квартал: ${data.quarter}, парцел: ${data.plot},`,
+        `номер по предходен план: ${formatNumberWithWords(data.previousPlanNumber)}, квартал: ${formatNumberWithWords(data.quarter)}, парцел: ${data.plot ? formatRomanNumeral(data.plot) : ""},`,
         `при съседи: ${data.neighbours ? formatIdentifier(data.neighbours) : ""}${buildingsText}.`
     ]
         .filter(Boolean)
