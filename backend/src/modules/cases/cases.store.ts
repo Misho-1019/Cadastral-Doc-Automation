@@ -12,12 +12,14 @@ export async function createCase(input: {
     validation: ValidationResult;
     propertyDescription: string;
     manualData: ManualCaseData | null;
+    rawText?: string;
 }) {
     return prisma.case.create({
         data: {
             fileName: input.fileName,
             documentType: input.documentType,
             propertyDescription: input.propertyDescription,
+            rawText: input.rawText,
             extractionResult: {
                 create: {
                     extractedJson: input.extractedData as unknown as Prisma.InputJsonValue,
@@ -38,6 +40,36 @@ export async function createCase(input: {
             generatedDocuments: true
         }
     });
+}
+
+export async function updateCaseExtraction(id: string, input: {
+    extractedData: BasicCadastralData;
+    validation: ValidationResult;
+    propertyDescription: string;
+}) {
+    const existing = await prisma.case.findUnique({
+        where: { id },
+        include: { extractionResult: true }
+    });
+
+    if (!existing) return null;
+
+    await prisma.case.update({
+        where: { id },
+        data: { propertyDescription: input.propertyDescription }
+    });
+
+    if (existing.extractionResult) {
+        await prisma.extractionResult.update({
+            where: { caseId: id },
+            data: {
+                extractedJson: input.extractedData as unknown as Prisma.InputJsonValue,
+                validationJson: input.validation as unknown as Prisma.InputJsonValue
+            }
+        });
+    }
+
+    return getCaseById(id);
 }
 
 export async function getCaseById(id: string) {

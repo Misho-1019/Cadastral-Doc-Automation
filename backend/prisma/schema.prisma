@@ -17,6 +17,7 @@ model Case {
     fileName            String
     documentType        String
     propertyDescription String
+    rawText             String?
     createdAt           DateTime            @default(now())
     updatedAt           DateTime            @updatedAt
 

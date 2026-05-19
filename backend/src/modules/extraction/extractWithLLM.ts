@@ -104,6 +104,7 @@ export async function extractWithLLM(
 
     parsed.approvalOrder = cleanApprovalOrder(parsed.approvalOrder);
     parsed.schemeNumber = cleanSchemeNumber(parsed.schemeNumber);
+    parsed.lastChangeDescription = cleanLastChangeDescription(parsed.lastChangeDescription);
 
     parsed.owners = (parsed.owners || []).map(owner => ({
         name: owner.name || "",
@@ -118,10 +119,19 @@ function cleanApprovalOrder(value: string | null): string | null {
 
     return value
         .replace(/\s+/g, " ")
+        .replace(/^Заповед\s*№?\s*/i, "")
         .replace("/", " от ")
         .replace("ИЗПЪЛНИТЕЛЕН ДИРЕКТОР", "Изпълнителния директор")
         .replace("АГКК", "АГКК")
         .replace("НА АГКК", "на АГКК")
+        .trim();
+}
+
+function cleanLastChangeDescription(value: string | null): string | null {
+    if (!value) return null;
+
+    return value
+        .replace(/^Последно\s+изменение\s+на\s+кадастралната\s+карта\s+и\s+кадастралните\s+регистри,\s+засягащо\s+.*?(?:\s+е\s+от|\s*:)\s*/i, "")
         .trim();
 }
 

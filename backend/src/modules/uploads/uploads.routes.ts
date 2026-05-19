@@ -88,7 +88,8 @@ router.post("/upload", upload.single("file"), async (req, res) => {
             extractedData,
             validation,
             propertyDescription,
-            manualData
+            manualData,
+            rawText: text
         });
 
         return res.json({

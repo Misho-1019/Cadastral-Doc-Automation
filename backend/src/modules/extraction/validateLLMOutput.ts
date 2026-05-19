@@ -31,7 +31,7 @@ export function validateLLMOutput(
     }
 
     if (!data.owners || data.owners.length === 0) {
-        criticalFailures.push("owners");
+        warnings.push("owners");
     } else {
         data.owners.forEach((owner, i) => {
             if (!owner.name) {
