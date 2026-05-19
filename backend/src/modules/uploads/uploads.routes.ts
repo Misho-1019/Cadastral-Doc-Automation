@@ -9,6 +9,8 @@ import { buildPropertyDescription } from "../documents/property-description/buil
 import { createCase } from "../cases/cases.store.js";
 import { validateManualCaseData } from "../cases/validateManualCaseData.js";
 import { normalizeManualCaseData } from "../cases/normalizeManualCaseData.js";
+import { extractWithLLM } from "../extraction/extractWithLLM.js";
+import { validateLLMOutput } from "../extraction/validateLLMOutput.js";
 
 const router = Router();
 
@@ -26,8 +28,39 @@ router.post("/upload", upload.single("file"), async (req, res) => {
         const text = normalizePdfText(rawText);
 
         const documentType = detectDocumentType(text);
-        const extractedData = parseBasicCadastralData(text, documentType);
+
+        let extractedData;
+        let extractionMethod = "regex";
+        let llmWarnings: string[] = [];
+
+        if (process.env.OPENAI_API_KEY) {
+            try {
+                const llmResult = await extractWithLLM(text, documentType);
+                const llmValidation = validateLLMOutput(llmResult, documentType);
+
+                if (llmValidation.isValid) {
+                    extractedData = llmResult;
+                    extractionMethod = "ai";
+                    llmWarnings = llmValidation.warnings;
+                } else {
+                    console.warn(
+                        "LLM extraction failed critical checks (%s), falling back to regex",
+                        llmValidation.criticalFailures.join(", ")
+                    );
+                    extractedData = parseBasicCadastralData(text, documentType);
+                }
+            } catch (llmError) {
+                console.warn("LLM extraction error, falling back to regex:", llmError);
+                extractedData = parseBasicCadastralData(text, documentType);
+            }
+        } else {
+            extractedData = parseBasicCadastralData(text, documentType);
+        }
+
         const validation = validateCadastralData(extractedData);
+
+        validation.warnings.push(...llmWarnings);
+
         const propertyDescription = buildPropertyDescription(extractedData);
 
         const rawManualData = req.body.manualData
@@ -61,6 +94,7 @@ router.post("/upload", upload.single("file"), async (req, res) => {
         return res.json({
             message: "Case created successfully",
             caseId: caseRecord.id,
+            extractionMethod,
             fileName: caseRecord.fileName,
             documentType: caseRecord.documentType,
             extractedData: caseRecord.extractionResult?.extractedJson,
