@@ -1,0 +1,74 @@
+import { claude } from "./claudeClient.js";
+export async function extractCadastralData(text) {
+    const response = await claude.messages.create({
+        model: 'claude-sonnet-4-6',
+        max_tokens: 2000,
+        messages: [
+            {
+                role: 'user',
+                content: `You are extracting data from Bulgarian cadastral documents.
+
+Return ONLY raw valid JSON.
+Do not use markdown.
+Do not wrap the JSON in code fences.
+Do not add explanations.
+
+Use this exact JSON shape:
+
+{
+  "documentType": "",
+  "documentNumber": "",
+  "issueDate": "",
+  "identifier": "",
+  "address": "",
+  "area": "",
+  "purpose": "",
+  "landIdentifier": "",
+  "floors": "",
+  "levels": "",
+  "previousIdentifier": "",
+  "neighbours": [],
+  "additionalInfo": "",
+  "floor": "",
+  "buildingIdentifier": "",
+  "buildingPurpose": "",
+  "buildingFloors": "",
+  "objectPurpose": "",
+  "adjoiningParts": "",
+  "sameFloorNeighbours": [],
+  "belowNeighbour": "",
+  "aboveNeighbour": ""
+  "territoryPurpose": "",
+  "permanentUsage": "",
+  "landCategory": "",
+  "previousPlanNumber": "",
+  "quarter": "",
+  "parcel": "",
+  "landNeighbours": [],
+  "buildingsInProperty": [
+    {
+      "identifier": "",
+      "builtUpArea": "",
+      "floors": "",
+      "purpose": ""
+    }
+  ],
+  "builtUpArea": "",
+  "independentObjectsCount": "",
+  "oldIdentifier": "",
+  "previousPlanNumberForBuilding": ""
+}
+
+Document:
+
+${text}`,
+            }
+        ]
+    });
+    const textResponse = response.content[0];
+    if (textResponse?.type !== 'text') {
+        throw new Error('Claude did not return text');
+    }
+    return JSON.parse(textResponse.text);
+}
+//# sourceMappingURL=extractCadastralData.js.map

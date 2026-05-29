@@ -1,0 +1,1 @@
+{"version":3,"file":"generateDescription.js","sourceRoot":"","sources":["generateDescription.ts"],"names":[],"mappings":"AAEA,MAAM,UAAU,mBAAmB,CAAC,IAA4B;IAC5D,OAAO;EACT,IAAI,CAAC,YAAY,oBAAoB,IAAI,CAAC,UAAU;UAC5C,IAAI,CAAC,OAAO;SACb,IAAI,CAAC,IAAI;mBACC,IAAI,CAAC,OAAO;KAC1B,CAAC,IAAI,EAAE,CAAC;AACb,CAAC"}

@@ -1,0 +1,42 @@
+export type CadastralExtractedData = {
+    documentType: string;
+    identifier: string;
+    address: string;
+    area: string;
+    purpose: string;
+    documentNumber?: string;
+    issueDate?: string;
+    landIdentifier?: string;
+    floors?: string;
+    levels?: string;
+    previousIdentifier?: string;
+    neighbours?: string[];
+    additionalInfo?: string;
+    floor?: string;
+    buildingIdentifier?: string;
+    buildingPurpose?: string;
+    buildingFloors?: string;
+    objectPurpose?: string;
+    adjoiningParts?: string;
+    sameFloorNeighbours?: string[];
+    belowNeighbour?: string;
+    aboveNeighbour?: string;
+    territoryPurpose?: string;
+    permanentUsage?: string;
+    landCategory?: string;
+    previousPlanNumber?: string;
+    quarter?: string;
+    parcel?: string;
+    landNeighbours?: string[];
+    buildingsInProperty?: {
+        identifier: string;
+        builtUpArea: string;
+        floors: string;
+        purpose: string;
+    }[];
+    builtUpArea?: string;
+    independentObjectsCount?: string;
+    oldIdentifier?: string;
+    previousPlanNumberForBuilding?: string;
+};
+//# sourceMappingURL=cadastral.types.d.ts.map
