@@ -23,6 +23,18 @@ Important:
   documentNumber: "15-212416"
   issueDate: "12.02.2026"
 
+Important:
+
+approvalOrder must contain ONLY the order number.
+
+Correct:
+approvalOrder: "РД-18-33"
+
+Incorrect:
+approvalOrder: "РД-18-33/15.06.2010 г."
+
+approvalOrderDate must contain ONLY the date.
+
 Use this exact JSON shape:
 
 {
