@@ -9,7 +9,12 @@ export async function extractCadastralData(text: string) {
                 role: 'user',
                 content: `You are extracting data from Bulgarian cadastral documents.
 
-Return ONLY valid JSON.
+Return ONLY raw valid JSON.
+Do not use markdown.
+Do not wrap the JSON in code fences.
+Do not add explanations.
+
+Use this exact JSON shape:
 
 {
   "documentType": "",
@@ -26,5 +31,11 @@ ${text}`,
         ]
     })
 
-    return response.content;
+    const textResponse = response.content[0];
+
+    if (textResponse?.type !== 'text') {
+        throw new Error('Claude did not return text');
+    }
+
+    return JSON.parse(textResponse.text);
 }
