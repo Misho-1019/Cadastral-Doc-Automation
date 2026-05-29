@@ -2,13 +2,13 @@ import type { CadastralExtractedData } from "../types/cadastral.types.js";
 import { claude } from "./claudeClient.js";
 
 export async function extractCadastralData(text: string): Promise<CadastralExtractedData> {
-    const response = await claude.messages.create({
-        model: 'claude-sonnet-4-6',
-        max_tokens: 2000,
-        messages: [
-            {
-                role: 'user',
-                content: `You are extracting data from Bulgarian cadastral documents.
+  const response = await claude.messages.create({
+    model: 'claude-sonnet-4-6',
+    max_tokens: 2000,
+    messages: [
+      {
+        role: 'user',
+        content: `You are extracting data from Bulgarian cadastral documents.
 
 Return ONLY raw valid JSON.
 Do not use markdown.
@@ -88,15 +88,26 @@ Use this exact JSON shape:
 Document:
 
 ${text}`,
-            }
-        ]
-    })
+      }
+    ]
+  })
 
-    const textResponse = response.content[0];
+  const textResponse = response.content[0];
 
-    if (textResponse?.type !== 'text') {
-        throw new Error('Claude did not return text');
-    }
+  if (textResponse?.type !== 'text') {
+    throw new Error('Claude did not return text');
+  }
 
-    return JSON.parse(textResponse.text);
+  try {
+    const cleanedResponse = textResponse.text
+        .replace(/```json/g, "")
+        .replace(/```/g, "")
+        .trim();
+    
+    return JSON.parse(cleanedResponse);
+  } catch (error) {
+    console.error("Failed to parse Claude response:", textResponse.text);
+
+    throw new Error("Failed to parse AI extraction response");
+  }
 }
