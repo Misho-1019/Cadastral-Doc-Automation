@@ -54,4 +54,8 @@ export type CadastralExtractedData = {
     independentObjectsCount?: string;
     oldIdentifier?: string;
     previousPlanNumberForBuilding?: string;
+    cadastralLocation?: string;
+    approvalOrder?: string;
+    approvalOrderDate?: string;
+    lastChangeDescription?: string;
 };

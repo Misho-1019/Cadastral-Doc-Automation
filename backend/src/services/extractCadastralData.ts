@@ -67,6 +67,10 @@ Use this exact JSON shape:
   "independentObjectsCount": "",
   "oldIdentifier": "",
   "previousPlanNumberForBuilding": ""
+  "cadastralLocation": "",
+  "approvalOrder": "",
+  "approvalOrderDate": "",
+  "lastChangeDescription": ""
 }
 
 Document:

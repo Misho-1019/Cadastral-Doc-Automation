@@ -24,4 +24,9 @@ export type IndependentObjectData = {
     aboveNeighbour?: string;
 
     previousIdentifier?: string;
+
+    cadastralLocation?: string;
+    approvalOrder?: string;
+    approvalOrderDate?: string;
+    lastChangeDescription?: string;
 };
