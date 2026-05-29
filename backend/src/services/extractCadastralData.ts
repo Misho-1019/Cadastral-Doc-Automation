@@ -14,6 +14,14 @@ Return ONLY raw valid JSON.
 Do not use markdown.
 Do not wrap the JSON in code fences.
 Do not add explanations.
+Important:
+
+- documentNumber must contain ONLY the document number.
+- Do not include the date in documentNumber.
+- issueDate must contain ONLY the date.
+- Example:
+  documentNumber: "15-212416"
+  issueDate: "12.02.2026"
 
 Use this exact JSON shape:
 
