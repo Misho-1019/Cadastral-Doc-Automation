@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "tsx src/server.ts",
+    "dev": "nodemon --watch src --ext ts --exec tsx src/server.ts",
     "build": "tsc",
     "start": "node dist/server.js"
   },
@@ -26,6 +26,7 @@
     "@types/multer": "^2.1.0",
     "@types/node": "^25.9.1",
     "@types/pdf-parse": "^1.1.5",
+    "nodemon": "^3.1.14",
     "tsx": "^4.22.3",
     "typescript": "^6.0.3"
   }
