@@ -40,6 +40,21 @@ Use this exact JSON shape:
   "sameFloorNeighbours": [],
   "belowNeighbour": "",
   "aboveNeighbour": ""
+  "territoryPurpose": "",
+  "permanentUsage": "",
+  "landCategory": "",
+  "previousPlanNumber": "",
+  "quarter": "",
+  "parcel": "",
+  "landNeighbours": [],
+  "buildingsInProperty": [
+    {
+      "identifier": "",
+      "builtUpArea": "",
+      "floors": "",
+      "purpose": ""
+    }
+  ]
 }
 
 Document:

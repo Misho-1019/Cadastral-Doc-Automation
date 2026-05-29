@@ -32,4 +32,21 @@ export type CadastralExtractedData = {
     sameFloorNeighbours?: string[];
     belowNeighbour?: string;
     aboveNeighbour?: string;
+
+    territoryPurpose?: string;
+    permanentUsage?: string;
+    landCategory?: string;
+
+    previousPlanNumber?: string;
+    quarter?: string;
+    parcel?: string;
+
+    landNeighbours?: string[];
+
+    buildingsInProperty?: {
+        identifier: string;
+        builtUpArea: string;
+        floors: string;
+        purpose: string;
+    }[];
 };
