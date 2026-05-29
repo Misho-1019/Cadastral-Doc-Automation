@@ -27,7 +27,7 @@ router.post("/generate", upload.single("pdf"), async (req, res) => {
         const documentType = detectCadastralDocumentType(extractedText);
 
         const extractedData = await extractCadastralData(extractedText);
-        const validationErrors = validateExtractedData(extractedData);
+        const validationErrors = validateExtractedData(extractedData, documentType);
         const description = generateCadastralDescription(documentType, extractedData);
     
         return res.json({
