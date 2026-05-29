@@ -4,7 +4,7 @@ import { extractPdfText } from "../services/extractPdfText.js";
 import { detectCadastralDocumentType } from "../services/detectCadastralDocumentType.js";
 import { extractCadastralData } from "../services/extractCadastralData.js";
 import { validateExtractedData } from "../services/validateExtractedData.js";
-import { generateCadastralDescription } from "../services/generateCadastralDescription.js";
+import { generateAiDescription } from "../services/generateAiDescription.js";
 
 const router = Router();
 
@@ -28,7 +28,7 @@ router.post("/generate", upload.single("pdf"), async (req, res) => {
 
         const extractedData = await extractCadastralData(extractedText);
         const validationErrors = validateExtractedData(extractedData, documentType);
-        const description = generateCadastralDescription(documentType, extractedData);
+        const description = await generateAiDescription(documentType, extractedData);
     
         return res.json({
             message: "PDF processed successfully",
