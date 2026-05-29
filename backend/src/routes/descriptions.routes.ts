@@ -3,6 +3,7 @@ import multer from "multer";
 import { extractPdfText } from "../services/extractPdfText.js";
 import { detectCadastralDocumentType } from "../services/detectCadastralDocumentType.js";
 import { extractCadastralData } from "../services/extractCadastralData.js";
+import { validateExtractedData } from "../services/validateExtractedData.js";
 
 const router = Router();
 
@@ -25,11 +26,13 @@ router.post("/generate", upload.single("pdf"), async (req, res) => {
         const documentType = detectCadastralDocumentType(extractedText);
 
         const extractedData = await extractCadastralData(extractedText);
+        const validationErrors = validateExtractedData(extractedData);
     
         return res.json({
             message: "PDF processed successfully",
             documentType,
             extractedData,
+            validationErrors,
         });
     } catch (error) {
         console.error(error);
