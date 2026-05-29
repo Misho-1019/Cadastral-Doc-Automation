@@ -54,7 +54,11 @@ Use this exact JSON shape:
       "floors": "",
       "purpose": ""
     }
-  ]
+  ],
+  "builtUpArea": "",
+  "independentObjectsCount": "",
+  "oldIdentifier": "",
+  "previousPlanNumberForBuilding": ""
 }
 
 Document:

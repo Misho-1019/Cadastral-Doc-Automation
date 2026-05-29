@@ -49,4 +49,9 @@ export type CadastralExtractedData = {
         floors: string;
         purpose: string;
     }[];
+
+    builtUpArea?: string;
+    independentObjectsCount?: string;
+    oldIdentifier?: string;
+    previousPlanNumberForBuilding?: string;
 };
