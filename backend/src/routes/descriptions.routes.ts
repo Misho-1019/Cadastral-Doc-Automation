@@ -1,6 +1,7 @@
 import { Router } from "express";
 import multer from "multer";
 import { extractPdfText } from "../services/extractPdfText.js";
+import { detectCadastralDocumentType } from "../services/detectCadastralDocumentType.js";
 
 const router = Router();
 
@@ -20,9 +21,11 @@ router.post("/generate", upload.single("pdf"), async (req, res) => {
         }
 
         const extractedText = await extractPdfText(req.file.buffer);
+        const documentType = detectCadastralDocumentType(extractedText);
     
         return res.json({
-            message: "PDF uploaded successfully",
+            message: "PDF processed successfully",
+            documentType,
             extractedText,
         });
     } catch (error) {
