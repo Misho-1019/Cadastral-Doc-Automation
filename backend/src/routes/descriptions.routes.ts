@@ -4,9 +4,7 @@ import { extractPdfText } from "../services/extractPdfText.js";
 import { detectCadastralDocumentType } from "../services/detectCadastralDocumentType.js";
 import { extractCadastralData } from "../services/extractCadastralData.js";
 import { validateExtractedData } from "../services/validateExtractedData.js";
-import { generateDescription } from "../services/generateDescription.js";
-import { formatIndependentObjectDescription } from "../services/formatIndependentObjectDescription.js";
-import type { IndependentObjectData } from "../types/independentObject.types.js";
+import { generateCadastralDescription } from "../services/generateCadastralDescription.js";
 
 const router = Router();
 
@@ -30,11 +28,7 @@ router.post("/generate", upload.single("pdf"), async (req, res) => {
 
         const extractedData = await extractCadastralData(extractedText);
         const validationErrors = validateExtractedData(extractedData);
-        let description = generateDescription(extractedData);
-
-        if (documentType === 'INDEPENDENT_OBJECT') {
-            description = formatIndependentObjectDescription(extractedData as IndependentObjectData);
-        }
+        const description = generateCadastralDescription(documentType, extractedData);
     
         return res.json({
             message: "PDF processed successfully",
