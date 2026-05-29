@@ -18,4 +18,18 @@ export type CadastralExtractedData = {
     neighbours?: string[];
 
     additionalInfo?: string;
+
+    floor?: string;
+
+    buildingIdentifier?: string;
+    buildingPurpose?: string;
+    buildingFloors?: string;
+
+    objectPurpose?: string;
+
+    adjoiningParts?: string;
+
+    sameFloorNeighbours?: string[];
+    belowNeighbour?: string;
+    aboveNeighbour?: string;
 };

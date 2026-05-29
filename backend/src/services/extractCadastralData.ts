@@ -30,7 +30,16 @@ Use this exact JSON shape:
   "levels": "",
   "previousIdentifier": "",
   "neighbours": [],
-  "additionalInfo": ""
+  "additionalInfo": "",
+  "floor": "",
+  "buildingIdentifier": "",
+  "buildingPurpose": "",
+  "buildingFloors": "",
+  "objectPurpose": "",
+  "adjoiningParts": "",
+  "sameFloorNeighbours": [],
+  "belowNeighbour": "",
+  "aboveNeighbour": ""
 }
 
 Document:
