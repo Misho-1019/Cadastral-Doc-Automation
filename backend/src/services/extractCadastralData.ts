@@ -19,10 +19,18 @@ Use this exact JSON shape:
 
 {
   "documentType": "",
+  "documentNumber": "",
+  "issueDate": "",
   "identifier": "",
   "address": "",
   "area": "",
-  "purpose": ""
+  "purpose": "",
+  "landIdentifier": "",
+  "floors": "",
+  "levels": "",
+  "previousIdentifier": "",
+  "neighbours": [],
+  "additionalInfo": ""
 }
 
 Document:
