@@ -16,4 +16,9 @@ export type BuildingData = {
 
     oldIdentifier?: string;
     previousPlanNumberForBuilding?: string;
+
+    cadastralLocation?: string;
+    approvalOrder?: string;
+    approvalOrderDate?: string;
+    lastChangeDescription?: string;
 };
