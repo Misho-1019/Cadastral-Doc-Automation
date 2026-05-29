@@ -1,6 +1,7 @@
+import type { CadastralExtractedData } from "../types/cadastral.types.js";
 import { claude } from "./claudeClient.js";
 
-export async function extractCadastralData(text: string) {
+export async function extractCadastralData(text: string): Promise<CadastralExtractedData> {
     const response = await claude.messages.create({
         model: 'claude-sonnet-4-6',
         max_tokens: 2000,
