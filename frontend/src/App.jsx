@@ -3,6 +3,8 @@ import Header from "./components/Header.jsx";
 import FileDropZone from "./components/FileDropZone.jsx";
 import GenerateButton from "./components/GenerateButton.jsx";
 import LoadingStatus from "./components/LoadingStatus.jsx";
+import ResultMeta from "./components/ResultMeta.jsx";
+import ValidationWarning from "./components/ValidationWarning.jsx";
 import useGenerateDescription from "./hooks/useGenerateDescription.js";
 import { t } from "./i18n.js";
 
@@ -67,9 +69,8 @@ function App() {
 
         {screen === "result" && data && (
           <div className="space-y-6">
-            <pre className="rounded-xl border border-slate-200 bg-white p-4 text-xs text-slate-600 overflow-auto max-h-96">
-              {JSON.stringify(data, null, 2)}
-            </pre>
+            <ResultMeta lang={lang} data={data} />
+            <ValidationWarning lang={lang} errors={data.validationErrors} />
             <GenerateButton
               lang={lang}
               disabled={false}
