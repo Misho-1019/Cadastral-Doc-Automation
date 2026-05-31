@@ -17,6 +17,8 @@ const upload = multer({
 
 router.post("/generate", upload.single("pdf"), async (req, res) => {
     try {
+        const requestStart = Date.now();
+
         if (!req.file) {
             return res.status(400).json({
                 message: "PDF file is required",
@@ -26,16 +28,33 @@ router.post("/generate", upload.single("pdf"), async (req, res) => {
         const extractedText = await extractPdfText(req.file.buffer);
         const documentType = detectCadastralDocumentType(extractedText);
 
+        const extractionStart = Date.now();
+
         const extractedData = await extractCadastralData(extractedText);
+
+        const extractionTimeMs = Date.now() - extractionStart;
+
         const validationErrors = validateExtractedData(extractedData, documentType);
+        
+        const descriptionStart = Date.now();
+        
         const description = await generateAiDescription(documentType, extractedData);
     
+        const descriptionTimeMs = Date.now() - descriptionStart;
+
+        const totalTimeMs = Date.now() - requestStart;
+
         return res.json({
             message: "PDF processed successfully",
             documentType,
             extractedData,
             validationErrors,
             description,
+            performance: {
+                extractionTimeMs,
+                descriptionTimeMs,
+                totalTimeMs,
+            }
         });
     } catch (error) {
         console.error(error);
