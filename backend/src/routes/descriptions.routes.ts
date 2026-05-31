@@ -5,6 +5,7 @@ import { detectCadastralDocumentType } from "../services/detectCadastralDocument
 import { extractCadastralData } from "../services/extractCadastralData.js";
 import { validateExtractedData } from "../services/validateExtractedData.js";
 import { generateAiDescription } from "../services/generateAiDescription.js";
+import { formatDuration } from "../utils/formatDuration.js";
 
 const router = Router();
 
@@ -52,8 +53,13 @@ router.post("/generate", upload.single("pdf"), async (req, res) => {
             description,
             performance: {
                 extractionTimeMs,
+                extractionTime: formatDuration(extractionTimeMs),
+
                 descriptionTimeMs,
+                descriptionTime: formatDuration(descriptionTimeMs),
+                
                 totalTimeMs,
+                totalTime: formatDuration(totalTimeMs),
             }
         });
     } catch (error) {
