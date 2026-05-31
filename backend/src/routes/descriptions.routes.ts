@@ -46,7 +46,6 @@ router.post("/generate", upload.single("pdf"), async (req, res) => {
         const totalTimeMs = Date.now() - requestStart;
 
         return res.json({
-            message: "PDF processed successfully",
             documentType,
             extractedData,
             validationErrors,
