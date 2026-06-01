@@ -14,7 +14,7 @@ export default function DescriptionEditor({ lang, value, onChange }) {
         value={value}
         onChange={(e) => onChange(e.target.value)}
         rows={12}
-        className="w-full min-h-[240px] rounded-xl border border-slate-200 bg-white p-4 text-sm leading-relaxed text-slate-800 font-mono resize-y focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+        className="w-full min-h-[480px] rounded-xl border border-slate-200 bg-white p-4 text-sm leading-relaxed text-slate-800 font-mono resize-y focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent"
       />
       <div className="flex justify-end">
         <span className="text-xs text-slate-400">

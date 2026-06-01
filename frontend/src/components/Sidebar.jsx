@@ -40,9 +40,9 @@ function settingsIcon(active) {
   );
 }
 
-export default function Sidebar({ lang }) {
+export default function Sidebar({ lang, className = "" }) {
   return (
-    <aside className="w-[260px] shrink-0 bg-white border-r border-slate-200 flex flex-col">
+    <aside className={`w-[260px] shrink-0 bg-white border-r border-slate-200 flex-col ${className}`}>
       <nav className="flex-1 px-3 pt-6 space-y-1">
         {navItems.map((item) => (
           <button

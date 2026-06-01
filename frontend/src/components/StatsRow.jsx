@@ -7,6 +7,13 @@ const typeColors = {
   UNKNOWN: "bg-slate-100 text-slate-800",
 };
 
+const typeLabels = {
+  INDEPENDENT_OBJECT: "Самостоятелен обект",
+  LAND_PROPERTY: "Поземлен имот",
+  BUILDING: "Сграда",
+  UNKNOWN: "Неизвестен",
+};
+
 export default function StatsRow({ lang, data }) {
   const docType = data.documentType;
   const identifier = data.extractedData?.identifier;
@@ -20,7 +27,7 @@ export default function StatsRow({ lang, data }) {
           {t(lang, "documentType")}
         </p>
         <span className={`inline-block rounded-md px-2.5 py-0.5 text-xs font-semibold ${typeColors[docType] || typeColors.UNKNOWN}`}>
-          {docType}
+          {typeLabels[docType] || docType}
         </span>
       </div>
 
@@ -28,7 +35,7 @@ export default function StatsRow({ lang, data }) {
         <p className="text-xs font-medium text-slate-400 uppercase tracking-wider mb-2">
           {t(lang, "identifier")}
         </p>
-        <p className="text-sm font-mono text-slate-700 truncate">
+        <p className="text-sm font-mono text-slate-700 break-words whitespace-normal">
           {identifier || "—"}
         </p>
       </div>

@@ -8,7 +8,7 @@ export default function GenerateButton({ lang, disabled, loading, onClick }) {
       disabled={disabled || loading}
       className={`w-full rounded-lg px-5 py-3 text-base font-semibold transition-colors flex items-center justify-center gap-2 ${
         disabled || loading
-          ? "bg-slate-300 text-slate-500 cursor-not-allowed"
+          ? "bg-teal-50 text-teal-300 cursor-not-allowed"
           : "bg-teal-600 text-white hover:bg-teal-700 active:bg-teal-800"
       }`}
     >
