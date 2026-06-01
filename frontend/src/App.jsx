@@ -15,6 +15,7 @@ import ReviewWarning from "./components/ReviewWarning.jsx";
 import HelpModal from "./components/HelpModal.jsx";
 import ComingSoonToast from "./components/ComingSoonToast.jsx";
 import HistoryList from "./components/HistoryList.jsx";
+import HistoryDetail from "./components/HistoryDetail.jsx";
 import useGenerateDescription from "./hooks/useGenerateDescription.js";
 import { t } from "./i18n.js";
 
@@ -226,6 +227,10 @@ function App() {
 
                 <HistoryList lang={lang} onView={(id) => { setSelectedRecordId(id); setScreen("detail"); }} />
               </div>
+            )}
+
+            {screen === "detail" && selectedRecordId && (
+              <HistoryDetail lang={lang} id={selectedRecordId} onBack={() => setScreen("history")} />
             )}
 
             {screen === "result" && data && (
