@@ -19,17 +19,17 @@ export default function HelpModal({ lang, onClose }) {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4 animate-[fadeIn_0.2s_ease-out]"
       onClick={onClose}
     >
       <div
-        className="relative w-full max-w-lg rounded-2xl bg-white p-6 shadow-xl"
+        className="relative w-full max-w-lg rounded-2xl bg-white p-6 shadow-xl animate-[fadeInUp_0.25s_ease-out]"
         onClick={(e) => e.stopPropagation()}
       >
         <button
           type="button"
           onClick={onClose}
-          className="absolute top-4 right-4 text-slate-400 hover:text-slate-600 transition-colors"
+          className="absolute top-4 right-4 text-slate-400 hover:text-slate-600 transition-colors rounded focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:outline-none"
           aria-label="Close"
         >
           <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>

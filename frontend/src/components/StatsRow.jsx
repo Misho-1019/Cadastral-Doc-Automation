@@ -22,16 +22,16 @@ export default function StatsRow({ lang, data }) {
 
   return (
     <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-      <div className="rounded-xl border border-slate-200 bg-white p-4">
+      <div className="rounded-xl border border-slate-200 bg-white p-4 flex flex-col">
         <p className="text-xs font-medium text-slate-400 uppercase tracking-wider mb-2">
           {t(lang, "documentType")}
         </p>
-        <span className={`inline-block rounded-md px-2.5 py-0.5 text-xs font-semibold ${typeColors[docType] || typeColors.UNKNOWN}`}>
+        <span className={`inline-block rounded-md px-2.5 py-0.5 text-xs font-semibold self-start ${typeColors[docType] || typeColors.UNKNOWN}`}>
           {t(lang, typeLabelKeys[docType] || "typeUnknown")}
         </span>
       </div>
 
-      <div className="rounded-xl border border-slate-200 bg-white p-4">
+      <div className="rounded-xl border border-slate-200 bg-white p-4 flex flex-col">
         <p className="text-xs font-medium text-slate-400 uppercase tracking-wider mb-2">
           {t(lang, "identifier")}
         </p>
@@ -40,7 +40,7 @@ export default function StatsRow({ lang, data }) {
         </p>
       </div>
 
-      <div className="rounded-xl border border-slate-200 bg-white p-4">
+      <div className="rounded-xl border border-slate-200 bg-white p-4 flex flex-col">
         <p className="text-xs font-medium text-slate-400 uppercase tracking-wider mb-2">
           {t(lang, "validation")}
         </p>
@@ -65,7 +65,7 @@ export default function StatsRow({ lang, data }) {
         </div>
       </div>
 
-      <div className="rounded-xl border border-slate-200 bg-white p-4">
+      <div className="rounded-xl border border-slate-200 bg-white p-4 flex flex-col">
         <p className="text-xs font-medium text-slate-400 uppercase tracking-wider mb-2">
           {t(lang, "time")}
         </p>

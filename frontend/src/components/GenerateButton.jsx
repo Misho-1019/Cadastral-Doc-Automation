@@ -6,7 +6,7 @@ export default function GenerateButton({ lang, disabled, loading, onClick }) {
       type="button"
       onClick={onClick}
       disabled={disabled || loading}
-      className={`w-full rounded-lg px-5 py-3 text-base font-semibold transition-colors flex items-center justify-center gap-2 ${
+      className={`w-full rounded-lg px-5 py-3 text-base font-semibold transition-colors flex items-center justify-center gap-2 focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:outline-none ${
         disabled || loading
           ? "bg-teal-50 text-teal-300 cursor-not-allowed"
           : "bg-teal-600 text-white hover:bg-teal-700 active:bg-teal-800"

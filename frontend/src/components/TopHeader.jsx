@@ -8,7 +8,7 @@ export default function TopHeader({ lang, onLanguageChange, onHelpClick, onToggl
         <button
           type="button"
           onClick={onToggleSidebar}
-          className="p-1.5 -ml-1.5 rounded-lg hover:bg-slate-100 transition-colors"
+          className="p-1.5 -ml-1.5 rounded-lg hover:bg-slate-100 transition-colors focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:outline-none"
           aria-label="Toggle sidebar"
         >
           <div className="w-5 h-4 relative flex flex-col justify-between">
@@ -40,7 +40,7 @@ export default function TopHeader({ lang, onLanguageChange, onHelpClick, onToggl
         <button
           type="button"
           onClick={onHelpClick}
-          className="flex items-center gap-1.5 text-sm text-slate-500 hover:text-slate-700 transition-colors"
+          className="flex items-center gap-1.5 text-sm text-slate-500 hover:text-slate-700 transition-colors focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:outline-none"
           aria-label={t(lang, "help")}
         >
           <span>{t(lang, "help")}</span>

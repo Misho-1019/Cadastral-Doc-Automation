@@ -58,7 +58,7 @@ export default function FileDropZone({ lang, file, onFileSelect, onFileRemove, e
           <button
             type="button"
             onClick={onFileRemove}
-            className="shrink-0 text-slate-400 hover:text-slate-600 transition-colors p-1"
+            className="shrink-0 text-slate-400 hover:text-slate-600 transition-colors p-1 rounded focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:outline-none"
             title={t(lang, "remove")}
           >
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>

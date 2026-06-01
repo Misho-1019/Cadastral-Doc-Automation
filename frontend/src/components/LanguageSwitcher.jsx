@@ -11,7 +11,7 @@ export default function LanguageSwitcher({ lang, onToggle }) {
           key={code}
           type="button"
           onClick={() => onToggle(code)}
-          className={`px-3 py-1.5 text-sm font-medium transition-colors ${
+          className={`px-3 py-1.5 text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:outline-none ${
             lang === code
               ? "bg-teal-600 text-white"
               : "bg-white text-slate-600 hover:bg-slate-50"

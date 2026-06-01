@@ -61,7 +61,7 @@ export default function Sidebar({ lang, open, onClose, onNavClick }) {
                 onNavClick?.(item.key);
                 if (window.innerWidth < 768) onClose?.();
               }}
-              className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
+              className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:outline-none ${
                 item.active
                   ? "bg-teal-50 text-teal-700 border-l-[3px] border-teal-600 rounded-l-none cursor-default"
                   : "text-slate-500 hover:bg-slate-50 cursor-pointer"
