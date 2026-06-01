@@ -13,6 +13,7 @@ import CopyButton from "./components/CopyButton.jsx";
 import PerformanceCard from "./components/PerformanceCard.jsx";
 import ReviewWarning from "./components/ReviewWarning.jsx";
 import HelpModal from "./components/HelpModal.jsx";
+import ComingSoonToast from "./components/ComingSoonToast.jsx";
 import useGenerateDescription from "./hooks/useGenerateDescription.js";
 import { t } from "./i18n.js";
 
@@ -31,6 +32,8 @@ function App() {
   const [screen, setScreen] = useState("idle");
   const [editedDescription, setEditedDescription] = useState("");
   const [showHelp, setShowHelp] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [comingSoon, setComingSoon] = useState(null);
   const { loading, data, error, generate, reset } = useGenerateDescription();
 
   useEffect(() => {
@@ -40,6 +43,20 @@ function App() {
       // localStorage not available
     }
   }, [lang]);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 768px)");
+    if (mq.matches) setSidebarOpen(false);
+    const handler = (e) => setSidebarOpen(!e.matches);
+    mq.addEventListener("change", handler);
+    return () => mq.removeEventListener("change", handler);
+  }, []);
+
+  useEffect(() => {
+    if (!comingSoon) return;
+    const t = setTimeout(() => setComingSoon(null), 2500);
+    return () => clearTimeout(t);
+  }, [comingSoon]);
 
   useEffect(() => {
     if (data?.description) {
@@ -163,10 +180,10 @@ function App() {
     <>
 
     <div className="h-screen flex flex-col bg-slate-50">
-      <TopHeader lang={lang} onLanguageChange={handleLanguageChange} onHelpClick={() => setShowHelp(true)} />
+      <TopHeader lang={lang} onLanguageChange={handleLanguageChange} onHelpClick={() => setShowHelp(true)} onToggleSidebar={() => setSidebarOpen(v => !v)} sidebarOpen={sidebarOpen} />
 
       <div className="flex flex-1 overflow-hidden">
-        <Sidebar lang={lang} className="hidden md:flex" />
+        <Sidebar lang={lang} open={sidebarOpen} onClose={() => setSidebarOpen(false)} onNavClick={(key) => setComingSoon(key)} />
 
         <main className="flex-1 overflow-y-auto">
           <div className="mx-auto max-w-[1100px] px-6 py-8">
@@ -230,6 +247,7 @@ function App() {
     </div>
 
     {showHelp && <HelpModal lang={lang} onClose={() => setShowHelp(false)} />}
+    {comingSoon && <ComingSoonToast lang={lang} />}
     </>
   );
 }

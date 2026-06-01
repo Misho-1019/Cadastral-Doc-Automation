@@ -1,10 +1,29 @@
 import LanguageSwitcher from "./LanguageSwitcher.jsx";
 import { t } from "../i18n.js";
 
-export default function TopHeader({ lang, onLanguageChange, onHelpClick }) {
+export default function TopHeader({ lang, onLanguageChange, onHelpClick, onToggleSidebar, sidebarOpen }) {
   return (
     <header className="h-[72px] shrink-0 bg-white border-b border-slate-200 flex items-center justify-between px-6">
       <div className="flex items-center gap-3">
+        <button
+          type="button"
+          onClick={onToggleSidebar}
+          className="p-1.5 -ml-1.5 rounded-lg hover:bg-slate-100 transition-colors"
+          aria-label="Toggle sidebar"
+        >
+          <div className="w-5 h-4 relative flex flex-col justify-between">
+            <span className={`block h-[2.5px] bg-slate-600 rounded-full transition-all duration-300 origin-center ${
+              sidebarOpen ? "rotate-45 translate-y-[7px]" : ""
+            }`} />
+            <span className={`block h-[2.5px] bg-slate-600 rounded-full transition-all duration-300 ${
+              sidebarOpen ? "opacity-0 scale-0" : "opacity-100"
+            }`} />
+            <span className={`block h-[2.5px] bg-slate-600 rounded-full transition-all duration-300 origin-center ${
+              sidebarOpen ? "-rotate-45 -translate-y-[7px]" : ""
+            }`} />
+          </div>
+        </button>
+
         <div
           className="w-8 h-8 rounded-lg border-2 border-teal-600 flex items-center justify-center text-teal-600 font-bold text-sm"
           aria-hidden="true"
