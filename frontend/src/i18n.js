@@ -53,6 +53,7 @@ export const translations = {
     download: "Изтегли като .txt",
     errorTimeout: "Грешка: Времето за генериране изтече. Моля, опитайте отново.",
     dismiss: "Затвори",
+    comingSoon: "Очаквайте скоро",
   },
   en: {
     title: "Cadastral Doc Automation",
@@ -108,6 +109,7 @@ export const translations = {
     download: "Download as .txt",
     errorTimeout: "Error: Generation timed out. Please try again.",
     dismiss: "Dismiss",
+    comingSoon: "Coming soon",
   },
 };
 

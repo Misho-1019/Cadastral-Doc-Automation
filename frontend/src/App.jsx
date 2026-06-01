@@ -37,11 +37,7 @@ function App() {
   const { loading, data, error, generate, reset } = useGenerateDescription(lang);
 
   useEffect(() => {
-    try {
-      localStorage.setItem("cadastral-lang", lang);
-    } catch {
-      // localStorage not available
-    }
+    document.documentElement.lang = lang;
   }, [lang]);
 
   useEffect(() => {

@@ -74,8 +74,26 @@ export default function FileDropZone({ lang, file, onFileSelect, onFileRemove, e
             </button>
           )}
         </div>
-        {(typeError || error) && (
-          <p className="text-sm text-red-600 mt-2">{typeError || error}</p>
+        {typeError && (
+          <p className="text-sm text-red-600 mt-2">{typeError}</p>
+        )}
+        {error && !readOnly && (
+          <div className="flex items-start gap-2 mt-2">
+            <p className="text-sm text-red-600 flex-1">{error}</p>
+            <button
+              type="button"
+              onClick={onFileRemove}
+              className="shrink-0 text-red-400 hover:text-red-600 transition-colors p-0.5 rounded focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:outline-none"
+              aria-label={t(lang, "dismiss")}
+            >
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+        )}
+        {error && readOnly && (
+          <p className="text-sm text-red-600 mt-2">{error}</p>
         )}
       </>
     );
