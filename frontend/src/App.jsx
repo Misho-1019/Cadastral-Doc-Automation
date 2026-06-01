@@ -9,6 +9,8 @@ import StatsRow from "./components/StatsRow.jsx";
 import ValidationWarning from "./components/ValidationWarning.jsx";
 import DescriptionEditor from "./components/DescriptionEditor.jsx";
 import CopyButton from "./components/CopyButton.jsx";
+import PerformanceCard from "./components/PerformanceCard.jsx";
+import ReviewWarning from "./components/ReviewWarning.jsx";
 import useGenerateDescription from "./hooks/useGenerateDescription.js";
 import { t } from "./i18n.js";
 
@@ -159,6 +161,9 @@ function App() {
                     </div>
                   </div>
                 </div>
+
+                <PerformanceCard lang={lang} performance={data.performance} />
+                <ReviewWarning lang={lang} />
 
                 <button
                   type="button"
