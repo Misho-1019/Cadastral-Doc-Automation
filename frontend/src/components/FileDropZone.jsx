@@ -4,16 +4,22 @@ import { FILE_SIZE_LIMIT } from "../constants.js";
 
 export default function FileDropZone({ lang, file, onFileSelect, onFileRemove, error, readOnly = false }) {
   const [isDragging, setIsDragging] = useState(false);
+  const [typeError, setTypeError] = useState(null);
   const inputRef = useRef(null);
 
   const handleFile = useCallback((selectedFile) => {
-    if (!selectedFile || selectedFile.type !== "application/pdf") return;
+    setTypeError(null);
+    if (!selectedFile) return;
+    if (selectedFile.type !== "application/pdf") {
+      setTypeError(lang === "bg" ? "Позволени са само PDF файлове." : "Only PDF files are allowed.");
+      return;
+    }
     if (selectedFile.size > FILE_SIZE_LIMIT) {
       onFileSelect(null);
       return;
     }
     onFileSelect(selectedFile);
-  }, [onFileSelect]);
+  }, [onFileSelect, lang]);
 
   const handleDragOver = useCallback((e) => {
     e.preventDefault();
@@ -42,31 +48,36 @@ export default function FileDropZone({ lang, file, onFileSelect, onFileRemove, e
 
   if (file && file.size <= FILE_SIZE_LIMIT) {
     return (
-      <div className="flex items-center justify-between rounded-xl border border-slate-200 bg-white px-4 py-3">
-        <div className="flex items-center gap-3 min-w-0">
-          <span className="text-lg shrink-0">📄</span>
-          <div className="min-w-0">
-            <p className="text-sm font-medium text-slate-800 truncate">
-              {file.name}
-            </p>
-            <p className="text-xs text-slate-400">
-              {(file.size / 1024 / 1024).toFixed(2)} MB
-            </p>
+      <>
+        <div className="flex items-center justify-between rounded-xl border border-slate-200 bg-white px-4 py-3">
+          <div className="flex items-center gap-3 min-w-0">
+            <span className="text-lg shrink-0">📄</span>
+            <div className="min-w-0">
+              <p className="text-sm font-medium text-slate-800 truncate">
+                {file.name}
+              </p>
+              <p className="text-xs text-slate-400">
+                {(file.size / 1024 / 1024).toFixed(2)} MB
+              </p>
+            </div>
           </div>
+          {!readOnly && (
+            <button
+              type="button"
+              onClick={onFileRemove}
+              className="shrink-0 text-slate-400 hover:text-slate-600 transition-colors p-1 rounded focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:outline-none"
+              title={t(lang, "remove")}
+            >
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          )}
         </div>
-        {!readOnly && (
-          <button
-            type="button"
-            onClick={onFileRemove}
-            className="shrink-0 text-slate-400 hover:text-slate-600 transition-colors p-1 rounded focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:outline-none"
-            title={t(lang, "remove")}
-          >
-            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </button>
+        {(typeError || error) && (
+          <p className="text-sm text-red-600 mt-2">{typeError || error}</p>
         )}
-      </div>
+      </>
     );
   }
 
@@ -102,8 +113,8 @@ export default function FileDropZone({ lang, file, onFileSelect, onFileRemove, e
         />
       </label>
 
-      {error && (
-        <p className="text-sm text-red-600">{error}</p>
+      {(typeError || error) && (
+        <p className="text-sm text-red-600">{typeError || error}</p>
       )}
     </div>
   );

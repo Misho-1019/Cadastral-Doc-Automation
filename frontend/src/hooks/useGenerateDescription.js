@@ -1,7 +1,8 @@
 import { useState, useRef, useCallback } from "react";
 import { API_TIMEOUT_MS } from "../constants.js";
+import { t } from "../i18n.js";
 
-export default function useGenerateDescription() {
+export default function useGenerateDescription(lang = "bg") {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
@@ -43,7 +44,7 @@ export default function useGenerateDescription() {
       return result;
     } catch (err) {
       if (err.name === "AbortError") {
-        setError("Generation timed out");
+        setError(t(lang, "errorTimeout"));
       } else {
         setError(err.message);
       }

@@ -34,7 +34,7 @@ function App() {
   const [showHelp, setShowHelp] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [comingSoon, setComingSoon] = useState(null);
-  const { loading, data, error, generate, reset } = useGenerateDescription();
+  const { loading, data, error, generate, reset } = useGenerateDescription(lang);
 
   useEffect(() => {
     try {
