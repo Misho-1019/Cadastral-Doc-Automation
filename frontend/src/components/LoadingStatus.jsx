@@ -18,6 +18,7 @@ export default function LoadingStatus({ lang }) {
         className="animate-spin h-8 w-8 text-teal-600"
         viewBox="0 0 24 24"
         fill="none"
+        aria-hidden="true"
       >
         <circle
           className="opacity-25"

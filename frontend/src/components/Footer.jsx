@@ -1,7 +1,9 @@
-export default function Footer() {
+import { t } from "../i18n.js";
+
+export default function Footer({ lang }) {
   return (
     <footer className="text-center py-6 text-xs text-slate-400">
-      &copy; 2026 Cadastral Doc Automation. All rights reserved.
+      {t(lang, "footerText")}
     </footer>
   );
 }

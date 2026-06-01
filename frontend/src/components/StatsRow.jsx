@@ -7,11 +7,11 @@ const typeColors = {
   UNKNOWN: "bg-slate-100 text-slate-800",
 };
 
-const typeLabels = {
-  INDEPENDENT_OBJECT: "Самостоятелен обект",
-  LAND_PROPERTY: "Поземлен имот",
-  BUILDING: "Сграда",
-  UNKNOWN: "Неизвестен",
+const typeLabelKeys = {
+  INDEPENDENT_OBJECT: "typeIndependentObject",
+  LAND_PROPERTY: "typeLandProperty",
+  BUILDING: "typeBuilding",
+  UNKNOWN: "typeUnknown",
 };
 
 export default function StatsRow({ lang, data }) {
@@ -27,7 +27,7 @@ export default function StatsRow({ lang, data }) {
           {t(lang, "documentType")}
         </p>
         <span className={`inline-block rounded-md px-2.5 py-0.5 text-xs font-semibold ${typeColors[docType] || typeColors.UNKNOWN}`}>
-          {typeLabels[docType] || docType}
+          {t(lang, typeLabelKeys[docType] || "typeUnknown")}
         </span>
       </div>
 
@@ -47,14 +47,14 @@ export default function StatsRow({ lang, data }) {
         <div className="flex items-center gap-1.5">
           {hasErrors ? (
             <>
-              <span className="text-amber-500 text-sm">⚠</span>
+              <span className="text-amber-500 text-sm" aria-hidden="true">⚠</span>
               <span className="text-sm font-medium text-amber-600">
                 {t(lang, "issuesFound")} ({data.validationErrors.length})
               </span>
             </>
           ) : (
             <>
-              <svg className="w-4 h-4 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+              <svg className="w-4 h-4 text-green-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5} aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
               </svg>
               <span className="text-sm font-medium text-green-600">
@@ -70,7 +70,7 @@ export default function StatsRow({ lang, data }) {
           {t(lang, "time")}
         </p>
         <div className="flex items-center gap-1.5">
-          <svg className="w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+          <svg className="w-4 h-4 text-slate-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5} aria-hidden="true">
             <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
           <span className="text-sm font-semibold text-slate-700">

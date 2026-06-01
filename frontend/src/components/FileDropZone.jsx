@@ -2,7 +2,7 @@ import { useState, useRef, useCallback } from "react";
 import { t } from "../i18n.js";
 import { FILE_SIZE_LIMIT } from "../constants.js";
 
-export default function FileDropZone({ lang, file, onFileSelect, onFileRemove, error }) {
+export default function FileDropZone({ lang, file, onFileSelect, onFileRemove, error, readOnly = false }) {
   const [isDragging, setIsDragging] = useState(false);
   const inputRef = useRef(null);
 
@@ -54,16 +54,18 @@ export default function FileDropZone({ lang, file, onFileSelect, onFileRemove, e
             </p>
           </div>
         </div>
-        <button
-          type="button"
-          onClick={onFileRemove}
-          className="shrink-0 text-slate-400 hover:text-slate-600 transition-colors p-1"
-          title={t(lang, "remove")}
-        >
-          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-          </svg>
-        </button>
+        {!readOnly && (
+          <button
+            type="button"
+            onClick={onFileRemove}
+            className="shrink-0 text-slate-400 hover:text-slate-600 transition-colors p-1"
+            title={t(lang, "remove")}
+          >
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        )}
       </div>
     );
   }
@@ -81,7 +83,7 @@ export default function FileDropZone({ lang, file, onFileSelect, onFileRemove, e
         }`}
       >
         <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-teal-50 text-teal-600">
-          <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+          <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5} aria-hidden="true">
             <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
           </svg>
         </div>

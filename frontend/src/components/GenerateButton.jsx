@@ -17,6 +17,7 @@ export default function GenerateButton({ lang, disabled, loading, onClick }) {
           className="animate-spin h-5 w-5"
           viewBox="0 0 24 24"
           fill="none"
+          aria-hidden="true"
         >
           <circle
             className="opacity-25"
