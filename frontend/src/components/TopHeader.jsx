@@ -1,7 +1,7 @@
 import LanguageSwitcher from "./LanguageSwitcher.jsx";
 import { t } from "../i18n.js";
 
-export default function TopHeader({ lang, onLanguageChange }) {
+export default function TopHeader({ lang, onLanguageChange, onHelpClick }) {
   return (
     <header className="h-[72px] shrink-0 bg-white border-b border-slate-200 flex items-center justify-between px-6">
       <div className="flex items-center gap-3">
@@ -20,10 +20,10 @@ export default function TopHeader({ lang, onLanguageChange }) {
         <LanguageSwitcher lang={lang} onToggle={onLanguageChange} />
         <button
           type="button"
+          onClick={onHelpClick}
           className="flex items-center gap-1.5 text-sm text-slate-500 hover:text-slate-700 transition-colors"
           aria-label={t(lang, "help")}
         >
-          <span className="text-base" aria-hidden="true">?</span>
           <span>{t(lang, "help")}</span>
         </button>
         <div className="flex items-center gap-2 border-l border-slate-200 pl-5">

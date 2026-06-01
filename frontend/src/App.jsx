@@ -12,6 +12,7 @@ import DescriptionEditor from "./components/DescriptionEditor.jsx";
 import CopyButton from "./components/CopyButton.jsx";
 import PerformanceCard from "./components/PerformanceCard.jsx";
 import ReviewWarning from "./components/ReviewWarning.jsx";
+import HelpModal from "./components/HelpModal.jsx";
 import useGenerateDescription from "./hooks/useGenerateDescription.js";
 import { t } from "./i18n.js";
 
@@ -29,6 +30,7 @@ function App() {
   const [fileError, setFileError] = useState(null);
   const [screen, setScreen] = useState("idle");
   const [editedDescription, setEditedDescription] = useState("");
+  const [showHelp, setShowHelp] = useState(false);
   const { loading, data, error, generate, reset } = useGenerateDescription();
 
   useEffect(() => {
@@ -158,8 +160,10 @@ function App() {
   ) : emptyResults;
 
   return (
+    <>
+
     <div className="h-screen flex flex-col bg-slate-50">
-      <TopHeader lang={lang} onLanguageChange={handleLanguageChange} />
+      <TopHeader lang={lang} onLanguageChange={handleLanguageChange} onHelpClick={() => setShowHelp(true)} />
 
       <div className="flex flex-1 overflow-hidden">
         <Sidebar lang={lang} className="hidden md:flex" />
@@ -224,6 +228,9 @@ function App() {
         </main>
       </div>
     </div>
+
+    {showHelp && <HelpModal lang={lang} onClose={() => setShowHelp(false)} />}
+    </>
   );
 }
 
