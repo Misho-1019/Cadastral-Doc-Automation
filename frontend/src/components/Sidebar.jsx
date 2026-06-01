@@ -1,9 +1,10 @@
+import { useLocation } from "react-router-dom";
 import { t } from "../i18n.js";
 
 const navItems = [
-  { key: "navGenerate", icon: generateIcon },
-  { key: "navHistory", icon: historyIcon },
-  { key: "navSettings", icon: settingsIcon },
+  { key: "navGenerate", icon: generateIcon, route: "/" },
+  { key: "navHistory", icon: historyIcon, route: "/history" },
+  { key: "navSettings", icon: settingsIcon, route: null },
 ];
 
 function generateIcon(active) {
@@ -31,17 +32,15 @@ function settingsIcon(active) {
   );
 }
 
-function isActive(itemKey, activeScreen) {
-  if (itemKey === "navGenerate") {
-    return activeScreen === "generate" || activeScreen === "idle" || activeScreen === "loading" || activeScreen === "result";
-  }
-  if (itemKey === "navHistory") {
-    return activeScreen === "history" || activeScreen === "detail";
-  }
-  return false;
+function isActive(itemRoute, currentPath) {
+  if (!itemRoute) return false;
+  if (itemRoute === "/") return currentPath === "/";
+  return currentPath.startsWith(itemRoute);
 }
 
-export default function Sidebar({ lang, open, onClose, onNavClick, activeScreen }) {
+export default function Sidebar({ lang, open, onClose, onNavClick }) {
+  const location = useLocation();
+
   return (
     <>
       {open && (
@@ -63,16 +62,13 @@ export default function Sidebar({ lang, open, onClose, onNavClick, activeScreen 
       >
         <nav className="flex-1 px-3 pt-6 space-y-1 min-w-[260px]">
           {navItems.map((item) => {
-            const active = isActive(item.key, activeScreen);
+            const active = isActive(item.route, location.pathname);
             return (
               <button
                 key={item.key}
                 type="button"
                 onClick={() => {
-                  if (item.key === "navSettings") {
-                    onNavClick?.(item.key);
-                  } else if (active) return;
-                  else onNavClick?.(item.key);
+                  onNavClick?.(item.key);
                   if (window.innerWidth < 768) onClose?.();
                 }}
                 className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:outline-none ${

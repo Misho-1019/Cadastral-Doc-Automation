@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { t } from "../i18n.js";
 import useHistory from "../hooks/useHistory.js";
 
@@ -16,7 +17,8 @@ const typeLabelKeys = {
   UNKNOWN: "typeUnknown",
 };
 
-export default function HistoryList({ lang, onView }) {
+export default function HistoryList({ lang }) {
+  const navigate = useNavigate();
   const { records, loading, fetchHistory, deleteRecord } = useHistory();
 
   useEffect(() => {
@@ -28,7 +30,7 @@ export default function HistoryList({ lang, onView }) {
     try {
       await deleteRecord(id);
     } catch {
-      // silently fail — user will see nothing changed
+      // silently fail
     }
   };
 
@@ -78,7 +80,7 @@ export default function HistoryList({ lang, onView }) {
           <div className="flex gap-2 shrink-0">
             <button
               type="button"
-              onClick={() => onView(r.id)}
+              onClick={() => navigate(`/history/${r.id}`)}
               className="rounded-lg border border-teal-600 px-3 py-1.5 text-xs font-semibold text-teal-700 hover:bg-teal-50 transition-colors focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:outline-none"
             >
               {t(lang, "historyView")}

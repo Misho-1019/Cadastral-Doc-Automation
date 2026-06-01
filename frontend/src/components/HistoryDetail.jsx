@@ -1,4 +1,5 @@
 import { useEffect, useCallback } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import { t } from "../i18n.js";
 import useHistory from "../hooks/useHistory.js";
 import CopyButton from "./CopyButton.jsx";
@@ -18,7 +19,9 @@ const typeLabelKeys = {
   UNKNOWN: "typeUnknown",
 };
 
-export default function HistoryDetail({ lang, id, onBack }) {
+export default function HistoryDetail({ lang }) {
+  const { id } = useParams();
+  const navigate = useNavigate();
   const { record, loading, fetchRecord, deleteRecord } = useHistory();
 
   useEffect(() => {
@@ -29,7 +32,7 @@ export default function HistoryDetail({ lang, id, onBack }) {
     if (!window.confirm(t(lang, "historyDeleteConfirm"))) return;
     try {
       await deleteRecord(id);
-      onBack();
+      navigate("/history");
     } catch {
       // silently fail
     }
@@ -67,7 +70,7 @@ export default function HistoryDetail({ lang, id, onBack }) {
         <div className="flex items-center gap-3">
           <button
             type="button"
-            onClick={onBack}
+            onClick={() => navigate("/history")}
             className="rounded-lg border border-slate-200 px-3 py-1.5 text-sm font-medium text-slate-600 hover:bg-slate-50 transition-colors focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:outline-none"
           >
             ← {t(lang, "historyBack")}

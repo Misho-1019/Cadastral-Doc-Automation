@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import TopHeader from "./components/TopHeader.jsx";
 import Sidebar from "./components/Sidebar.jsx";
 import Footer from "./components/Footer.jsx";
@@ -27,45 +28,18 @@ function getInitialLang() {
   }
 }
 
-function App() {
-  const [lang, setLang] = useState(getInitialLang);
+function GeneratePage({ lang }) {
   const [file, setFile] = useState(null);
   const [fileError, setFileError] = useState(null);
   const [screen, setScreen] = useState("idle");
   const [editedDescription, setEditedDescription] = useState("");
-  const [showHelp, setShowHelp] = useState(false);
-  const [sidebarOpen, setSidebarOpen] = useState(true);
-  const [comingSoon, setComingSoon] = useState(null);
-  const [selectedRecordId, setSelectedRecordId] = useState(null);
   const { loading, data, error, generate, reset } = useGenerateDescription(lang);
-
-  useEffect(() => {
-    document.documentElement.lang = lang;
-  }, [lang]);
-
-  useEffect(() => {
-    const mq = window.matchMedia("(max-width: 768px)");
-    if (mq.matches) setSidebarOpen(false);
-    const handler = (e) => setSidebarOpen(!e.matches);
-    mq.addEventListener("change", handler);
-    return () => mq.removeEventListener("change", handler);
-  }, []);
-
-  useEffect(() => {
-    if (!comingSoon) return;
-    const t = setTimeout(() => setComingSoon(null), 2500);
-    return () => clearTimeout(t);
-  }, [comingSoon]);
 
   useEffect(() => {
     if (data?.description) {
       setEditedDescription(data.description);
     }
   }, [data]);
-
-  const handleLanguageChange = (newLang) => {
-    setLang(newLang);
-  };
 
   const handleFileSelect = (selectedFile) => {
     if (!selectedFile) {
@@ -175,103 +149,140 @@ function App() {
     </>
   ) : emptyResults;
 
+  if (screen === "loading") {
+    return <LoadingStatus lang={lang} />;
+  }
+
+  if (screen === "result" && data) {
+    return (
+      <div className="space-y-6">
+        <div>
+          <h1 className="text-2xl font-bold text-slate-800">
+            {t(lang, "navGenerate")}
+          </h1>
+          <p className="mt-1 text-sm text-slate-500">
+            {t(lang, "subtitle")}
+          </p>
+        </div>
+
+        <WorkAreaCard
+          lang={lang}
+          leftContent={uploadContentResult}
+          rightContent={resultsContent}
+        />
+
+        <PerformanceCard lang={lang} performance={data.performance} />
+        <ReviewWarning lang={lang} />
+
+        <button
+          type="button"
+          onClick={handleReset}
+          className="w-full rounded-lg border border-slate-300 bg-white px-5 py-3 text-base font-semibold text-slate-600 hover:bg-slate-50 active:bg-slate-100 transition-colors focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:outline-none"
+        >
+          {t(lang, "generateAnother")}
+        </button>
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-6">
+      <div>
+        <h1 className="text-2xl font-bold text-slate-800">
+          {t(lang, "navGenerate")}
+        </h1>
+        <p className="mt-1 text-sm text-slate-500">
+          {t(lang, "subtitle")}
+        </p>
+      </div>
+
+      <WorkAreaCard
+        lang={lang}
+        leftContent={uploadContent}
+        rightContent={emptyResults}
+      />
+    </div>
+  );
+}
+
+function App() {
+  const [lang, setLang] = useState(getInitialLang);
+  const [showHelp, setShowHelp] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [comingSoon, setComingSoon] = useState(null);
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    document.documentElement.lang = lang;
+  }, [lang]);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 768px)");
+    if (mq.matches) setSidebarOpen(false);
+    const handler = (e) => setSidebarOpen(!e.matches);
+    mq.addEventListener("change", handler);
+    return () => mq.removeEventListener("change", handler);
+  }, []);
+
+  useEffect(() => {
+    if (!comingSoon) return;
+    const t = setTimeout(() => setComingSoon(null), 2500);
+    return () => clearTimeout(t);
+  }, [comingSoon]);
+
+  const handleLanguageChange = (newLang) => {
+    setLang(newLang);
+  };
+
+  const handleNavClick = (key) => {
+    if (key === "navHistory") {
+      navigate("/history");
+    } else if (key === "navGenerate") {
+      navigate("/");
+    } else if (key === "navSettings") {
+      setComingSoon(key);
+    }
+  };
+
   return (
     <>
+      <div className="h-screen flex flex-col bg-slate-50">
+        <TopHeader lang={lang} onLanguageChange={handleLanguageChange} onHelpClick={() => setShowHelp(true)} onToggleSidebar={() => setSidebarOpen(v => !v)} sidebarOpen={sidebarOpen} />
 
-    <div className="h-screen flex flex-col bg-slate-50">
-      <TopHeader lang={lang} onLanguageChange={handleLanguageChange} onHelpClick={() => setShowHelp(true)} onToggleSidebar={() => setSidebarOpen(v => !v)} sidebarOpen={sidebarOpen} />
+        <div className="flex flex-1 overflow-hidden">
+          <Sidebar lang={lang} open={sidebarOpen} onClose={() => setSidebarOpen(false)} onNavClick={handleNavClick} />
 
-      <div className="flex flex-1 overflow-hidden">
-        <Sidebar lang={lang} open={sidebarOpen} onClose={() => setSidebarOpen(false)} onNavClick={(key) => {
-          if (key === "navHistory") {
-            setScreen("history");
-          } else if (key === "navSettings") {
-            setComingSoon(key);
-          }
-        }} activeScreen={screen} />
+          <main className="flex-1 overflow-y-auto">
+            <div className="mx-auto max-w-[1100px] px-6 py-8">
 
-        <main className="flex-1 overflow-y-auto">
-          <div className="mx-auto max-w-[1100px] px-6 py-8">
+              <Routes>
+                <Route path="/" element={<GeneratePage lang={lang} />} />
+                <Route path="/history" element={
+                  <div className="space-y-6">
+                    <div>
+                      <h1 className="text-2xl font-bold text-slate-800">
+                        {t(lang, "historyTitle")}
+                      </h1>
+                      <p className="mt-1 text-sm text-slate-500">
+                        {t(lang, "historySubtitle")}
+                      </p>
+                    </div>
+                    <HistoryList lang={lang} />
+                  </div>
+                } />
+                <Route path="/history/:id" element={<HistoryDetail lang={lang} />} />
+              </Routes>
 
-            {screen === "loading" && <LoadingStatus lang={lang} />}
+              <Footer lang={lang} />
 
-            {screen !== "loading" && !data && (
-              <div className="space-y-6">
-                <div>
-                  <h1 className="text-2xl font-bold text-slate-800">
-                    {t(lang, "navGenerate")}
-                  </h1>
-                  <p className="mt-1 text-sm text-slate-500">
-                    {t(lang, "subtitle")}
-                  </p>
-                </div>
-
-                <WorkAreaCard
-                  lang={lang}
-                  leftContent={uploadContent}
-                  rightContent={emptyResults}
-                />
-              </div>
-            )}
-
-            {screen === "history" && (
-              <div className="space-y-6">
-                <div>
-                  <h1 className="text-2xl font-bold text-slate-800">
-                    {t(lang, "historyTitle")}
-                  </h1>
-                  <p className="mt-1 text-sm text-slate-500">
-                    {t(lang, "historySubtitle")}
-                  </p>
-                </div>
-
-                <HistoryList lang={lang} onView={(id) => { setSelectedRecordId(id); setScreen("detail"); }} />
-              </div>
-            )}
-
-            {screen === "detail" && selectedRecordId && (
-              <HistoryDetail lang={lang} id={selectedRecordId} onBack={() => setScreen("history")} />
-            )}
-
-            {screen === "result" && data && (
-              <div className="space-y-6">
-                <div>
-                  <h1 className="text-2xl font-bold text-slate-800">
-                    {t(lang, "navGenerate")}
-                  </h1>
-                  <p className="mt-1 text-sm text-slate-500">
-                    {t(lang, "subtitle")}
-                  </p>
-                </div>
-
-                <WorkAreaCard
-                  lang={lang}
-                  leftContent={uploadContentResult}
-                  rightContent={resultsContent}
-                />
-
-                <PerformanceCard lang={lang} performance={data.performance} />
-                <ReviewWarning lang={lang} />
-
-                <button
-                  type="button"
-                  onClick={handleReset}
-                  className="w-full rounded-lg border border-slate-300 bg-white px-5 py-3 text-base font-semibold text-slate-600 hover:bg-slate-50 active:bg-slate-100 transition-colors focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:outline-none"
-                >
-                  {t(lang, "generateAnother")}
-                </button>
-              </div>
-            )}
-
-            <Footer lang={lang} />
-
-          </div>
-        </main>
+            </div>
+          </main>
+        </div>
       </div>
-    </div>
 
-    {showHelp && <HelpModal lang={lang} onClose={() => setShowHelp(false)} />}
-    {comingSoon && <ComingSoonToast lang={lang} />}
+      {showHelp && <HelpModal lang={lang} onClose={() => setShowHelp(false)} />}
+      {comingSoon && <ComingSoonToast lang={lang} />}
     </>
   );
 }
