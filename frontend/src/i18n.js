@@ -54,6 +54,9 @@ export const translations = {
     errorTimeout: "Грешка: Времето за генериране изтече. Моля, опитайте отново.",
     dismiss: "Затвори",
     comingSoon: "Очаквайте скоро",
+    errorFallback: "Нещо се обърка",
+    errorTryAgain: "Опитайте отново",
+    errorFormat: "Позволени са само PDF файлове.",
   },
   en: {
     title: "Cadastral Doc Automation",
@@ -110,6 +113,9 @@ export const translations = {
     errorTimeout: "Error: Generation timed out. Please try again.",
     dismiss: "Dismiss",
     comingSoon: "Coming soon",
+    errorFallback: "Something went wrong",
+    errorTryAgain: "Try again",
+    errorFormat: "Only PDF files are allowed.",
   },
 };
 

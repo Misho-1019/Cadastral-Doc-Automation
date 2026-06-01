@@ -11,7 +11,7 @@ export default function FileDropZone({ lang, file, onFileSelect, onFileRemove, e
     setTypeError(null);
     if (!selectedFile) return;
     if (selectedFile.type !== "application/pdf") {
-      setTypeError(lang === "bg" ? "Позволени са само PDF файлове." : "Only PDF files are allowed.");
+      setTypeError(t(lang, "errorFormat"));
       return;
     }
     if (selectedFile.size > FILE_SIZE_LIMIT) {

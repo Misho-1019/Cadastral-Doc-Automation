@@ -59,7 +59,7 @@ Use this exact JSON shape:
   "adjoiningParts": "",
   "sameFloorNeighbours": [],
   "belowNeighbour": "",
-  "aboveNeighbour": ""
+  "aboveNeighbour": "",
   "territoryPurpose": "",
   "permanentUsage": "",
   "landCategory": "",
@@ -78,7 +78,7 @@ Use this exact JSON shape:
   "builtUpArea": "",
   "independentObjectsCount": "",
   "oldIdentifier": "",
-  "previousPlanNumberForBuilding": ""
+  "previousPlanNumberForBuilding": "",
   "cadastralLocation": "",
   "approvalOrder": "",
   "approvalOrderDate": "",
