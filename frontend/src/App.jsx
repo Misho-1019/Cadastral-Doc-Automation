@@ -1,10 +1,14 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import TopHeader from "./components/TopHeader.jsx";
 import Sidebar from "./components/Sidebar.jsx";
 import Footer from "./components/Footer.jsx";
 import FileDropZone from "./components/FileDropZone.jsx";
 import GenerateButton from "./components/GenerateButton.jsx";
 import LoadingStatus from "./components/LoadingStatus.jsx";
+import StatsRow from "./components/StatsRow.jsx";
+import ValidationWarning from "./components/ValidationWarning.jsx";
+import DescriptionEditor from "./components/DescriptionEditor.jsx";
+import CopyButton from "./components/CopyButton.jsx";
 import useGenerateDescription from "./hooks/useGenerateDescription.js";
 import { t } from "./i18n.js";
 
@@ -13,7 +17,14 @@ function App() {
   const [file, setFile] = useState(null);
   const [fileError, setFileError] = useState(null);
   const [screen, setScreen] = useState("idle");
+  const [editedDescription, setEditedDescription] = useState("");
   const { loading, data, error, generate, reset } = useGenerateDescription();
+
+  useEffect(() => {
+    if (data?.description) {
+      setEditedDescription(data.description);
+    }
+  }, [data]);
 
   const handleFileSelect = (selectedFile) => {
     if (!selectedFile) {
@@ -45,6 +56,7 @@ function App() {
   const handleReset = () => {
     reset();
     handleFileRemove();
+    setEditedDescription("");
   };
 
   return (
@@ -118,13 +130,40 @@ function App() {
                 </div>
 
                 <div className="rounded-2xl border border-slate-200 bg-white p-6">
-                  Results will go here
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-4">
+                      <h2 className="text-sm font-semibold text-slate-500 uppercase tracking-wider">
+                        {t(lang, "uploadTitle")}
+                      </h2>
+                      <FileDropZone
+                        lang={lang}
+                        file={file}
+                        onFileSelect={handleFileSelect}
+                        onFileRemove={handleFileRemove}
+                        error={fileError || error}
+                      />
+                    </div>
+
+                    <div className="space-y-4">
+                      <h2 className="text-sm font-semibold text-slate-500 uppercase tracking-wider">
+                        {t(lang, "resultsTitle")}
+                      </h2>
+                      <StatsRow lang={lang} data={data} />
+                      <ValidationWarning lang={lang} errors={data.validationErrors} />
+                      <DescriptionEditor
+                        lang={lang}
+                        value={editedDescription}
+                        onChange={setEditedDescription}
+                      />
+                      <CopyButton lang={lang} text={editedDescription} />
+                    </div>
+                  </div>
                 </div>
 
                 <button
                   type="button"
                   onClick={handleReset}
-                  className="w-full rounded-lg border border-slate-300 bg-white px-5 py-3 text-base font-semibold text-slate-600 hover:bg-slate-50 transition-colors"
+                  className="w-full rounded-lg border border-slate-300 bg-white px-5 py-3 text-base font-semibold text-slate-600 hover:bg-slate-50 active:bg-slate-100 transition-colors"
                 >
                   {t(lang, "generateAnother")}
                 </button>
