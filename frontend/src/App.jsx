@@ -14,6 +14,7 @@ import PerformanceCard from "./components/PerformanceCard.jsx";
 import ReviewWarning from "./components/ReviewWarning.jsx";
 import HelpModal from "./components/HelpModal.jsx";
 import ComingSoonToast from "./components/ComingSoonToast.jsx";
+import HistoryList from "./components/HistoryList.jsx";
 import useGenerateDescription from "./hooks/useGenerateDescription.js";
 import { t } from "./i18n.js";
 
@@ -34,6 +35,7 @@ function App() {
   const [showHelp, setShowHelp] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [comingSoon, setComingSoon] = useState(null);
+  const [selectedRecordId, setSelectedRecordId] = useState(null);
   const { loading, data, error, generate, reset } = useGenerateDescription(lang);
 
   useEffect(() => {
@@ -179,7 +181,13 @@ function App() {
       <TopHeader lang={lang} onLanguageChange={handleLanguageChange} onHelpClick={() => setShowHelp(true)} onToggleSidebar={() => setSidebarOpen(v => !v)} sidebarOpen={sidebarOpen} />
 
       <div className="flex flex-1 overflow-hidden">
-        <Sidebar lang={lang} open={sidebarOpen} onClose={() => setSidebarOpen(false)} onNavClick={(key) => setComingSoon(key)} />
+        <Sidebar lang={lang} open={sidebarOpen} onClose={() => setSidebarOpen(false)} onNavClick={(key) => {
+          if (key === "navHistory") {
+            setScreen("history");
+          } else if (key === "navSettings") {
+            setComingSoon(key);
+          }
+        }} activeScreen={screen} />
 
         <main className="flex-1 overflow-y-auto">
           <div className="mx-auto max-w-[1100px] px-6 py-8">
@@ -202,6 +210,21 @@ function App() {
                   leftContent={uploadContent}
                   rightContent={emptyResults}
                 />
+              </div>
+            )}
+
+            {screen === "history" && (
+              <div className="space-y-6">
+                <div>
+                  <h1 className="text-2xl font-bold text-slate-800">
+                    {t(lang, "historyTitle")}
+                  </h1>
+                  <p className="mt-1 text-sm text-slate-500">
+                    {t(lang, "historySubtitle")}
+                  </p>
+                </div>
+
+                <HistoryList lang={lang} onView={(id) => { setSelectedRecordId(id); setScreen("detail"); }} />
               </div>
             )}
 

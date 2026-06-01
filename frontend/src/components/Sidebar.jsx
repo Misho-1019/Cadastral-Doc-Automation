@@ -1,9 +1,9 @@
 import { t } from "../i18n.js";
 
 const navItems = [
-  { key: "navGenerate", icon: generateIcon, active: true },
-  { key: "navHistory", icon: historyIcon, active: false },
-  { key: "navSettings", icon: settingsIcon, active: false },
+  { key: "navGenerate", icon: generateIcon },
+  { key: "navHistory", icon: historyIcon },
+  { key: "navSettings", icon: settingsIcon },
 ];
 
 function generateIcon(active) {
@@ -31,7 +31,17 @@ function settingsIcon(active) {
   );
 }
 
-export default function Sidebar({ lang, open, onClose, onNavClick }) {
+function isActive(itemKey, activeScreen) {
+  if (itemKey === "navGenerate") {
+    return activeScreen === "generate" || activeScreen === "idle" || activeScreen === "loading" || activeScreen === "result";
+  }
+  if (itemKey === "navHistory") {
+    return activeScreen === "history" || activeScreen === "detail";
+  }
+  return false;
+}
+
+export default function Sidebar({ lang, open, onClose, onNavClick, activeScreen }) {
   return (
     <>
       {open && (
@@ -52,25 +62,30 @@ export default function Sidebar({ lang, open, onClose, onNavClick }) {
         `}
       >
         <nav className="flex-1 px-3 pt-6 space-y-1 min-w-[260px]">
-          {navItems.map((item) => (
-            <button
-              key={item.key}
-              type="button"
-              onClick={() => {
-                if (item.active) return;
-                onNavClick?.(item.key);
-                if (window.innerWidth < 768) onClose?.();
-              }}
-              className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:outline-none ${
-                item.active
-                  ? "bg-teal-50 text-teal-700 border-l-[3px] border-teal-600 rounded-l-none cursor-default"
-                  : "text-slate-500 hover:bg-slate-50 cursor-pointer"
-              }`}
-            >
-              {item.icon(item.active)}
-              <span className="whitespace-nowrap">{t(lang, item.key)}</span>
-            </button>
-          ))}
+          {navItems.map((item) => {
+            const active = isActive(item.key, activeScreen);
+            return (
+              <button
+                key={item.key}
+                type="button"
+                onClick={() => {
+                  if (item.key === "navSettings") {
+                    onNavClick?.(item.key);
+                  } else if (active) return;
+                  else onNavClick?.(item.key);
+                  if (window.innerWidth < 768) onClose?.();
+                }}
+                className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:outline-none ${
+                  active
+                    ? "bg-teal-50 text-teal-700 border-l-[3px] border-teal-600 rounded-l-none cursor-default"
+                    : "text-slate-500 hover:bg-slate-50 cursor-pointer"
+                }`}
+              >
+                {item.icon(active)}
+                <span className="whitespace-nowrap">{t(lang, item.key)}</span>
+              </button>
+            );
+          })}
         </nav>
 
         <div className="px-4 pb-6 min-w-[260px]">
