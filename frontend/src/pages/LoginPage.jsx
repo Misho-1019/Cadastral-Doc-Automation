@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext.jsx";
 import { t } from "../i18n.js";
 
@@ -10,6 +10,9 @@ export default function LoginPage({ lang }) {
   const [loading, setLoading] = useState(false);
   const { signIn } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const redirectTo = new URLSearchParams(location.search).get("redirect") || "/";
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -21,7 +24,7 @@ export default function LoginPage({ lang }) {
       setError(error.message);
       return;
     }
-    navigate("/");
+    navigate(redirectTo);
   };
 
   return (

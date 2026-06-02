@@ -17,11 +17,12 @@ import HelpModal from "./components/HelpModal.jsx";
 import ComingSoonToast from "./components/ComingSoonToast.jsx";
 import HistoryList from "./components/HistoryList.jsx";
 import HistoryDetail from "./components/HistoryDetail.jsx";
-import ProtectedRoute from "./components/ProtectedRoute.jsx";
+import AuthPrompt from "./components/AuthPrompt.jsx";
 import LoginPage from "./pages/LoginPage.jsx";
 import SignupPage from "./pages/SignupPage.jsx";
 import SettingsPage from "./pages/SettingsPage.jsx";
 import useGenerateDescription from "./hooks/useGenerateDescription.js";
+import { useAuth } from "./contexts/AuthContext.jsx";
 import { t } from "./i18n.js";
 
 function getInitialLang() {
@@ -38,6 +39,8 @@ function GeneratePage({ lang }) {
   const [screen, setScreen] = useState("idle");
   const [editedDescription, setEditedDescription] = useState("");
   const { loading, data, error, generate, reset } = useGenerateDescription(lang);
+  const { user } = useAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (data?.description) {
@@ -63,6 +66,10 @@ function GeneratePage({ lang }) {
 
   const handleGenerate = async () => {
     if (!file) return;
+    if (!user) {
+      navigate("/login?redirect=/");
+      return;
+    }
     setScreen("loading");
     try {
       await generate(file);
@@ -214,6 +221,7 @@ function App() {
   const [showHelp, setShowHelp] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [comingSoon, setComingSoon] = useState(null);
+  const { user } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -256,33 +264,29 @@ function App() {
     }
   };
 
-  const isPublic = ["/login", "/signup"].includes(location.pathname);
+  const isAuthPage = ["/login", "/signup"].includes(location.pathname);
 
   return (
     <>
       <div className="h-screen flex flex-col bg-slate-50">
-        {!isPublic && (
+        {!isAuthPage && (
           <TopHeader lang={lang} onLanguageChange={handleLanguageChange} onHelpClick={() => setShowHelp(true)} onToggleSidebar={() => setSidebarOpen(v => !v)} sidebarOpen={sidebarOpen} />
         )}
 
         <div className="flex flex-1 overflow-hidden">
-          {!isPublic && (
+          {!isAuthPage && (
             <Sidebar lang={lang} open={sidebarOpen} onClose={() => setSidebarOpen(false)} onNavClick={handleNavClick} />
           )}
 
-          <main className={isPublic ? "flex-1 overflow-y-auto" : "flex-1 overflow-y-auto"}>
-            <div className={isPublic ? "mx-auto max-w-[1100px] px-6 py-8" : "mx-auto max-w-[1100px] px-6 py-8"}>
+          <main className="flex-1 overflow-y-auto">
+            <div className="mx-auto max-w-[1100px] px-6 py-8">
 
               <Routes>
                 <Route path="/login" element={<LoginPage lang={lang} />} />
                 <Route path="/signup" element={<SignupPage lang={lang} />} />
-                <Route path="/" element={
-                  <ProtectedRoute>
-                    <GeneratePage lang={lang} />
-                  </ProtectedRoute>
-                } />
+                <Route path="/" element={<GeneratePage lang={lang} />} />
                 <Route path="/history" element={
-                  <ProtectedRoute>
+                  user ? (
                     <div className="space-y-6">
                       <div>
                         <h1 className="text-2xl font-bold text-slate-800">
@@ -294,21 +298,27 @@ function App() {
                       </div>
                       <HistoryList lang={lang} />
                     </div>
-                  </ProtectedRoute>
+                  ) : (
+                    <AuthPrompt lang={lang} returnTo="/history" />
+                  )
                 } />
                 <Route path="/history/:id" element={
-                  <ProtectedRoute>
+                  user ? (
                     <HistoryDetail lang={lang} />
-                  </ProtectedRoute>
+                  ) : (
+                    <AuthPrompt lang={lang} returnTo="/history" />
+                  )
                 } />
                 <Route path="/settings" element={
-                  <ProtectedRoute>
+                  user ? (
                     <SettingsPage lang={lang} />
-                  </ProtectedRoute>
+                  ) : (
+                    <AuthPrompt lang={lang} returnTo="/settings" />
+                  )
                 } />
               </Routes>
 
-              {!isPublic && <Footer lang={lang} />}
+              {!isAuthPage && <Footer lang={lang} />}
 
             </div>
           </main>
