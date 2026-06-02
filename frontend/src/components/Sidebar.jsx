@@ -52,7 +52,7 @@ export default function Sidebar({ lang, open, onClose, onNavClick }) {
 
       <aside
         className={`
-          bg-white border-r border-slate-200 flex flex-col
+          bg-white dark:bg-slate-800 border-r border-slate-200 dark:border-slate-700 flex flex-col
           transition-all duration-300 overflow-hidden min-w-0
           fixed md:relative inset-y-0 left-0 z-40
           ${open ? "translate-x-0" : "-translate-x-full"}
@@ -73,8 +73,8 @@ export default function Sidebar({ lang, open, onClose, onNavClick }) {
                 }}
                 className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:outline-none ${
                   active
-                    ? "bg-teal-50 text-teal-700 border-l-[3px] border-teal-600 rounded-l-none cursor-default"
-                    : "text-slate-500 hover:bg-slate-50 cursor-pointer"
+                    ? "bg-teal-50 dark:bg-teal-900/40 text-teal-700 dark:text-teal-300 border-l-[3px] border-teal-600 rounded-l-none cursor-default"
+                    : "text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-700/50 cursor-pointer"
                 }`}
               >
                 {item.icon(active)}
@@ -85,16 +85,16 @@ export default function Sidebar({ lang, open, onClose, onNavClick }) {
         </nav>
 
         <div className="px-4 pb-6 min-w-[260px]">
-          <div className="rounded-xl border border-slate-200 bg-slate-50 p-4 text-center">
-            <div className="mx-auto mb-2 flex h-10 w-10 items-center justify-center rounded-full bg-teal-100 text-teal-600">
+          <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50 p-4 text-center">
+            <div className="mx-auto mb-2 flex h-10 w-10 items-center justify-center rounded-full bg-teal-100 dark:bg-teal-900/50 text-teal-600 dark:text-teal-400">
               <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5} aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
               </svg>
             </div>
-            <p className="text-sm font-semibold text-slate-700 whitespace-nowrap">
+            <p className="text-sm font-semibold text-slate-700 dark:text-slate-300 whitespace-nowrap">
               {t(lang, "sidebarTagline")}
             </p>
-            <p className="text-xs text-slate-500 mt-0.5 whitespace-nowrap">
+            <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5 whitespace-nowrap">
               {t(lang, "sidebarSubtitle")}
             </p>
           </div>

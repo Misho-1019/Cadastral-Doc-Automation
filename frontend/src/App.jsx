@@ -96,11 +96,11 @@ function GeneratePage({ lang }) {
   };
 
   const emptyResults = (
-    <div className="flex flex-col items-center justify-center h-full min-h-[200px] rounded-xl border border-dashed border-slate-200 bg-slate-50 gap-3">
-      <svg className="w-10 h-10 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.2} aria-hidden="true">
+    <div className="flex flex-col items-center justify-center h-full min-h-[200px] rounded-xl border border-dashed border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-800/50 gap-3">
+      <svg className="w-10 h-10 text-slate-300 dark:text-slate-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.2} aria-hidden="true">
         <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
       </svg>
-      <p className="text-sm text-slate-400 px-4 text-center">
+      <p className="text-sm text-slate-400 dark:text-slate-500 px-4 text-center">
         {t(lang, "resultsPlaceholder")}
       </p>
     </div>
@@ -149,7 +149,7 @@ function GeneratePage({ lang }) {
         <button
           type="button"
           onClick={handleDownload}
-          className="rounded-lg border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-600 hover:bg-slate-50 active:bg-slate-100 transition-colors flex items-center gap-2 shrink-0 focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:outline-none"
+          className="rounded-lg border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-800 px-4 py-3 text-sm font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700 active:bg-slate-100 transition-colors flex items-center gap-2 shrink-0 focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:outline-none"
         >
           <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
             <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
@@ -168,10 +168,10 @@ function GeneratePage({ lang }) {
     return (
       <div className="space-y-6">
         <div>
-          <h1 className="text-2xl font-bold text-slate-800">
+          <h1 className="text-2xl font-bold text-slate-800 dark:text-slate-100">
             {t(lang, "navGenerate")}
           </h1>
-          <p className="mt-1 text-sm text-slate-500">
+          <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
             {t(lang, "subtitle")}
           </p>
         </div>
@@ -188,7 +188,7 @@ function GeneratePage({ lang }) {
         <button
           type="button"
           onClick={handleReset}
-          className="w-full rounded-lg border border-slate-300 bg-white px-5 py-3 text-base font-semibold text-slate-600 hover:bg-slate-50 active:bg-slate-100 transition-colors focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:outline-none"
+          className="w-full rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 px-5 py-3 text-base font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700 active:bg-slate-100 transition-colors focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:outline-none"
         >
           {t(lang, "generateAnother")}
         </button>
@@ -199,10 +199,10 @@ function GeneratePage({ lang }) {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-slate-800">
+        <h1 className="text-2xl font-bold text-slate-800 dark:text-slate-100">
           {t(lang, "navGenerate")}
         </h1>
-        <p className="mt-1 text-sm text-slate-500">
+        <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
           {t(lang, "subtitle")}
         </p>
       </div>
@@ -268,7 +268,7 @@ function App() {
 
   return (
     <>
-      <div className="h-screen flex flex-col bg-slate-50">
+      <div className="h-screen flex flex-col bg-slate-50 dark:bg-slate-950">
         {!isAuthPage && (
           <TopHeader lang={lang} onLanguageChange={handleLanguageChange} onHelpClick={() => setShowHelp(true)} onToggleSidebar={() => setSidebarOpen(v => !v)} sidebarOpen={sidebarOpen} />
         )}
@@ -289,10 +289,10 @@ function App() {
                   user ? (
                     <div className="space-y-6">
                       <div>
-                        <h1 className="text-2xl font-bold text-slate-800">
+                        <h1 className="text-2xl font-bold text-slate-800 dark:text-slate-100">
                           {t(lang, "historyTitle")}
                         </h1>
-                        <p className="mt-1 text-sm text-slate-500">
+                        <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
                           {t(lang, "historySubtitle")}
                         </p>
                       </div>

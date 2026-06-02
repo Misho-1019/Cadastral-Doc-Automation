@@ -49,14 +49,14 @@ export default function FileDropZone({ lang, file, onFileSelect, onFileRemove, e
   if (file && file.size <= FILE_SIZE_LIMIT) {
     return (
       <>
-        <div className="flex items-center justify-between rounded-xl border border-slate-200 bg-white px-4 py-3">
+        <div className="flex items-center justify-between rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-4 py-3">
           <div className="flex items-center gap-3 min-w-0">
             <span className="text-lg shrink-0">📄</span>
             <div className="min-w-0">
-              <p className="text-sm font-medium text-slate-800 truncate">
+              <p className="text-sm font-medium text-slate-800 dark:text-slate-200 truncate">
                 {file.name}
               </p>
-              <p className="text-xs text-slate-400">
+              <p className="text-xs text-slate-400 dark:text-slate-500">
                 {(file.size / 1024 / 1024).toFixed(2)} MB
               </p>
             </div>
@@ -65,7 +65,7 @@ export default function FileDropZone({ lang, file, onFileSelect, onFileRemove, e
             <button
               type="button"
               onClick={onFileRemove}
-              className="shrink-0 text-slate-400 hover:text-slate-600 transition-colors p-1 rounded focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:outline-none"
+              className="shrink-0 text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300 transition-colors p-1 rounded focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:outline-none"
               title={t(lang, "remove")}
             >
               <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -107,19 +107,19 @@ export default function FileDropZone({ lang, file, onFileSelect, onFileRemove, e
         onDrop={handleDrop}
         className={`flex cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed px-6 py-10 text-center transition-colors ${
           isDragging
-            ? "border-teal-500 bg-teal-50"
-            : "border-slate-200 bg-white hover:border-teal-500 hover:bg-teal-50/50"
+            ? "border-teal-500 bg-teal-50 dark:bg-teal-900/20"
+            : "border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-800 hover:border-teal-500 hover:bg-teal-50/50 dark:hover:bg-teal-900/10"
         }`}
       >
-        <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-teal-50 text-teal-600">
+        <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-teal-50 dark:bg-teal-900/30 text-teal-600 dark:text-teal-400">
           <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5} aria-hidden="true">
             <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
           </svg>
         </div>
-        <p className="text-sm font-medium text-slate-700">
+        <p className="text-sm font-medium text-slate-700 dark:text-slate-300">
           {t(lang, "uploadLabel")}
         </p>
-        <p className="mt-1 text-xs text-slate-400">
+        <p className="mt-1 text-xs text-slate-400 dark:text-slate-500">
           {t(lang, "acceptedFormat")}
         </p>
         <input
