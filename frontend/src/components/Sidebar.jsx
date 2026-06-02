@@ -4,7 +4,7 @@ import { t } from "../i18n.js";
 const navItems = [
   { key: "navGenerate", icon: generateIcon, route: "/" },
   { key: "navHistory", icon: historyIcon, route: "/history" },
-  { key: "navSettings", icon: settingsIcon, route: null },
+  { key: "navSettings", icon: settingsIcon, route: "/settings" },
 ];
 
 function generateIcon(active) {

@@ -1,6 +1,7 @@
 import { useState, useRef, useCallback } from "react";
 import { API_TIMEOUT_MS } from "../constants.js";
 import { t } from "../i18n.js";
+import { useAuth } from "../contexts/AuthContext.jsx";
 
 export default function useGenerateDescription(lang = "bg") {
   const [loading, setLoading] = useState(false);
@@ -8,6 +9,7 @@ export default function useGenerateDescription(lang = "bg") {
   const [error, setError] = useState(null);
   const isSubmittingRef = useRef(false);
   const abortRef = useRef(null);
+  const { session } = useAuth();
 
   const generate = useCallback(async (file) => {
     if (isSubmittingRef.current) return;
@@ -26,9 +28,15 @@ export default function useGenerateDescription(lang = "bg") {
       const formData = new FormData();
       formData.append("pdf", file);
 
+      const headers = {};
+      if (session?.access_token) {
+        headers["Authorization"] = `Bearer ${session.access_token}`;
+      }
+
       const response = await fetch("/api/descriptions/generate", {
         method: "POST",
         body: formData,
+        headers,
         signal: abortRef.current.signal,
       });
 
@@ -55,7 +63,7 @@ export default function useGenerateDescription(lang = "bg") {
       isSubmittingRef.current = false;
       abortRef.current = null;
     }
-  }, []);
+  }, [session, lang]);
 
   const reset = useCallback(() => {
     abortRef.current?.abort();

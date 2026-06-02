@@ -17,6 +17,10 @@ import HelpModal from "./components/HelpModal.jsx";
 import ComingSoonToast from "./components/ComingSoonToast.jsx";
 import HistoryList from "./components/HistoryList.jsx";
 import HistoryDetail from "./components/HistoryDetail.jsx";
+import ProtectedRoute from "./components/ProtectedRoute.jsx";
+import LoginPage from "./pages/LoginPage.jsx";
+import SignupPage from "./pages/SignupPage.jsx";
+import SettingsPage from "./pages/SettingsPage.jsx";
 import useGenerateDescription from "./hooks/useGenerateDescription.js";
 import { t } from "./i18n.js";
 
@@ -231,6 +235,13 @@ function App() {
     return () => clearTimeout(t);
   }, [comingSoon]);
 
+  useEffect(() => {
+    const publicRoutes = ["/login", "/signup"];
+    if (publicRoutes.includes(location.pathname)) {
+      setSidebarOpen(false);
+    }
+  }, [location.pathname]);
+
   const handleLanguageChange = (newLang) => {
     setLang(newLang);
   };
@@ -241,40 +252,63 @@ function App() {
     } else if (key === "navGenerate") {
       navigate("/");
     } else if (key === "navSettings") {
-      setComingSoon(key);
+      navigate("/settings");
     }
   };
+
+  const isPublic = ["/login", "/signup"].includes(location.pathname);
 
   return (
     <>
       <div className="h-screen flex flex-col bg-slate-50">
-        <TopHeader lang={lang} onLanguageChange={handleLanguageChange} onHelpClick={() => setShowHelp(true)} onToggleSidebar={() => setSidebarOpen(v => !v)} sidebarOpen={sidebarOpen} />
+        {!isPublic && (
+          <TopHeader lang={lang} onLanguageChange={handleLanguageChange} onHelpClick={() => setShowHelp(true)} onToggleSidebar={() => setSidebarOpen(v => !v)} sidebarOpen={sidebarOpen} />
+        )}
 
         <div className="flex flex-1 overflow-hidden">
-          <Sidebar lang={lang} open={sidebarOpen} onClose={() => setSidebarOpen(false)} onNavClick={handleNavClick} />
+          {!isPublic && (
+            <Sidebar lang={lang} open={sidebarOpen} onClose={() => setSidebarOpen(false)} onNavClick={handleNavClick} />
+          )}
 
-          <main className="flex-1 overflow-y-auto">
-            <div className="mx-auto max-w-[1100px] px-6 py-8">
+          <main className={isPublic ? "flex-1 overflow-y-auto" : "flex-1 overflow-y-auto"}>
+            <div className={isPublic ? "mx-auto max-w-[1100px] px-6 py-8" : "mx-auto max-w-[1100px] px-6 py-8"}>
 
               <Routes>
-                <Route path="/" element={<GeneratePage lang={lang} />} />
-                <Route path="/history" element={
-                  <div className="space-y-6">
-                    <div>
-                      <h1 className="text-2xl font-bold text-slate-800">
-                        {t(lang, "historyTitle")}
-                      </h1>
-                      <p className="mt-1 text-sm text-slate-500">
-                        {t(lang, "historySubtitle")}
-                      </p>
-                    </div>
-                    <HistoryList lang={lang} />
-                  </div>
+                <Route path="/login" element={<LoginPage lang={lang} />} />
+                <Route path="/signup" element={<SignupPage lang={lang} />} />
+                <Route path="/" element={
+                  <ProtectedRoute>
+                    <GeneratePage lang={lang} />
+                  </ProtectedRoute>
                 } />
-                <Route path="/history/:id" element={<HistoryDetail lang={lang} />} />
+                <Route path="/history" element={
+                  <ProtectedRoute>
+                    <div className="space-y-6">
+                      <div>
+                        <h1 className="text-2xl font-bold text-slate-800">
+                          {t(lang, "historyTitle")}
+                        </h1>
+                        <p className="mt-1 text-sm text-slate-500">
+                          {t(lang, "historySubtitle")}
+                        </p>
+                      </div>
+                      <HistoryList lang={lang} />
+                    </div>
+                  </ProtectedRoute>
+                } />
+                <Route path="/history/:id" element={
+                  <ProtectedRoute>
+                    <HistoryDetail lang={lang} />
+                  </ProtectedRoute>
+                } />
+                <Route path="/settings" element={
+                  <ProtectedRoute>
+                    <SettingsPage lang={lang} />
+                  </ProtectedRoute>
+                } />
               </Routes>
 
-              <Footer lang={lang} />
+              {!isPublic && <Footer lang={lang} />}
 
             </div>
           </main>
