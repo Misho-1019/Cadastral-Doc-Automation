@@ -1,9 +1,22 @@
+import { useNavigate } from "react-router-dom";
 import LanguageSwitcher from "./LanguageSwitcher.jsx";
 import { useTheme } from "../contexts/ThemeContext.jsx";
+import { useAuth } from "../contexts/AuthContext.jsx";
 import { t } from "../i18n.js";
+
+function getInitials(email) {
+  const name = email.split("@")[0];
+  const parts = name.split(/[._-]/);
+  return parts
+    .map((p) => p[0].toUpperCase())
+    .slice(0, 2)
+    .join("");
+}
 
 export default function TopHeader({ lang, onLanguageChange, onHelpClick, onToggleSidebar, sidebarOpen }) {
   const { theme, toggleTheme } = useTheme();
+  const { user, signOut } = useAuth();
+  const navigate = useNavigate();
 
   return (
     <header className="h-[72px] shrink-0 bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 flex items-center justify-between px-6">
@@ -65,18 +78,47 @@ export default function TopHeader({ lang, onLanguageChange, onHelpClick, onToggl
           <span>{t(lang, "help")}</span>
         </button>
         <div className="flex items-center gap-2 border-l border-slate-200 dark:border-slate-700 pl-5">
-          <div
-            className="w-8 h-8 rounded-full bg-teal-100 text-teal-700 flex items-center justify-center text-xs font-bold"
-            aria-hidden="true"
-          >
-            LO
-          </div>
-          <span className="text-sm font-medium text-slate-700 dark:text-slate-300">
-            {t(lang, "lawOffice")}
-          </span>
-          <svg className="w-4 h-4 text-slate-400 dark:text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-          </svg>
+          {user ? (
+            <>
+              <div
+                className="w-8 h-8 rounded-full bg-teal-100 text-teal-700 flex items-center justify-center text-xs font-bold"
+                aria-hidden="true"
+              >
+                {getInitials(user.email)}
+              </div>
+              <span className="text-sm font-medium text-slate-700 dark:text-slate-300 truncate max-w-[140px]">
+                {user.email}
+              </span>
+              <button
+                type="button"
+                onClick={signOut}
+                className="p-1.5 rounded-lg text-slate-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-950 transition-colors focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:outline-none"
+                aria-label="Sign out"
+                title="Sign out"
+              >
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9" />
+                </svg>
+              </button>
+            </>
+          ) : (
+            <>
+              <button
+                type="button"
+                onClick={() => navigate("/login")}
+                className="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-teal-600 dark:hover:text-teal-400 transition-colors"
+              >
+                {lang === "bg" ? "Вход" : "Sign In"}
+              </button>
+              <button
+                type="button"
+                onClick={() => navigate("/signup")}
+                className="text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-teal-600 dark:hover:text-teal-400 transition-colors"
+              >
+                {lang === "bg" ? "Регистрация" : "Sign Up"}
+              </button>
+            </>
+          )}
         </div>
       </div>
     </header>
