@@ -1,9 +1,10 @@
-import { useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { t } from "../i18n.js";
 import useHistory from "../hooks/useHistory.js";
 import CopyButton from "./CopyButton.jsx";
 import ValidationWarning from "./ValidationWarning.jsx";
+import ConfirmModal from "./ConfirmModal.jsx";
 
 const typeColors = {
   INDEPENDENT_OBJECT: "bg-purple-100 text-purple-700",
@@ -22,6 +23,7 @@ const typeLabelKeys = {
 export default function HistoryDetail({ lang }) {
   const { id } = useParams();
   const navigate = useNavigate();
+  const [showConfirm, setShowConfirm] = useState(false);
   const { record, loading, fetchRecord, deleteRecord } = useHistory();
 
   useEffect(() => {
@@ -29,7 +31,7 @@ export default function HistoryDetail({ lang }) {
   }, [id, fetchRecord]);
 
   const handleDelete = async () => {
-    if (!window.confirm(t(lang, "historyDeleteConfirm"))) return;
+    setShowConfirm(false);
     try {
       await deleteRecord(id);
       navigate("/history");
@@ -81,7 +83,7 @@ export default function HistoryDetail({ lang }) {
         </div>
         <button
           type="button"
-          onClick={handleDelete}
+          onClick={() => setShowConfirm(true)}
           className="rounded-lg border border-red-300 px-3 py-1.5 text-sm font-semibold text-red-600 hover:bg-red-50 transition-colors focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:outline-none"
         >
           {t(lang, "historyDelete")}
@@ -137,6 +139,15 @@ export default function HistoryDetail({ lang }) {
           {t(lang, "download")}
         </button>
       </div>
+
+      {showConfirm && (
+        <ConfirmModal
+          lang={lang}
+          message={t(lang, "historyDeleteConfirm")}
+          onConfirm={handleDelete}
+          onCancel={() => setShowConfirm(false)}
+        />
+      )}
     </div>
   );
 }

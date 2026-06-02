@@ -1,7 +1,8 @@
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { t } from "../i18n.js";
 import useHistory from "../hooks/useHistory.js";
+import ConfirmModal from "./ConfirmModal.jsx";
 
 const typeColors = {
   INDEPENDENT_OBJECT: "bg-purple-100 text-purple-700",
@@ -19,6 +20,7 @@ const typeLabelKeys = {
 
 export default function HistoryList({ lang }) {
   const navigate = useNavigate();
+  const [deleteTarget, setDeleteTarget] = useState(null);
   const { records, loading, fetchHistory, deleteRecord } = useHistory();
 
   useEffect(() => {
@@ -26,11 +28,17 @@ export default function HistoryList({ lang }) {
   }, [fetchHistory]);
 
   const handleDelete = async (id) => {
-    if (!window.confirm(t(lang, "historyDeleteConfirm"))) return;
+    setDeleteTarget(id);
+  };
+
+  const confirmDelete = async () => {
+    if (!deleteTarget) return;
     try {
-      await deleteRecord(id);
+      await deleteRecord(deleteTarget);
     } catch {
       // silently fail
+    } finally {
+      setDeleteTarget(null);
     }
   };
 
@@ -39,25 +47,15 @@ export default function HistoryList({ lang }) {
       <div className="space-y-3">
         {[1, 2, 3].map((i) => (
           <div key={i} className="h-16 rounded-xl bg-slate-100 animate-pulse" />
-        ))}
-      </div>
-    );
-  }
-
-  if (!loading && records.length === 0) {
-    return (
-      <div className="flex flex-col items-center justify-center py-16 rounded-xl border border-dashed border-slate-200 bg-slate-50 gap-3">
-        <svg className="w-10 h-10 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.2} aria-hidden="true">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-        </svg>
-        <p className="text-sm text-slate-400">{t(lang, "historyEmpty")}</p>
+      ))}
       </div>
     );
   }
 
   return (
-    <div className="space-y-3">
-      {records.map((r) => (
+    <>
+      <div className="space-y-3">
+        {records.map((r) => (
         <div
           key={r.id}
           className="rounded-xl border border-slate-200 bg-white px-4 py-3 flex items-center gap-4"
@@ -95,6 +93,16 @@ export default function HistoryList({ lang }) {
           </div>
         </div>
       ))}
-    </div>
+      </div>
+
+      {deleteTarget && (
+        <ConfirmModal
+          lang={lang}
+          message={t(lang, "historyDeleteConfirm")}
+          onConfirm={confirmDelete}
+          onCancel={() => setDeleteTarget(null)}
+        />
+      )}
+    </>
   );
 }
