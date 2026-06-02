@@ -33,7 +33,7 @@ export default function useGenerateDescription(lang = "bg") {
         headers["Authorization"] = `Bearer ${session.access_token}`;
       }
 
-      const response = await fetch("/api/descriptions/generate", {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/descriptions/generate`, {
         method: "POST",
         body: formData,
         headers,

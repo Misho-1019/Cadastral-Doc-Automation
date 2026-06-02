@@ -20,7 +20,7 @@ export default function useHistory() {
     setLoading(true);
     setError(null);
     try {
-      const res = await fetch("/api/descriptions/history", {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/descriptions/history`, {
         headers: getHeaders(),
       });
       if (!res.ok) throw new Error("Failed to fetch history");
@@ -38,7 +38,7 @@ export default function useHistory() {
     setError(null);
     setRecord(null);
     try {
-      const res = await fetch(`/api/descriptions/history/${id}`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/descriptions/history/${id}`, {
         headers: getHeaders(),
       });
       if (!res.ok) throw new Error("Failed to fetch record");
@@ -52,7 +52,7 @@ export default function useHistory() {
   }, [getHeaders]);
 
   const deleteRecord = useCallback(async (id) => {
-    const res = await fetch(`/api/descriptions/history/${id}`, {
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/api/descriptions/history/${id}`, {
       method: "DELETE",
       headers: getHeaders(),
     });

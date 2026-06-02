@@ -7,7 +7,16 @@ import descriptionsRouter from "./routes/descriptions.routes.js";
 
 const app = express();
 
-app.use(cors());
+const allowedOrigins = [
+    process.env.FRONTEND_URL,
+    "http://localhost:5173",
+].filter((origin): origin is string => origin !== undefined);
+
+app.use(cors({
+    origin: allowedOrigins,
+    credentials: true,
+}));
+
 app.use(express.json());
 
 app.use("/api/descriptions", descriptionsRouter);

@@ -31,6 +31,12 @@ router.post("/generate", auth, upload.single("pdf"), async (req, res) => {
         const extractedText = await extractPdfText(req.file.buffer);
         const documentType = detectCadastralDocumentType(extractedText);
 
+        if (documentType === "UNKNOWN") {
+            return res.status(400).json({
+                message: "Unsupported or unrecognised cadastral document type",
+            });
+        }
+
         const extractionStart = Date.now();
 
         const extractedData = await extractCadastralData(extractedText);
