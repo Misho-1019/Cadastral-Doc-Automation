@@ -98,6 +98,7 @@ exports.Prisma.DescriptionHistoryScalarFieldEnum = {
   documentType: 'documentType',
   identifier: 'identifier',
   description: 'description',
+  userId: 'userId',
   extractedData: 'extractedData',
   validationErrors: 'validationErrors',
   performance: 'performance',
@@ -164,7 +165,7 @@ const config = {
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
-    "rootEnvPath": "../../../.env",
+    "rootEnvPath": null,
     "schemaEnvPath": "../../../.env"
   },
   "relativePath": "../../../prisma",
@@ -174,7 +175,6 @@ const config = {
     "db"
   ],
   "activeProvider": "postgresql",
-  "postinstall": false,
   "inlineDatasources": {
     "db": {
       "url": {
@@ -183,13 +183,13 @@ const config = {
       }
     }
   },
-  "inlineSchema": "generator client {\n  provider = \"prisma-client-js\"\n  output   = \"../src/generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel DescriptionHistory {\n  id               String   @id @default(uuid())\n  documentType     String\n  identifier       String?\n  description      String\n  extractedData    Json?\n  validationErrors Json?\n  performance      Json?\n  fileName         String?\n  createdAt        DateTime @default(now())\n}\n",
-  "inlineSchemaHash": "5c5ab5aaae112499c48f296477156dac72b906554f4760d1bb6176daf031ee30",
+  "inlineSchema": "generator client {\n  provider = \"prisma-client-js\"\n  output   = \"../src/generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel DescriptionHistory {\n  id               String   @id @default(uuid())\n  documentType     String\n  identifier       String?\n  description      String\n  userId           String?\n  extractedData    Json?\n  validationErrors Json?\n  performance      Json?\n  fileName         String?\n  createdAt        DateTime @default(now())\n}\n",
+  "inlineSchemaHash": "cb6204b56cc1eec6d3a99a89e4442c9be6338cb29b04c95971de828d559c1d04",
   "copyEngine": true
 }
 config.dirname = '/'
 
-config.runtimeDataModel = JSON.parse("{\"models\":{\"DescriptionHistory\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"documentType\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"identifier\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"description\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"extractedData\",\"kind\":\"scalar\",\"type\":\"Json\"},{\"name\":\"validationErrors\",\"kind\":\"scalar\",\"type\":\"Json\"},{\"name\":\"performance\",\"kind\":\"scalar\",\"type\":\"Json\"},{\"name\":\"fileName\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":null}},\"enums\":{},\"types\":{}}")
+config.runtimeDataModel = JSON.parse("{\"models\":{\"DescriptionHistory\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"documentType\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"identifier\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"description\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"userId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"extractedData\",\"kind\":\"scalar\",\"type\":\"Json\"},{\"name\":\"validationErrors\",\"kind\":\"scalar\",\"type\":\"Json\"},{\"name\":\"performance\",\"kind\":\"scalar\",\"type\":\"Json\"},{\"name\":\"fileName\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":null}},\"enums\":{},\"types\":{}}")
 defineDmmfProperty(exports.Prisma, config.runtimeDataModel)
 config.engineWasm = {
   getRuntime: async () => require('./query_engine_bg.js'),

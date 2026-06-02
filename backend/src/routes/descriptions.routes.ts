@@ -7,6 +7,7 @@ import { validateExtractedData } from "../services/validateExtractedData.js";
 import { generateAiDescription } from "../services/generateAiDescription.js";
 import { formatDuration } from "../utils/formatDuration.js";
 import prisma from "../lib/prisma.js";
+import { auth } from "../middleware/auth.js";
 
 const router = Router();
 
@@ -17,7 +18,7 @@ const upload = multer({
     },
 });
 
-router.post("/generate", upload.single("pdf"), async (req, res) => {
+router.post("/generate", auth, upload.single("pdf"), async (req, res) => {
     try {
         const requestStart = Date.now();
 
@@ -70,6 +71,7 @@ router.post("/generate", upload.single("pdf"), async (req, res) => {
                 validationErrors,
                 performance: result.performance,
                 fileName: req.file.originalname || null,
+                userId: req.userId || null,
             }
         })
 
@@ -83,9 +85,10 @@ router.post("/generate", upload.single("pdf"), async (req, res) => {
     }
 });
 
-router.get("/history", async (req, res) => {
+router.get("/history", auth, async (req, res) => {
     try {
         const records = await prisma.descriptionHistory.findMany({
+            where: { userId: req.userId || null },
             orderBy: { createdAt: 'desc' },
             select: {
                 id: true,
@@ -103,10 +106,10 @@ router.get("/history", async (req, res) => {
     }
 })
 
-router.get("/history/:id", async (req, res) => {
+router.get("/history/:id", auth, async (req, res) => {
     try {
-        const record = await prisma.descriptionHistory.findUnique({
-            where: { id: req.params.id },
+        const record = await prisma.descriptionHistory.findFirst({
+            where: { id: req.params.id as string, userId: req.userId || null },
         })
 
         if (!record) {
@@ -120,10 +123,18 @@ router.get("/history/:id", async (req, res) => {
     }
 })
 
-router.delete("/history/:id", async (req, res) => {
+router.delete("/history/:id", auth, async (req, res) => {
     try {
+        const record = await prisma.descriptionHistory.findFirst({
+            where: { id: req.params.id as string, userId: req.userId || null },
+        })
+
+        if (!record) {
+            return res.status(404).json({ message: "Record not found" });
+        }
+
         await prisma.descriptionHistory.delete({
-            where: { id: req.params.id },
+            where: { id: req.params.id as string },
         });
 
         return res.json({ message: "Record deleted successfully" });

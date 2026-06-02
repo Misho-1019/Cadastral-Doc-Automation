@@ -126,6 +126,7 @@ exports.Prisma.DescriptionHistoryScalarFieldEnum = {
   documentType: 'documentType',
   identifier: 'identifier',
   description: 'description',
+  userId: 'userId',
   extractedData: 'extractedData',
   validationErrors: 'validationErrors',
   performance: 'performance',

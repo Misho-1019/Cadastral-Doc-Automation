@@ -13,6 +13,7 @@ model DescriptionHistory {
   documentType     String
   identifier       String?
   description      String
+  userId           String?
   extractedData    Json?
   validationErrors Json?
   performance      Json?

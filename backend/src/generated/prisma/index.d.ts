@@ -876,6 +876,7 @@ export namespace Prisma {
     documentType: string | null
     identifier: string | null
     description: string | null
+    userId: string | null
     fileName: string | null
     createdAt: Date | null
   }
@@ -885,6 +886,7 @@ export namespace Prisma {
     documentType: string | null
     identifier: string | null
     description: string | null
+    userId: string | null
     fileName: string | null
     createdAt: Date | null
   }
@@ -894,6 +896,7 @@ export namespace Prisma {
     documentType: number
     identifier: number
     description: number
+    userId: number
     extractedData: number
     validationErrors: number
     performance: number
@@ -908,6 +911,7 @@ export namespace Prisma {
     documentType?: true
     identifier?: true
     description?: true
+    userId?: true
     fileName?: true
     createdAt?: true
   }
@@ -917,6 +921,7 @@ export namespace Prisma {
     documentType?: true
     identifier?: true
     description?: true
+    userId?: true
     fileName?: true
     createdAt?: true
   }
@@ -926,6 +931,7 @@ export namespace Prisma {
     documentType?: true
     identifier?: true
     description?: true
+    userId?: true
     extractedData?: true
     validationErrors?: true
     performance?: true
@@ -1011,6 +1017,7 @@ export namespace Prisma {
     documentType: string
     identifier: string | null
     description: string
+    userId: string | null
     extractedData: JsonValue | null
     validationErrors: JsonValue | null
     performance: JsonValue | null
@@ -1040,6 +1047,7 @@ export namespace Prisma {
     documentType?: boolean
     identifier?: boolean
     description?: boolean
+    userId?: boolean
     extractedData?: boolean
     validationErrors?: boolean
     performance?: boolean
@@ -1052,6 +1060,7 @@ export namespace Prisma {
     documentType?: boolean
     identifier?: boolean
     description?: boolean
+    userId?: boolean
     extractedData?: boolean
     validationErrors?: boolean
     performance?: boolean
@@ -1064,6 +1073,7 @@ export namespace Prisma {
     documentType?: boolean
     identifier?: boolean
     description?: boolean
+    userId?: boolean
     extractedData?: boolean
     validationErrors?: boolean
     performance?: boolean
@@ -1076,6 +1086,7 @@ export namespace Prisma {
     documentType?: boolean
     identifier?: boolean
     description?: boolean
+    userId?: boolean
     extractedData?: boolean
     validationErrors?: boolean
     performance?: boolean
@@ -1083,7 +1094,7 @@ export namespace Prisma {
     createdAt?: boolean
   }
 
-  export type DescriptionHistoryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "documentType" | "identifier" | "description" | "extractedData" | "validationErrors" | "performance" | "fileName" | "createdAt", ExtArgs["result"]["descriptionHistory"]>
+  export type DescriptionHistoryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "documentType" | "identifier" | "description" | "userId" | "extractedData" | "validationErrors" | "performance" | "fileName" | "createdAt", ExtArgs["result"]["descriptionHistory"]>
 
   export type $DescriptionHistoryPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "DescriptionHistory"
@@ -1093,6 +1104,7 @@ export namespace Prisma {
       documentType: string
       identifier: string | null
       description: string
+      userId: string | null
       extractedData: Prisma.JsonValue | null
       validationErrors: Prisma.JsonValue | null
       performance: Prisma.JsonValue | null
@@ -1525,6 +1537,7 @@ export namespace Prisma {
     readonly documentType: FieldRef<"DescriptionHistory", 'String'>
     readonly identifier: FieldRef<"DescriptionHistory", 'String'>
     readonly description: FieldRef<"DescriptionHistory", 'String'>
+    readonly userId: FieldRef<"DescriptionHistory", 'String'>
     readonly extractedData: FieldRef<"DescriptionHistory", 'Json'>
     readonly validationErrors: FieldRef<"DescriptionHistory", 'Json'>
     readonly performance: FieldRef<"DescriptionHistory", 'Json'>
@@ -1915,6 +1928,7 @@ export namespace Prisma {
     documentType: 'documentType',
     identifier: 'identifier',
     description: 'description',
+    userId: 'userId',
     extractedData: 'extractedData',
     validationErrors: 'validationErrors',
     performance: 'performance',
@@ -2038,6 +2052,7 @@ export namespace Prisma {
     documentType?: StringFilter<"DescriptionHistory"> | string
     identifier?: StringNullableFilter<"DescriptionHistory"> | string | null
     description?: StringFilter<"DescriptionHistory"> | string
+    userId?: StringNullableFilter<"DescriptionHistory"> | string | null
     extractedData?: JsonNullableFilter<"DescriptionHistory">
     validationErrors?: JsonNullableFilter<"DescriptionHistory">
     performance?: JsonNullableFilter<"DescriptionHistory">
@@ -2050,6 +2065,7 @@ export namespace Prisma {
     documentType?: SortOrder
     identifier?: SortOrderInput | SortOrder
     description?: SortOrder
+    userId?: SortOrderInput | SortOrder
     extractedData?: SortOrderInput | SortOrder
     validationErrors?: SortOrderInput | SortOrder
     performance?: SortOrderInput | SortOrder
@@ -2065,6 +2081,7 @@ export namespace Prisma {
     documentType?: StringFilter<"DescriptionHistory"> | string
     identifier?: StringNullableFilter<"DescriptionHistory"> | string | null
     description?: StringFilter<"DescriptionHistory"> | string
+    userId?: StringNullableFilter<"DescriptionHistory"> | string | null
     extractedData?: JsonNullableFilter<"DescriptionHistory">
     validationErrors?: JsonNullableFilter<"DescriptionHistory">
     performance?: JsonNullableFilter<"DescriptionHistory">
@@ -2077,6 +2094,7 @@ export namespace Prisma {
     documentType?: SortOrder
     identifier?: SortOrderInput | SortOrder
     description?: SortOrder
+    userId?: SortOrderInput | SortOrder
     extractedData?: SortOrderInput | SortOrder
     validationErrors?: SortOrderInput | SortOrder
     performance?: SortOrderInput | SortOrder
@@ -2095,6 +2113,7 @@ export namespace Prisma {
     documentType?: StringWithAggregatesFilter<"DescriptionHistory"> | string
     identifier?: StringNullableWithAggregatesFilter<"DescriptionHistory"> | string | null
     description?: StringWithAggregatesFilter<"DescriptionHistory"> | string
+    userId?: StringNullableWithAggregatesFilter<"DescriptionHistory"> | string | null
     extractedData?: JsonNullableWithAggregatesFilter<"DescriptionHistory">
     validationErrors?: JsonNullableWithAggregatesFilter<"DescriptionHistory">
     performance?: JsonNullableWithAggregatesFilter<"DescriptionHistory">
@@ -2107,6 +2126,7 @@ export namespace Prisma {
     documentType: string
     identifier?: string | null
     description: string
+    userId?: string | null
     extractedData?: NullableJsonNullValueInput | InputJsonValue
     validationErrors?: NullableJsonNullValueInput | InputJsonValue
     performance?: NullableJsonNullValueInput | InputJsonValue
@@ -2119,6 +2139,7 @@ export namespace Prisma {
     documentType: string
     identifier?: string | null
     description: string
+    userId?: string | null
     extractedData?: NullableJsonNullValueInput | InputJsonValue
     validationErrors?: NullableJsonNullValueInput | InputJsonValue
     performance?: NullableJsonNullValueInput | InputJsonValue
@@ -2131,6 +2152,7 @@ export namespace Prisma {
     documentType?: StringFieldUpdateOperationsInput | string
     identifier?: NullableStringFieldUpdateOperationsInput | string | null
     description?: StringFieldUpdateOperationsInput | string
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
     extractedData?: NullableJsonNullValueInput | InputJsonValue
     validationErrors?: NullableJsonNullValueInput | InputJsonValue
     performance?: NullableJsonNullValueInput | InputJsonValue
@@ -2143,6 +2165,7 @@ export namespace Prisma {
     documentType?: StringFieldUpdateOperationsInput | string
     identifier?: NullableStringFieldUpdateOperationsInput | string | null
     description?: StringFieldUpdateOperationsInput | string
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
     extractedData?: NullableJsonNullValueInput | InputJsonValue
     validationErrors?: NullableJsonNullValueInput | InputJsonValue
     performance?: NullableJsonNullValueInput | InputJsonValue
@@ -2155,6 +2178,7 @@ export namespace Prisma {
     documentType: string
     identifier?: string | null
     description: string
+    userId?: string | null
     extractedData?: NullableJsonNullValueInput | InputJsonValue
     validationErrors?: NullableJsonNullValueInput | InputJsonValue
     performance?: NullableJsonNullValueInput | InputJsonValue
@@ -2167,6 +2191,7 @@ export namespace Prisma {
     documentType?: StringFieldUpdateOperationsInput | string
     identifier?: NullableStringFieldUpdateOperationsInput | string | null
     description?: StringFieldUpdateOperationsInput | string
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
     extractedData?: NullableJsonNullValueInput | InputJsonValue
     validationErrors?: NullableJsonNullValueInput | InputJsonValue
     performance?: NullableJsonNullValueInput | InputJsonValue
@@ -2179,6 +2204,7 @@ export namespace Prisma {
     documentType?: StringFieldUpdateOperationsInput | string
     identifier?: NullableStringFieldUpdateOperationsInput | string | null
     description?: StringFieldUpdateOperationsInput | string
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
     extractedData?: NullableJsonNullValueInput | InputJsonValue
     validationErrors?: NullableJsonNullValueInput | InputJsonValue
     performance?: NullableJsonNullValueInput | InputJsonValue
@@ -2260,6 +2286,7 @@ export namespace Prisma {
     documentType?: SortOrder
     identifier?: SortOrder
     description?: SortOrder
+    userId?: SortOrder
     extractedData?: SortOrder
     validationErrors?: SortOrder
     performance?: SortOrder
@@ -2272,6 +2299,7 @@ export namespace Prisma {
     documentType?: SortOrder
     identifier?: SortOrder
     description?: SortOrder
+    userId?: SortOrder
     fileName?: SortOrder
     createdAt?: SortOrder
   }
@@ -2281,6 +2309,7 @@ export namespace Prisma {
     documentType?: SortOrder
     identifier?: SortOrder
     description?: SortOrder
+    userId?: SortOrder
     fileName?: SortOrder
     createdAt?: SortOrder
   }
