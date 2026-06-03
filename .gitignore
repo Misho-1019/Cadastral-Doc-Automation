@@ -150,3 +150,8 @@ output/*
 
 frontend/node_modules
 frontend/dist
+
+*.zip
+
+# Prisma generated client (platform-specific — regenerated on build)
+backend/src/generated/
