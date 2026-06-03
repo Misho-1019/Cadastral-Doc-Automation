@@ -71,23 +71,23 @@ The system is designed to simulate a **real internal legal tool**, where AI is i
 
 ### 1️⃣ Upload & Generate
 
-<!-- TODO: Add screenshot -->
+![Upload & Generate](views/Screenshot%202026-06-03%20181530.png)
 
 ### 2️⃣ Document Type Detection & Validation
 
-<!-- TODO: Add screenshot -->
+![Document Type Detection & Validation](views/Screenshot%202026-06-03%20181615.png)
 
 ### 3️⃣ Generated Legal Description & Editing
 
-<!-- TODO: Add screenshot -->
+![Generated Legal Description & Editing](views/Screenshot%202026-06-03%20181320.png)
 
 ### 4️⃣ History Management
 
-<!-- TODO: Add screenshot -->
+![History Management](views/Screenshot%202026-06-03%20181639.png)
 
 ### 5️⃣ Performance Metrics
 
-<!-- TODO: Add screenshot -->
+![Performance Metrics](views/Screenshot%202026-06-03%20181623.png)
 
 ---
 
