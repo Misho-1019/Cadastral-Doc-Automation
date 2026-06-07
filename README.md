@@ -30,7 +30,7 @@ The system is designed to simulate a **real internal legal tool**, where AI is i
 ### Document Upload & Processing
 
 - Drag-and-drop PDF upload with file validation
-- Server-side PDF text extraction
+- Server-side PDF text extraction with automatic OCR fallback for scanned PDFs
 - Automatic document type detection
 
 ### AI-Powered Extraction & Generation
@@ -114,6 +114,7 @@ The application follows a layered client–server architecture:
 - Structured data extraction from raw PDF text
 - Bulgarian legal description generation
 - Prompt engineering for domain-specific cadastral terminology
+- Vision-based OCR for scanned/image PDFs without embedded text
 
 ### Data Layer (PostgreSQL + Prisma)
 
@@ -142,7 +143,7 @@ This mirrors real-world systems where **AI processing is integrated into a struc
 - Prisma ORM 6
 - PostgreSQL (Supabase)
 - Anthropic Claude SDK
-- pdf-parse
+- pdf-parse + Claude Vision (OCR fallback for scanned PDFs)
 
 ### Deployment
 
@@ -155,7 +156,7 @@ This mirrors real-world systems where **AI processing is integrated into a struc
 ## 🗄️ Document Processing Flow (Important)
 
 1. User uploads a Bulgarian cadastral PDF
-2. Backend extracts raw text via pdf-parse
+2. Backend extracts raw text via pdf-parse (falls back to Claude Vision OCR for scanned/image PDFs)
 3. Backend detects document type (land property / building / independent object)
 4. Claude AI extracts structured cadastral data
 5. Extracted data is validated against required fields
