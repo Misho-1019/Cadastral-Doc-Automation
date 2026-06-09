@@ -112,6 +112,9 @@ export const translations = {
     naTaxAssessmentIssueDate: "Дата на издаване",
     naTaxAssessmentIssuer: "Издадено от",
     naPreviousDeedDescription: "Предишен нотариален акт",
+    naSuccess: "Нотариалният акт е генериран успешно!",
+    naSuccessSubtitle: "Файлът беше изтеглен. Можете да го отворите в Microsoft Word.",
+    naBackToHome: "Към началото",
   },
   en: {
     title: "Cadastral Doc Automation",
@@ -226,6 +229,9 @@ export const translations = {
     naTaxAssessmentIssueDate: "Issue date",
     naTaxAssessmentIssuer: "Issued by",
     naPreviousDeedDescription: "Previous deed description",
+    naSuccess: "Notarial act generated successfully!",
+    naSuccessSubtitle: "The file was downloaded. You can open it in Microsoft Word.",
+    naBackToHome: "Back to home",
   },
 };
 
