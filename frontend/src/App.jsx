@@ -21,6 +21,7 @@ import AuthPrompt from "./components/AuthPrompt.jsx";
 import LoginPage from "./pages/LoginPage.jsx";
 import SignupPage from "./pages/SignupPage.jsx";
 import SettingsPage from "./pages/SettingsPage.jsx";
+import NotarialActPage from "./pages/NotarialActPage.jsx";
 import useGenerateDescription from "./hooks/useGenerateDescription.js";
 import { useAuth } from "./contexts/AuthContext.jsx";
 import { t } from "./i18n.js";
@@ -261,6 +262,8 @@ function App() {
       navigate("/");
     } else if (key === "navSettings") {
       navigate("/settings");
+    } else if (key === "navNotarialAct") {
+      navigate("/notarial-act");
     }
   };
 
@@ -314,6 +317,13 @@ function App() {
                     <SettingsPage lang={lang} />
                   ) : (
                     <AuthPrompt lang={lang} returnTo="/settings" />
+                  )
+                } />
+                <Route path="/notarial-act" element={
+                  user ? (
+                    <NotarialActPage lang={lang} />
+                  ) : (
+                    <AuthPrompt lang={lang} returnTo="/notarial-act" />
                   )
                 } />
               </Routes>
