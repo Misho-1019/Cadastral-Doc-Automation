@@ -8,6 +8,37 @@ import useGenerateDescription from "../hooks/useGenerateDescription.js";
 import { useAuth } from "../contexts/AuthContext.jsx";
 import { t } from "../i18n.js";
 
+function collectValuesToBold(extractedData) {
+  if (!extractedData) return [];
+  const values = new Set();
+
+  const add = (v) => {
+    if (v && typeof v === "string" && v.trim() && v.trim().toLowerCase() !== "няма") {
+      values.add(v.trim());
+    }
+  };
+
+  for (const [key, value] of Object.entries(extractedData)) {
+    if (key === "documentType") continue;
+    if (key === "additionalInfo") continue;
+    if (typeof value === "string") {
+      add(value);
+    } else if (Array.isArray(value)) {
+      for (const item of value) {
+        if (typeof item === "string") {
+          add(item);
+        } else if (item && typeof item === "object") {
+          for (const v of Object.values(item)) {
+            if (typeof v === "string") add(v);
+          }
+        }
+      }
+    }
+  }
+
+  return [...values].sort((a, b) => b.length - a.length);
+}
+
 export default function NotarialActPage({ lang }) {
   const [file, setFile] = useState(null);
   const [fileError, setFileError] = useState(null);
@@ -61,6 +92,8 @@ export default function NotarialActPage({ lang }) {
         aiDescription: data.description,
         documentNumber: extractedData?.documentNumber || "",
         issueDate: extractedData?.issueDate || "",
+        identifier: extractedData?.identifier || "",
+        extractedDataValues: collectValuesToBold(extractedData),
       });
 
       const response = await fetch(

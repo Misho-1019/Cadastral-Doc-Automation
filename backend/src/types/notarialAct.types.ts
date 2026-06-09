@@ -44,6 +44,8 @@ export interface NotarialActTemplateData extends NotarialActFormData {
   documentNumber: string;
   issueDate: string;
 
+  extractedDataValues: string[];
+
   actDateWords: string;
   priceWords: string;
   depositAmountWords: string;

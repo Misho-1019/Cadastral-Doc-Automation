@@ -15,13 +15,13 @@ import PerformanceCard from "./components/PerformanceCard.jsx";
 import ReviewWarning from "./components/ReviewWarning.jsx";
 import HelpModal from "./components/HelpModal.jsx";
 import ComingSoonToast from "./components/ComingSoonToast.jsx";
-import HistoryList from "./components/HistoryList.jsx";
 import HistoryDetail from "./components/HistoryDetail.jsx";
 import AuthPrompt from "./components/AuthPrompt.jsx";
 import LoginPage from "./pages/LoginPage.jsx";
 import SignupPage from "./pages/SignupPage.jsx";
 import SettingsPage from "./pages/SettingsPage.jsx";
 import NotarialActPage from "./pages/NotarialActPage.jsx";
+import HistoryPage from "./pages/HistoryPage.jsx";
 import useGenerateDescription from "./hooks/useGenerateDescription.js";
 import { useAuth } from "./contexts/AuthContext.jsx";
 import { t } from "./i18n.js";
@@ -290,17 +290,7 @@ function App() {
                 <Route path="/" element={<GeneratePage lang={lang} />} />
                 <Route path="/history" element={
                   user ? (
-                    <div className="space-y-6">
-                      <div>
-                        <h1 className="text-2xl font-bold text-slate-800 dark:text-slate-100">
-                          {t(lang, "historyTitle")}
-                        </h1>
-                        <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
-                          {t(lang, "historySubtitle")}
-                        </p>
-                      </div>
-                      <HistoryList lang={lang} />
-                    </div>
+                    <HistoryPage lang={lang} />
                   ) : (
                     <AuthPrompt lang={lang} returnTo="/history" />
                   )

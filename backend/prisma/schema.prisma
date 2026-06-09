@@ -20,3 +20,14 @@ model DescriptionHistory {
   fileName         String?
   createdAt        DateTime @default(now())
 }
+
+model NotarialActHistory {
+  id           String   @id @default(uuid())
+  userId       String?
+  identifier   String?
+  sellerName   String?
+  buyerName    String?
+  templateData Json
+  fileName     String?
+  createdAt    DateTime @default(now())
+}

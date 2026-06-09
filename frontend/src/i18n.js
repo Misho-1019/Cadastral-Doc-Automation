@@ -115,6 +115,12 @@ export const translations = {
     naSuccess: "Нотариалният акт е генериран успешно!",
     naSuccessSubtitle: "Файлът беше изтеглен. Можете да го отворите в Microsoft Word.",
     naBackToHome: "Към началото",
+    naGenerateTab: "Генериране",
+    naHistoryTab: "История",
+    naHistoryEmpty: "Няма генерирани нотариални актове",
+    naHistoryDownload: "Изтегли .docx",
+    historyTabDescriptions: "Описания",
+    historyTabNotarialActs: "Нотариални актове",
   },
   en: {
     title: "Cadastral Doc Automation",
@@ -232,6 +238,12 @@ export const translations = {
     naSuccess: "Notarial act generated successfully!",
     naSuccessSubtitle: "The file was downloaded. You can open it in Microsoft Word.",
     naBackToHome: "Back to home",
+    naGenerateTab: "Generate",
+    naHistoryTab: "History",
+    naHistoryEmpty: "No notarial acts generated yet",
+    naHistoryDownload: "Download .docx",
+    historyTabDescriptions: "Descriptions",
+    historyTabNotarialActs: "Notarial Acts",
   },
 };
 

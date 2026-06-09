@@ -96,7 +96,7 @@ router.post("/generate", auth, upload.single("pdf"), async (req, res) => {
 
 router.post("/generate-notarial-act", auth, async (req, res) => {
     try {
-        const { formData, aiDescription, documentNumber, issueDate } = req.body;
+        const { formData, aiDescription, documentNumber, issueDate, identifier, extractedDataValues } = req.body;
 
         if (!formData || !aiDescription) {
             return res.status(400).json({
@@ -119,6 +119,7 @@ router.post("/generate-notarial-act", auth, async (req, res) => {
             aiDescription,
             documentNumber: documentNumber || "",
             issueDate: issueDate || "",
+            extractedDataValues: extractedDataValues || [],
             actDateWords,
             priceWords,
             depositAmountWords,
@@ -129,6 +130,18 @@ router.post("/generate-notarial-act", auth, async (req, res) => {
         };
 
         const docxBuffer = await generateNotarialActDocx(templateData);
+
+        // Save to history (fire-and-forget, don't block response)
+        prisma.notarialActHistory.create({
+            data: {
+                identifier: identifier || documentNumber || null,
+                sellerName: f.sellerName,
+                buyerName: f.buyerName,
+                templateData: templateData as any,
+                fileName: `Notarial-Act-${f.buyerName}.docx`,
+                userId: req.userId || null,
+            }
+        }).catch((err: unknown) => console.error("Failed to save notarial act history:", err));
 
         res.setHeader(
             "Content-Type",
@@ -196,6 +209,77 @@ router.delete("/history/:id", auth, async (req, res) => {
         }
 
         await prisma.descriptionHistory.delete({
+            where: { id: req.params.id as string },
+        });
+
+        return res.json({ message: "Record deleted successfully" });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: "Failed to delete record" });
+    }
+})
+
+router.get("/notarial-act-history", auth, async (req, res) => {
+    try {
+        const records = await prisma.notarialActHistory.findMany({
+            where: { userId: req.userId || null },
+            orderBy: { createdAt: 'desc' },
+            select: {
+                id: true,
+                identifier: true,
+                sellerName: true,
+                buyerName: true,
+                fileName: true,
+                createdAt: true,
+            }
+        });
+
+        return res.json(records);
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: 'Failed to retrieve notarial act history' });
+    }
+})
+
+router.get("/notarial-act-history/:id/download", auth, async (req, res) => {
+    try {
+        const record = await prisma.notarialActHistory.findFirst({
+            where: { id: req.params.id as string, userId: req.userId || null },
+        })
+
+        if (!record) {
+            return res.status(404).json({ message: "Record not found" });
+        }
+
+        const templateData = record.templateData as unknown as NotarialActTemplateData;
+        const docxBuffer = await generateNotarialActDocx(templateData);
+
+        res.setHeader(
+            "Content-Type",
+            "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+        );
+        res.setHeader(
+            "Content-Disposition",
+            "attachment; filename=notarial-act.docx"
+        );
+        res.send(docxBuffer);
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: "Failed to download notarial act" });
+    }
+})
+
+router.delete("/notarial-act-history/:id", auth, async (req, res) => {
+    try {
+        const record = await prisma.notarialActHistory.findFirst({
+            where: { id: req.params.id as string, userId: req.userId || null },
+        })
+
+        if (!record) {
+            return res.status(404).json({ message: "Record not found" });
+        }
+
+        await prisma.notarialActHistory.delete({
             where: { id: req.params.id as string },
         });
 
