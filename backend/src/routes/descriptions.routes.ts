@@ -5,7 +5,10 @@ import { detectCadastralDocumentType } from "../services/detectCadastralDocument
 import { extractCadastralData } from "../services/extractCadastralData.js";
 import { validateExtractedData } from "../services/validateExtractedData.js";
 import { generateAiDescription } from "../services/generateAiDescription.js";
+import { generateNotarialActDocx } from "../services/fillNotarialAct.js";
 import { formatDuration } from "../utils/formatDuration.js";
+import { dateToBgWords, numberToBgWords, percentageToBgWords, currencyToBgWords } from "../utils/numberToWords.js";
+import type { NotarialActFormData, NotarialActTemplateData } from "../types/notarialAct.types.js";
 import prisma from "../lib/prisma.js";
 import { auth } from "../middleware/auth.js";
 
@@ -87,6 +90,59 @@ router.post("/generate", auth, upload.single("pdf"), async (req, res) => {
 
         return res.status(500).json({
             message: "Failed to process PDF",
+        });
+    }
+});
+
+router.post("/generate-notarial-act", auth, async (req, res) => {
+    try {
+        const { formData, aiDescription, documentNumber, issueDate } = req.body;
+
+        if (!formData || !aiDescription) {
+            return res.status(400).json({
+                message: "Form data and AI description are required",
+            });
+        }
+
+        const f: NotarialActFormData = formData;
+
+        const actDateWords = dateToBgWords(f.actDate);
+        const priceWords = numberToBgWords(f.price) + " " + f.priceCurrency;
+        const depositAmountWords = numberToBgWords(f.depositAmount) + " " + f.priceCurrency;
+        const depositPercentageWords = percentageToBgWords(f.depositPercentage);
+        const remainingAmount = f.price - f.depositAmount;
+        const remainingAmountWords = numberToBgWords(remainingAmount) + " " + f.priceCurrency;
+        const taxAssessmentValueWords = currencyToBgWords(f.taxAssessmentValue, f.priceCurrency);
+
+        const templateData: NotarialActTemplateData = {
+            ...f,
+            aiDescription,
+            documentNumber: documentNumber || "",
+            issueDate: issueDate || "",
+            actDateWords,
+            priceWords,
+            depositAmountWords,
+            depositPercentageWords,
+            remainingAmount,
+            remainingAmountWords,
+            taxAssessmentValueWords,
+        };
+
+        const docxBuffer = await generateNotarialActDocx(templateData);
+
+        res.setHeader(
+            "Content-Type",
+            "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+        );
+        res.setHeader(
+            "Content-Disposition",
+            "attachment; filename=notarial-act.docx"
+        );
+        res.send(docxBuffer);
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({
+            message: "Failed to generate notarial act",
         });
     }
 });
