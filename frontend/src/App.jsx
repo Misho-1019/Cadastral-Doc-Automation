@@ -22,6 +22,7 @@ import SignupPage from "./pages/SignupPage.jsx";
 import SettingsPage from "./pages/SettingsPage.jsx";
 import NotarialActPage from "./pages/NotarialActPage.jsx";
 import HistoryPage from "./pages/HistoryPage.jsx";
+import ChatWidget from "./components/ChatWidget.jsx";
 import useGenerateDescription from "./hooks/useGenerateDescription.js";
 import { useAuth } from "./contexts/AuthContext.jsx";
 import { t } from "./i18n.js";
@@ -327,6 +328,7 @@ function App() {
 
       {showHelp && <HelpModal lang={lang} onClose={() => setShowHelp(false)} />}
       {comingSoon && <ComingSoonToast lang={lang} />}
+      <ChatWidget lang={lang} />
     </>
   );
 }

@@ -9,10 +9,38 @@ import { generateNotarialActDocx } from "../services/fillNotarialAct.js";
 import { formatDuration } from "../utils/formatDuration.js";
 import { dateToBgWords, numberToBgWords, percentageToBgWords, currencyToBgWords } from "../utils/numberToWords.js";
 import type { NotarialActFormData, NotarialActTemplateData } from "../types/notarialAct.types.js";
+import { streamChat } from "../services/chatService.js";
 import prisma from "../lib/prisma.js";
 import { auth } from "../middleware/auth.js";
 
 const router = Router();
+
+router.post("/chat", async (req, res) => {
+    try {
+        const { messages } = req.body;
+
+        if (!messages || !Array.isArray(messages) || messages.length === 0) {
+            return res.status(400).json({ message: "Messages array is required" });
+        }
+
+        res.setHeader("Content-Type", "text/event-stream");
+        res.setHeader("Cache-Control", "no-cache");
+        res.setHeader("Connection", "keep-alive");
+
+        for await (const chunk of streamChat(messages)) {
+            res.write(`data: ${JSON.stringify({ text: chunk })}\n\n`);
+        }
+        res.write("data: [DONE]\n\n");
+        res.end();
+    } catch (error) {
+        console.error("Chat error:", error);
+        if (!res.headersSent) {
+            return res.status(500).json({ message: "Chat service error" });
+        }
+        res.write(`data: ${JSON.stringify({ error: "Something went wrong" })}\n\n`);
+        res.end();
+    }
+});
 
 const upload = multer({
     storage: multer.memoryStorage(),

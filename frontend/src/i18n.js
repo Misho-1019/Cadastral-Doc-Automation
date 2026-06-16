@@ -121,6 +121,9 @@ export const translations = {
     naHistoryDownload: "Изтегли .docx",
     historyTabDescriptions: "Описания",
     historyTabNotarialActs: "Нотариални актове",
+    chatTitle: "AI Асистент",
+    chatPlaceholder: "Напишете съобщение...",
+    chatWelcome: "Здравейте! Питайте ме за кадастрални документи, генериране на описания, нотариални актове или кадастралното законодателство.",
   },
   en: {
     title: "Cadastral Doc Automation",
@@ -244,6 +247,9 @@ export const translations = {
     naHistoryDownload: "Download .docx",
     historyTabDescriptions: "Descriptions",
     historyTabNotarialActs: "Notarial Acts",
+    chatTitle: "AI Assistant",
+    chatPlaceholder: "Type a message...",
+    chatWelcome: "Hello! Ask me about cadastral documents, description generation, notarial acts, or cadastral legislation.",
   },
 };
 
