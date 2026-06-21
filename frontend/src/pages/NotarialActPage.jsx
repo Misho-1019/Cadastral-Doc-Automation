@@ -198,7 +198,7 @@ export default function NotarialActPage({ lang }) {
               {t(lang, "naSuccessSubtitle")}
             </p>
           </div>
-          <div className="flex gap-3 justify-center">
+          <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <button
               type="button"
               onClick={handleReset}

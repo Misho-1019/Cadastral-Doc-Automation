@@ -46,7 +46,7 @@ export default function TopHeader({ lang, onLanguageChange, onHelpClick, onToggl
         >
           C
         </div>
-        <span className="text-lg font-semibold text-slate-800 dark:text-slate-100">
+        <span className="text-lg font-semibold text-slate-800 dark:text-slate-100 truncate max-w-[90px] sm:max-w-[160px] md:max-w-none">
           {t(lang, "title")}
         </span>
       </div>

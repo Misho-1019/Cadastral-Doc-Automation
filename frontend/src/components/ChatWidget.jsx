@@ -107,14 +107,14 @@ export default function ChatWidget({ lang }) {
   return (
     <>
       {open && (
-        <div className="fixed inset-0 z-50 bg-black/20 md:hidden" onClick={() => setOpen(false)} />
+        <div className="fixed inset-0 z-40 bg-black/20 md:hidden" onClick={() => setOpen(false)} />
       )}
 
       {!open && (
         <button
           type="button"
           onClick={() => setOpen(true)}
-          className="fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full bg-teal-600 dark:bg-teal-500 text-white shadow-lg hover:bg-teal-700 dark:hover:bg-teal-600 active:scale-95 transition-all flex items-center justify-center focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:ring-offset-2 outline-none"
+          className="fixed bottom-6 right-6 z-40 w-14 h-14 rounded-full bg-teal-600 dark:bg-teal-500 text-white shadow-lg hover:bg-teal-700 dark:hover:bg-teal-600 active:scale-95 transition-all flex items-center justify-center focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:ring-offset-2 outline-none"
           aria-label={t(lang, "chatTitle")}
         >
           <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -124,7 +124,7 @@ export default function ChatWidget({ lang }) {
       )}
 
       {open && (
-        <div className="fixed bottom-6 right-6 z-50 w-[360px] max-w-[calc(100vw-2rem)] h-[500px] max-h-[calc(100vh-6rem)] rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 shadow-2xl flex flex-col overflow-hidden animate-[fadeInUp_0.2s_ease-out]">
+        <div className="fixed bottom-6 right-6 z-40 w-[360px] max-w-[calc(100vw-2rem)] h-[500px] max-h-[calc(100vh-6rem)] rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 shadow-2xl flex flex-col overflow-hidden animate-[fadeInUp_0.2s_ease-out]">
           <div className="flex items-center justify-between px-4 py-3 border-b border-slate-100 dark:border-slate-700 shrink-0">
             <h3 className="text-sm font-semibold text-slate-800 dark:text-slate-200">
               {t(lang, "chatTitle")}
@@ -132,7 +132,7 @@ export default function ChatWidget({ lang }) {
             <button
               type="button"
               onClick={() => setOpen(false)}
-              className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors rounded focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:outline-none"
+              className="p-1.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors rounded focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:outline-none"
               aria-label={t(lang, "dismiss")}
             >
               <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
